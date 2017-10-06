@@ -4,13 +4,12 @@ var app = app || {};
     app.initialEmergency = [
         {
             id: 1,
-            location: '',
+            location: {lat: 39.173853, lng: -84.507786},
             casualties: 4,
-            fire: '',
-            hazmat: '',
-            ppe: '',
-            assembly: '',
-            com_post: '',
+            type: 'HAZMAT',
+            ppe: 'Level A',
+            assembly: {lat: 39.176411, lng: -84.507937},
+            com_post: {lat: 39.175396, lng: -84.507062},
         },
     ];
 
@@ -18,8 +17,7 @@ var app = app || {};
         this.id = ko.observable(data.id);
         this.location = ko.observable(data.location);
         this.casualties = ko.observable(data.casualties);
-        this.fire = ko.observable(data.fire);
-        this.hazmat = ko.observable(data.hazmat);
+        this.type = ko.observable(data.type);
         this.ppe = ko.observable(data.ppe);
         this.assembly = ko.observable(data.assembly);
         this.com_post = ko.observable(data.com_post);
