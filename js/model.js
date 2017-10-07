@@ -21,7 +21,6 @@ var app = app || {};
         this.ppe = ko.observable(data.ppe);
         this.assembly = ko.observable(data.assembly);
         this.com_post = ko.observable(data.com_post);
-
         this.cas_level = ko.computed(function() {
             if (this.casualties() === 1){
                 return "Single Casualty Event"
@@ -33,5 +32,12 @@ var app = app || {};
                 return "Mass Casualty Event"
             }; 
         }, this);
+        this.incidentMarker = new google.maps.Marker({
+            position: data.location,
+            title: data.type,
+            animation: google.maps.Animation.DROP,
+            map: null
+        });
+        console.log('map marker made!')
     };
 })();

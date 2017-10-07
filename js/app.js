@@ -2,7 +2,6 @@ var app = app || {};
 
 (function() {
     'use strict';
-
     app.initMap = function() {
         // Map Tab
         var map;
@@ -13,8 +12,6 @@ var app = app || {};
               zoom: 14,
               mapTypeControl: false
         });
-
-    ko.applyBindings(new app.ViewModel());
-    
+        ko.applyBindings(new app.ViewModel());
     };
 })();
