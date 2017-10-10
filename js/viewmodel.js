@@ -56,13 +56,19 @@ var app = app || {};
             } else {
                 var x = ko.utils.arrayFilter(self.initialList(), function(item){
                     return ko.utils.arrayFilter(selectedEvents, function(p) {
-                        return p.type == item.type
-                    });
+                        return p.type == item.type()
+                    }).length > 0;
                 });
-                console.log(x);
-                x.forEach(function(mark){
+                // Set all markers to invisible
+                self.initialList().forEach(function(mark){
                     mark.markers.forEach(function(mark){
                         mark.marker.setVisible(false);
+                    });
+                });
+                // set only the filtered markers to visible
+                x.forEach(function(mark){
+                    mark.markers.forEach(function(mark){
+                        mark.marker.setVisible(true);
                     });
                 });
                 return x;
