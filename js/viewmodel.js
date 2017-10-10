@@ -54,16 +54,18 @@ var app = app || {};
                 });
                 return self.initialList();
             } else {
-                return ko.utils.arrayFilter(self.initialList(), function(item){
+                var x = ko.utils.arrayFilter(self.initialList(), function(item){
                     return ko.utils.arrayFilter(selectedEvents, function(p) {
-                        if (p.type != item.type) {
-                            item.markers.forEach(function(mark){
-                                mark.marker.setVisible(false);
-                            });
-                        };
                         return p.type == item.type
                     });
                 });
+                console.log(x);
+                x.forEach(function(mark){
+                    mark.markers.forEach(function(mark){
+                        mark.marker.setVisible(false);
+                    });
+                });
+                return x;
             };
         });
 
