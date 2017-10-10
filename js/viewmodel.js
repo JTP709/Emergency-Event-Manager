@@ -29,6 +29,9 @@ var app = app || {};
             self.initialList.push(new app.EventListing(item));
         });
 
+
+        // Filter Function
+
         // Create an array of filters
         this.checkbox = function(x) {
             this.type = x;

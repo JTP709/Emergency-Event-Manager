@@ -57,28 +57,32 @@ var app = app || {};
                     '<p>' + data.type + ' Event</p>' +
                     '<p>PPE: ' + data.ppe + '</p>' +
                     '<p>Casualties: ' + data.casualties + '</p>' +
-                    '</div>'
+                    '</div>',
+                type: 'primary'
             },
             {
                 title: 'Command Post',
                 position: data.com_post,
                 content: '<div id="content">'+
                     '<p>Command Post</p>' +
-                    '</div>'
+                    '</div>',
+                type: 'secondary'
             },
             {
                 title: 'Assembly Point',
                 position: data.assembly,
                 content: '<div id="content">'+
                     '<p>Assembly Point</p>' +
-                    '</div>'
+                    '</div>',
+                type: 'secondary'
             },
             {
                 title: 'Decontamination Point',
                 position: data.decon,
                 content: '<div id="content">'+
                     '<p>Decontamination Point</p>' +
-                    '</div>'
+                    '</div>',
+                type: 'secondary'
             }
         ];
 
@@ -89,12 +93,23 @@ var app = app || {};
                     position: data.position,
                     title: data.title,
                     animation: google.maps.Animation.DROP,
-                    map: app.map
+                    map: app.map,
+                    visible: false
+            });
+            this.marker.addListener('click', function(){
+                self.infoWindow.open(app.map, func.marker);
+                self.infoWindow.setContent(data.content);
+            });
+            // Change markers on zoom
+            if (data.type != 'primary') {
+                this.marker.setVisible(false);
+                google.maps.event.addListener(app.map, 'zoom_changed', function() {
+                    var zoom = app.map.getZoom();
+                    func.marker.setVisible(zoom >= 14);
                 });
-                this.marker.addListener('click', function(){
-                    self.infoWindow.open(app.map, func.marker);
-                    self.infoWindow.setContent(data.content);
-                });
+            } else {
+                this.marker.setVisible(true);
+            };
         };
 
         this.infoWindow = new google.maps.InfoWindow();
