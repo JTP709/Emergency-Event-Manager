@@ -28,7 +28,7 @@ var app = app || {};
             casualties: 2,
             type: 'FIRE',
             ppe: 'Turnout',
-            assembly: {lat: 34115387, lng: -84.529902},
+            assembly: {lat: 38.993168, lng: -84.650226},
             com_post: {lat: 38.992819, lng: -84.649519},
             decon: null
         },
@@ -38,9 +38,19 @@ var app = app || {};
             casualties: 2,
             type: 'ACTIVE SHOOTER',
             ppe: 'LEVEL D',
-            assembly: {lat: 39.112844, lng: -84.526581},
-            com_post: {lat: 39.113600, lng: -84.527466},
+            assembly: {lat: 39.112839, lng: -84.526615},
+            com_post: {lat: 39.115844, lng: -84.803381},
             decon: null
+        },
+        {
+            id: 5,
+            location: {lat: 39.117189, lng: -84.802841},
+            casualties: 0,
+            type: 'HAZMAT',
+            ppe: 'LEVEL A',
+            assembly: {lat: 39.116347, lng: -84.799515},
+            com_post: {lat: 39.113600, lng: -84.527466},
+            decon: {lat: 39.116412, lng: -84.803169}
         }
     ];
 

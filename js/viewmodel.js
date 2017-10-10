@@ -173,6 +173,12 @@ var app = app || {};
                 this.ppe_reset.checked = false;
                 this.cas_reset.selectedIndex = 0;
                 self.errorForm(false);
+
+                // Reset view if greater than 14
+                var zoom = app.map.getZoom();
+                if (zoom <= 14) {
+                    self.reset();
+                };
             };
         };
 
@@ -221,5 +227,8 @@ var app = app || {};
             });
             self.tempMarkers.push(this.marker);
         };
+
+        // Reset Map after markers have been placed
+        this.reset();
     };
 })();
