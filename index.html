@@ -10,8 +10,9 @@
 <body>
     <h1>Emergency Response Coordinator</h1>
     <div id="navbar">
-        <a href="#" data-bind="click: nav">New Emergency</a>
-        <a href="#" data-bind="click: nav">Map</a>
+        <a href="#" data-bind="click: function(){nav('new_tab')}">New Emergency</a>
+        <a href="#" data-bind="click: function(){nav('map_tab')}">Emergency Events</a>
+        <a href="#" data-bind="click: reset">Reset Map</a>
     </div>
     <div class="container">
         <div id="side_bar">
@@ -19,14 +20,27 @@
                 <h2>New Emergency</h2>
             </div>
             <div id="map_tab">
-                <h2>Emergency Map</h2>
-                <div data-bind="foreach: emergencyList">
+                <h4>Filter List:</h4>
+                
+                <div id="checkbox_list">
+                    <ul data-bind="foreach: filters">
+                        <li>
+                            <input type="checkbox" data-bind="checked:selected, attr: {id: type}">
+                            <label data-bind="text: type, attr: {for: type}"></label>
+                        </li>
+                    </ul>
+
+                <h2>Emergency Events</h2>
+                <div data-bind="foreach: initialList">
                     <ul>
-                        <div data-bind="click: $parent.changeCenter">
-                            <h3>Emergency #<div data-bind="text: id"></div></h3>
-                            <li>Number of Casualties: <div data-bind="text: casualties"></div></li>
-                            <li> Casualty Level: <div data-bind="text: cas_level"></div></li>
-                            <li>PPE Level: <div data-bind="text: ppe"></div></li>
+                        <div>
+                            <h3>Emergency #<label data-bind="text: id"></label></h3>
+                            <li>Type: <label data-bind="text: type"></label></li>
+                            <li>Number of Casualties: <label data-bind="text: casualties"></label></li>
+                            <li> Casualty Level: <label data-bind="text: cas_level"></label></li>
+                            <li>PPE Level: <label data-bind="text: ppe"></label></li>
+                            <div><input type="checkbox" data-bind=""> Hide </div>
+                            <button data-bind="click: $parent.changeCenter">Go To Emergency</button>
                         </div>
                     </ul>
                 </div>
