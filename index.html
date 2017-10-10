@@ -19,21 +19,34 @@
             <div id="new_tab">
                 <h2>New Emergency</h2>
                 <form>
-                    <label>Event Type:</label><br>
-                    <input type="radio" value="HAZMAT" id="new_type">HAZMAT<br>
-                    <input type="radio" value="FIRE" id="new_type">FIRE<br>
-                    <button id="new_location" data-bind="click: new_locationMarker">Event Location</button><br>
-                    <button id="new_assembly" data-bind="click: new_assemblyMarker">Assembly Point</button><br>
-                    <button id="new_com_post" data-bind="click: new_com_postMarker">Command Post</button><br>
-                    <button id="new_com_post" data-bind="click: new_com_postMarker">DECON Point</button><br>
-                    <label>Casualties: </label><input type="text" id="new_cas"><br>
-                    <label>PPE:</label><br>
-                    <input type="radio" value="LEVEL A" id="new_ppe">LEVEL A<br>
-                    <input type="radio" value="LEVEL B" id="new_ppe">LEVEL B<br>
-                    <input type="radio" value="LEVEL C" id="new_ppe">LEVEL C<br>
-                    <input type="radio" value="LEVEL D" id="new_ppe">LEVEL D<br>
-                    <input type="radio" value="Turnout" id="new_ppe">Turnout Gear<br>
+                    <label><b>Event Type:</b></label><br>
+                    <input type="radio" name="type" value="HAZMAT" class="new_type">HAZMAT<br>
+                    <input type="radio" name="type" value="FIRE" class="new_type">FIRE<br>
+
+                    <label><b>Marker Lockations:</b></label>
+                    <br>
+                    <button id="new_location" data-bind="click: newLocationMarker">Event Location</button><br>
+                    <button id="new_assembly" data-bind="click: newAssemblyMarker">Assembly Point</button><br>
+                    <button id="new_com_post" data-bind="click: newComPostMarker">Command Post</button><br>
+                    <button id="new_com_post" data-bind="click: newDeconMarker">DECON Point</button><br>
+
+                    <label><b>Casualties: </b></label><select id="new_cas"></select><br>
+
+                    <label><b>PPE:</b></label><br>
+                    <input type="radio" name="ppe" value="LEVEL A" class="new_ppe">LEVEL A<br>
+                    <input type="radio" name="ppe" value="LEVEL B" class="new_ppe">LEVEL B<br>
+                    <input type="radio" name="ppe" value="LEVEL C" class="new_ppe">LEVEL C<br>
+                    <input type="radio" name="ppe" value="LEVEL D" class="new_ppe">LEVEL D<br>
+                    <input type="radio" name="ppe" value="Turnout" class="new_ppe">Turnout Gear<br>
+                    <br>
+
                     <button data-bind="click: newEvent">Submit</button>
+                    <div data-bind="visible: errorForm">
+                        <b>You must complete the entire form before submitting!</b>
+                    </div>
+                    <div data-bind="visible: newEventMsg">
+                        <b>New Event has been added!</b>
+                    </div>
                 </form>
             </div>
             <div id="map_tab">
@@ -65,6 +78,7 @@
         </div>
         <div id="map"></div>
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="js/lib/knockout-min.js"></script>
     <script src="js/model.js"></script>
     <script src="js/viewmodel.js"></script>

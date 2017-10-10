@@ -9,6 +9,8 @@ var app = app || {};
         var map_tab = document.getElementById('map_tab');
         new_tab.style.display = 'none';
         this.nav = function(z) {
+            self.newEventMsg(false);
+            self.errorForm(false);
             var x = new_tab;
             var y = map_tab;
             if (z === 'new_tab') {
@@ -78,44 +80,88 @@ var app = app || {};
         };
 
         // Create a new Emergency Event
+        
         // Set observables for marker lat-long data
         this.tempLocMarker = ko.observable(null);
         this.tempAssemblyMarker = ko.observable(null);
         this.tempComPostMarker = ko.observable(null);
+        this.tempDeconMarker = ko.observable(null);
 
-        this.newEvent = function(){
-            // Counts current number of events in the list
-            var event_num = self.initialList().length;
-
-            this.id = event_num + 1;
-            this.location = self.tempLocMarker();
-            this.cas = document.getElementById("new_cas").value;
-            this.type = document.getElementById("new_type").value;
-            this.ppe = document.getElementById("new_ppe").value;
-            this.assembly = self.tempAssemblyMarker();
-            this.com_post = self.tempComPostMarker();
-
-            this.newData = [
-                {
-                    id: this.id,
-                    location: this.location,
-                    casualties: this.cas,
-                    type: this.type,
-                    ppe: this.ppe,
-                    assembly: this.assembly,
-                    com_post: this.com_post,
-                }
-            ];
-            this.newData.forEach(function(item){
-                self.initialList.push(new app.EventListing(item));
-            });
-            this.tempLocMarker = ko.observable(null);
-            this.tempAssemblyMarker = ko.observable(null);
-            this.tempComPostMarker = ko.observable(null);
-            self.tempMarkers = ko.observableArray([]);
+        // Casualty Number Dropdown for New Emergency Event menu
+        
+        var $select = $("#new_cas");
+        for (i=0;i<=100;i++){
+            $select.append($('<option></option>').val(i).html(i))
         };
 
-        this.new_locationMarker = function(){
+        // Flash message hidden initially
+        this.newEventMsg = ko.observable(false);
+        this.errorForm = ko.observable(false);
+
+        this.newEvent = function(){
+            // Check to make sure the form is filled out
+            var typeCheck = document.querySelector('input[name = "type"]:checked');
+            var ppeCheck = document.querySelector('input[name = "ppe"]:checked');
+            /*
+            var locCheck = self.tempLocMarker();
+            || locCheck == null
+            */
+            if (typeCheck == null || ppeCheck == null){
+                self.errorForm(true);
+                self.newEventMsg(false);
+            } else {
+                // Counts current number of events in the list
+                var event_num = self.initialList().length;
+
+                this.id = event_num + 1;
+                this.location = self.tempLocMarker();
+                this.cas = document.getElementById("new_cas").value;
+                this.type = document.querySelector('input[name = "type"]:checked').value;
+                this.ppe = document.querySelector('input[name = "ppe"]:checked').value;
+                this.assembly = self.tempAssemblyMarker();
+                this.com_post = self.tempComPostMarker();
+                this.decon = self.tempDeconMarker();
+                // Populate a new array with the data
+                this.newData = [
+                    {
+                        id: this.id,
+                        location: this.location,
+                        casualties: this.cas,
+                        type: this.type,
+                        ppe: this.ppe,
+                        assembly: this.assembly,
+                        com_post: this.com_post,
+                        decon: this.decon
+                    }
+                ];
+
+                // Add the data to our model
+                this.newData.forEach(function(item){
+                    self.initialList.push(new app.EventListing(item));
+                });
+
+                // Show the flash message indicating a new event was added
+                self.newEventMsg(true);
+
+                // Reset the temp marker observables and array
+                this.tempLocMarker = ko.observable(null);
+                this.tempAssemblyMarker = ko.observable(null);
+                this.tempComPostMarker = ko.observable(null);
+                this.tempDeconMarker = ko.observable(null);
+                self.tempMarkers = ko.observableArray([]);
+
+                // Reset the form
+                this.cas_reset = document.getElementById("new_cas");
+                this.type_reset = document.querySelector('input[name = "type"]:checked');
+                this.ppe_reset = document.querySelector('input[name = "ppe"]:checked');
+                this.type_reset.checked = false;
+                this.ppe_reset.checked = false;
+                this.cas_reset.selectedIndex = 0;
+                self.errorForm(false);
+            };
+        };
+
+        this.newLocationMarker = function(){
             app.map.addListener(app.map,'click', this.addTempMarker);
             self.listener = true;
             this.addTempMarker = function(event){
@@ -126,7 +172,7 @@ var app = app || {};
             };
         };
 
-        this.new_assemblyMarker = function(){
+        this.newAssemblyMarker = function(){
             app.map.addListener(app.map,'click', this.addTempMarker);
             this.addTempMarker = function(event){
                 placeMarker(event.latLng);
@@ -134,11 +180,19 @@ var app = app || {};
             };
         };
 
-        this.new_com_postMarker = function(){
+        this.newComPostMarker = function(){
             app.map.addListener(app.map,'click', this.addTempMarker);
             this.addTempMarker = function(event){
                 placeMarker(event.latLng);
                 self.tempComPostMarker = ko.observable(event.latLng);
+            };
+        };
+
+        this.newDeconMarker = function(){
+            app.map.addListener(app.map,'click', this.addTempMarker);
+            this.addTempMarker = function(event){
+                placeMarker(event.latLng);
+                self.tempDeconMarker = ko.observable(event.latLng);
             };
         };
 

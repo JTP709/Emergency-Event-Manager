@@ -77,7 +77,7 @@ var app = app || {};
                 title: 'Decontamination Point',
                 position: data.decon,
                 content: '<div id="content">'+
-                    '<p>DECON</p>' +
+                    '<p>Decontamination Point</p>' +
                     '</div>'
             }
         ];
