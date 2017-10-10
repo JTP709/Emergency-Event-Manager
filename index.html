@@ -10,14 +10,31 @@
 <body>
     <h1>Emergency Response Coordinator</h1>
     <div id="navbar">
-        <a href="#" data-bind="click: function(){nav('new_tab')}">New Emergency</a>
-        <a href="#" data-bind="click: function(){nav('map_tab')}">Emergency Events</a>
-        <a href="#" data-bind="click: reset">Reset Map</a>
+        <button data-bind="click: function(){nav('map_tab')}">Emergency Events</button>
+        <button data-bind="click: function(){nav('new_tab')}">New Emergency</button>
+        <button data-bind="click: reset">Reset Map</button>
     </div>
     <div class="container">
         <div id="side_bar">
             <div id="new_tab">
                 <h2>New Emergency</h2>
+                <form>
+                    <label>Event Type:</label><br>
+                    <input type="radio" value="HAZMAT" id="new_type">HAZMAT<br>
+                    <input type="radio" value="FIRE" id="new_type">FIRE<br>
+                    <button id="new_location" data-bind="click: new_locationMarker">Event Location</button><br>
+                    <button id="new_assembly" data-bind="click: new_assemblyMarker">Assembly Point</button><br>
+                    <button id="new_com_post" data-bind="click: new_com_postMarker">Command Post</button><br>
+                    <button id="new_com_post" data-bind="click: new_com_postMarker">DECON Point</button><br>
+                    <label>Casualties: </label><input type="text" id="new_cas"><br>
+                    <label>PPE:</label><br>
+                    <input type="radio" value="LEVEL A" id="new_ppe">LEVEL A<br>
+                    <input type="radio" value="LEVEL B" id="new_ppe">LEVEL B<br>
+                    <input type="radio" value="LEVEL C" id="new_ppe">LEVEL C<br>
+                    <input type="radio" value="LEVEL D" id="new_ppe">LEVEL D<br>
+                    <input type="radio" value="Turnout" id="new_ppe">Turnout Gear<br>
+                    <button data-bind="click: newEvent">Submit</button>
+                </form>
             </div>
             <div id="map_tab">
                 <h4>Filter List:</h4>
@@ -31,7 +48,7 @@
                     </ul>
 
                 <h2>Emergency Events</h2>
-                <div data-bind="foreach: initialList">
+                <div data-bind="foreach: filteredList">
                     <ul>
                         <div>
                             <h3>Emergency #<label data-bind="text: id"></label></h3>
@@ -39,7 +56,7 @@
                             <li>Number of Casualties: <label data-bind="text: casualties"></label></li>
                             <li> Casualty Level: <label data-bind="text: cas_level"></label></li>
                             <li>PPE Level: <label data-bind="text: ppe"></label></li>
-                            <div><input type="checkbox" data-bind=""> Hide </div>
+                            <div><input type="checkbox" data-bind=""> Hide Markers</div>
                             <button data-bind="click: $parent.changeCenter">Go To Emergency</button>
                         </div>
                     </ul>

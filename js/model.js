@@ -10,6 +10,7 @@ var app = app || {};
             ppe: 'Level A',
             assembly: {lat: 39.176411, lng: -84.507937},
             com_post: {lat: 39.175396, lng: -84.507062},
+            decon: {lat: 39.174987, lng: -84.507533}
         },
         {
             id: 2,
@@ -19,10 +20,13 @@ var app = app || {};
             ppe: 'Turnout',
             assembly: {lat: 39.085401, lng: -84.725157},
             com_post: {lat: 39.086947, lng: -84.727718},
+            decon: null
         }
     ];
 
     app.EventListing = function(data) {
+        var self = this;
+
         this.id = ko.observable(data.id);
         this.location = ko.observable(data.location);
         this.casualties = ko.observable(data.casualties);
@@ -44,49 +48,63 @@ var app = app || {};
                 return "Mass Casualty Event"
             }; 
         }, this);
-        this.selected = ko.observable(false);
+
+        this.markerData = [
+            {
+                title: data.type + 'Incident',
+                position: data.location,
+                content: '<div id="content">'+
+                    '<p>' + data.type + ' Event</p>' +
+                    '<p>PPE: ' + data.ppe + '</p>' +
+                    '<p>Casualties: ' + data.casualties + '</p>' +
+                    '</div>'
+            },
+            {
+                title: 'Command Post',
+                position: data.com_post,
+                content: '<div id="content">'+
+                    '<p>Command Post</p>' +
+                    '</div>'
+            },
+            {
+                title: 'Assembly Point',
+                position: data.assembly,
+                content: '<div id="content">'+
+                    '<p>Assembly Point</p>' +
+                    '</div>'
+            },
+            {
+                title: 'Decontamination Point',
+                position: data.decon,
+                content: '<div id="content">'+
+                    '<p>DECON</p>' +
+                    '</div>'
+            }
+        ];
+
+        // Create markers with info windows
+        this.markerMaker = function(data) {
+            var func = this;
+            this.marker = new google.maps.Marker({
+                    position: data.position,
+                    title: data.title,
+                    animation: google.maps.Animation.DROP,
+                    map: app.map
+                });
+                this.marker.addListener('click', function(){
+                    self.infoWindow.open(app.map, func.marker);
+                    self.infoWindow.setContent(data.content);
+                });
+        };
+
+        this.infoWindow = new google.maps.InfoWindow();
+
+        this.markers =[];
+        this.markerData.forEach(function(data){
+            if (data.position != null) {
+                self.markers.push(new self.markerMaker(data));
+            };
+        });
     };
-    
-    app.EventMarkers = function(data) {
-        var contentString = '<div id="content">'+
-            '<p>' + data.type + ' Event</p>' +
-            '<p>Hotzone</p>' +
-            '<p>PPE: ' + data.ppe + '</p>' +
-            '<p>Casualties: ' + data.casualties + '</p>' +
-            '</div>';
 
-        // Incident Marker and Info Window maker
-        this.incidentMarker = new google.maps.Marker({
-            position: data.location,
-            title: data.type + 'Incident',
-            animation: google.maps.Animation.DROP,
-            map: app.map
-        });
-        var infoWindow = new google.maps.InfoWindow({
-            content: contentString,
-            position: data.location
-        });
-        this.incidentMarker.addListener('click', function(){
-            infoWindow.open(app.map, this.incidentMarker)
-        });
-
-        // Command Post Marker and Info Window maker
-        this.comPostMarker = new google.maps.Marker({
-            position: data.com_post,
-            title: 'Command Post',
-            animation: google.maps.Animation.DROP,
-            map: app.map
-        });
-
-        // Assembly Point Marker and Info Window maker
-        this.assemblyPointMarker = new google.maps.Marker({
-            position: data.assembly,
-            title: 'Assembly Point',
-            animation: google.maps.Animation.DROP,
-            map: app.map
-        });
-        this.id = ko.observable(data.id);
-        this.selected = ko.observable(false);
-    };
-    
 })();
