@@ -22,6 +22,7 @@
                     <label><b>Event Type:</b></label><br>
                     <input type="radio" name="type" value="HAZMAT" class="new_type">HAZMAT<br>
                     <input type="radio" name="type" value="FIRE" class="new_type">FIRE<br>
+                    <input type="radio" name="type" value="ACTIVE SHOOTER" class="new_type">ACTIVE SHOOTER<br>
 
                     <label><b>Marker Lockations:</b></label>
                     <br>
@@ -53,22 +54,25 @@
                 <h4>Filter List:</h4>
                 
                 <div id="checkbox_list">
-                    <ul data-bind="foreach: filters">
-                        <li>
+                    <div data-bind="foreach: filters">
                             <input type="checkbox" data-bind="checked:selected, attr: {id: type}">
                             <label data-bind="text: type, attr: {for: type}"></label>
-                        </li>
-                    </ul>
+                            <br>
+                    </div>
 
                 <h2>Emergency Events</h2>
                 <div data-bind="foreach: filteredList">
                     <ul>
                         <div>
                             <h3>Emergency #<label data-bind="text: id"></label></h3>
-                            <li>Type: <label data-bind="text: type"></label></li>
-                            <li>Number of Casualties: <label data-bind="text: casualties"></label></li>
-                            <li> Casualty Level: <label data-bind="text: cas_level"></label></li>
-                            <li>PPE Level: <label data-bind="text: ppe"></label></li>
+                            <label>Type: <label data-bind="text: type"></label></label>
+                            <br>
+                            <label>Number of Casualties: <label data-bind="text: casualties"></label></label>
+                            <br>
+                            <label> Casualty Level: <label data-bind="text: cas_level"></label></label>
+                            <br>
+                            <label>PPE Level: <label data-bind="text: ppe"></label></label>
+                            <br>
                             <button data-bind="click: $parent.changeCenter">Go To Emergency</button>
                         </div>
                     </ul>

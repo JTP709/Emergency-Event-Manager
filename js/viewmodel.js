@@ -39,7 +39,8 @@ var app = app || {};
         };
         this.filters = [
             new this.checkbox('HAZMAT'),
-            new this.checkbox('FIRE')
+            new this.checkbox('FIRE'),
+            new this.checkbox('ACTIVE SHOOTER'),
         ];
 
         
@@ -159,7 +160,10 @@ var app = app || {};
                 this.tempAssemblyMarker = ko.observable(null);
                 this.tempComPostMarker = ko.observable(null);
                 this.tempDeconMarker = ko.observable(null);
-                self.tempMarkers = ko.observableArray([]);
+                for (var i = 0; i < self.tempMarkers.length; i++) {
+                  self.tempMarkers[i].setMap(null);
+                };
+                self.tempMarkers = [];
 
                 // Reset the form
                 this.cas_reset = document.getElementById("new_cas");
@@ -173,41 +177,42 @@ var app = app || {};
         };
 
         this.newLocationMarker = function(){
-            app.map.addListener(app.map,'click', this.addTempMarker);
-            self.listener = true;
-            this.addTempMarker = function(event){
-                placeMarker(event.latLng);
+            var func = this;
+            this.clicker = google.maps.event.addListener(app.map,'click', function(event){
+                self.placeMarker(event.latLng);
                 self.tempLocMarker = ko.observable(event.latLng);
-                console.log('Location Added');
-                console.log(event.latLng);
-            };
+                google.maps.event.removeListener(func.clicker);
+            });
         };
 
         this.newAssemblyMarker = function(){
-            app.map.addListener(app.map,'click', this.addTempMarker);
-            this.addTempMarker = function(event){
-                placeMarker(event.latLng);
+            var func = this;
+            this.clicker = google.maps.event.addListener(app.map,'click', function(event){
+                self.placeMarker(event.latLng);
                 self.tempAssemblyMarker = ko.observable(event.latLng);
-            };
+                google.maps.event.removeListener(func.clicker);
+            });
         };
 
         this.newComPostMarker = function(){
-            app.map.addListener(app.map,'click', this.addTempMarker);
-            this.addTempMarker = function(event){
-                placeMarker(event.latLng);
+            var func = this; 
+            this.clicker = google.maps.event.addListener(app.map,'click', function(event){
+                self.placeMarker(event.latLng);
                 self.tempComPostMarker = ko.observable(event.latLng);
-            };
+                google.maps.event.removeListener(func.clicker);
+            });
         };
 
         this.newDeconMarker = function(){
-            app.map.addListener(app.map,'click', this.addTempMarker);
-            this.addTempMarker = function(event){
-                placeMarker(event.latLng);
+            var func = this;
+            this.clicker = google.maps.event.addListener(app.map,'click', function(event){
+                self.placeMarker(event.latLng);
                 self.tempDeconMarker = ko.observable(event.latLng);
-            };
+                google.maps.event.removeListener(func.clicker);
+            });
         };
 
-        this.tempMarkers = ko.observableArray([]);
+        this.tempMarkers = [];
         
         this.placeMarker = function(location) {
             this.marker = new google.maps.Marker({
