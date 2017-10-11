@@ -40,7 +40,7 @@ var app = app || {};
         this.filters = [
             new this.checkbox('HAZMAT'),
             new this.checkbox('FIRE'),
-            new this.checkbox('ACTIVE SHOOTER'),
+            new this.checkbox('ACTIVE SHOOTER')
         ];
 
         
@@ -56,10 +56,8 @@ var app = app || {};
                         mark.marker.setVisible(true);
                     });
                 });
-                app.filterSelect(false);
                 return self.initialList();
             } else {
-                app.filterSelect(true);
                 var x = ko.utils.arrayFilter(self.initialList(), function(item){
                     return ko.utils.arrayFilter(selectedEvents, function(p) {
                         return p.type == item.type()
@@ -71,6 +69,7 @@ var app = app || {};
                         marks.marker.setVisible(false);
                     });
                 });
+                this.zoom = app.map.getZoom();
                 // set only the filtered markers to visible
                 x.forEach(function(mark){
                     mark.markers.forEach(function(marks){
@@ -83,7 +82,7 @@ var app = app || {};
 
         // Highlight a marker when hovering over list div element
         this.highlightedIcon = app.makeMarkerIcon('FFFF24');
-        this.defaultIcon = app.makeMarkerIcon('0091ff');
+        this.defaultIcon = app.makeMarkerIcon('ff0000');
         this.highlightMarker = function(data) {
             this.markers[0].marker.setIcon(self.highlightedIcon);
         };
@@ -113,14 +112,15 @@ var app = app || {};
 
         // Casualty Number Dropdown for New Emergency Event menu
         
-        var $select = $("#new_cas");
-        for (i=0;i<=100;i++){
+        var $select = $(".numDropDownMenu");
+        for (i=0;i<=500;i++){
             $select.append($('<option></option>').val(i).html(i))
         };
 
         // Flash message hidden initially
         this.newEventMsg = ko.observable(false);
         this.errorForm = ko.observable(false);
+        this.errorHotzonePreview = ko.observable(false);
 
         this.newEvent = function(){
             // Check to make sure the form is filled out
@@ -140,6 +140,7 @@ var app = app || {};
                 this.id = event_num + 1;
                 this.location = self.tempLocMarker();
                 this.cas = document.getElementById("new_cas").value;
+                this.rad = document.getElementById("new_rad").value;
                 this.type = document.querySelector('input[name = "type"]:checked').value;
                 this.ppe = document.querySelector('input[name = "ppe"]:checked').value;
                 this.assembly = self.tempAssemblyMarker();
@@ -155,7 +156,8 @@ var app = app || {};
                         ppe: this.ppe,
                         assembly: this.assembly,
                         com_post: this.com_post,
-                        decon: this.decon
+                        decon: this.decon,
+                        radius: this.rad
                     }
                 ];
 
@@ -175,24 +177,28 @@ var app = app || {};
                 for (var i = 0; i < self.tempMarkers.length; i++) {
                   self.tempMarkers[i].setMap(null);
                 };
+                for (var i = 0; i < self.tempHotzones.length; i++) {
+                  self.tempHotzones[i].setMap(null);
+                };
                 self.tempMarkers = [];
+                self.tempHotzones = [];
 
                 // Reset the form
                 this.cas_reset = document.getElementById("new_cas");
+                this.rad_reset = document.getElementById("new_rad");
                 this.type_reset = document.querySelector('input[name = "type"]:checked');
                 this.ppe_reset = document.querySelector('input[name = "ppe"]:checked');
                 this.type_reset.checked = false;
                 this.ppe_reset.checked = false;
                 this.cas_reset.selectedIndex = 0;
+                this.rad_reset.selectedIndex = 0;
                 self.errorForm(false);
-
-                //Reset view if greater than 14
-                var zoom = app.map.getZoom();
-                if (zoom <= 14) {
-                    self.reset();
-                };
+                this.errorHotzonePreview(false);
             };
         };
+
+        this.tempHotzones = [];
+        this.tempMarkers = [];
 
         this.newLocationMarker = function(){
             var func = this;
@@ -230,7 +236,37 @@ var app = app || {};
             });
         };
 
-        this.tempMarkers = [];
+        this.newHotzone = function(){
+            if (self.tempLocMarker() == null) {
+                this.errorHotzonePreview(true);
+            } else {
+                var func = this;
+                // Remove previous Hotzone previews
+                for (var i = 0; i < self.tempHotzones.length; i++) {
+                  self.tempHotzones[i].setMap(null);
+                };
+                self.tempHotzones = [];
+                // Establish radius and center
+                var radius = parseFloat(document.getElementById('new_rad').value);
+                var center = self.tempLocMarker();
+                // Create the new hotzone preview
+                this.hotzone = new google.maps.Circle({
+                    strokeColor: '#FF0000',
+                    strokeOpacity: 0.4,
+                    strokeWeight: 2,
+                    fillColor: '#FF0000',
+                    fillOpacity: 0.075,
+                    map: app.map,
+                    center: center,
+                    radius: radius
+                });
+                console.log(this.hotzone);
+                // Push the temp hotzone to the array
+                self.tempHotzones.push(this.hotzone);
+                // Remove the error message
+                self.errorHotzonePreview(false);
+            };
+        };
         
         this.placeMarker = function(location) {
             this.marker = new google.maps.Marker({

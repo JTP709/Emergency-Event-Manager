@@ -10,7 +10,8 @@ var app = app || {};
             ppe: 'LEVEL A',
             assembly: {lat: 39.176411, lng: -84.507937},
             com_post: {lat: 39.175396, lng: -84.507062},
-            decon: {lat: 39.174987, lng: -84.507533}
+            decon: {lat: 39.174987, lng: -84.507533},
+            radius: 50,
         },
         {
             id: 2,
@@ -20,7 +21,8 @@ var app = app || {};
             ppe: 'Turnout',
             assembly: {lat: 39.085401, lng: -84.725157},
             com_post: {lat: 39.086947, lng: -84.727718},
-            decon: null
+            decon: null,
+            radius: 50,
         },
         {
             id: 3,
@@ -30,7 +32,8 @@ var app = app || {};
             ppe: 'Turnout',
             assembly: {lat: 38.993168, lng: -84.650226},
             com_post: {lat: 38.992819, lng: -84.649519},
-            decon: null
+            decon: null,
+            radius: 55,
         },
         {
             id: 4,
@@ -40,7 +43,8 @@ var app = app || {};
             ppe: 'LEVEL D',
             assembly: {lat: 39.112839, lng: -84.526615},
             com_post: {lat: 39.113600, lng: -84.527466},
-            decon: null
+            decon: null,
+            radius: 100,
         },
         {
             id: 5,
@@ -50,7 +54,8 @@ var app = app || {};
             ppe: 'LEVEL A',
             assembly: {lat: 39.116347, lng: -84.799515},
             com_post: {lat: 39.115844, lng: -84.803381},
-            decon: {lat: 39.116412, lng: -84.803169}
+            decon: {lat: 39.116412, lng: -84.803169},
+            radius: 150,
         }
     ];
 
@@ -78,15 +83,15 @@ var app = app || {};
                 return "Mass Casualty Event"
             }; 
         }, this);
+        this.radius = ko.observable(data.radius);
 
         this.markerData = [
             {
                 title: data.type + 'Incident',
                 position: data.location,
                 content: '<div id="content">'+
-                    '<p>' + data.type + ' Event</p>' +
-                    '<p>PPE: ' + data.ppe + '</p>' +
-                    '<p>Casualties: ' + data.casualties + '</p>' +
+                    '<label><b>' + data.type + ' EVENT</b></label>' +
+                    '<p>' + this.cas_level() + '</p>' +
                     '</div>',
                 type: 'primary'
             },
@@ -131,11 +136,10 @@ var app = app || {};
         };
 
         // Create markers with info windows
-        app.filterSelect = ko.observable(false);
         this.markerMaker = function(data) {
             var func = this;
             // Defaust icon color and image
-            this.defaultIcon = app.makeMarkerIcon('0091ff');
+            this.defaultIcon = app.makeMarkerIcon('ff0000');
             // Create the marker
             this.marker = new google.maps.Marker({
                     position: data.position,
@@ -157,18 +161,37 @@ var app = app || {};
             this.marker.addListener('mouseout', function() {
                 this.setIcon(func.defaultIcon);
             });
-            //Change markers on zoom
+            // Set marker visibility based on zoom
             if (data.type != 'primary') {
                 this.marker.setVisible(false);
                 google.maps.event.addListener(app.map, 'zoom_changed', function() {
                     var zoom = app.map.getZoom();
-                    if (app.filterSelect() == false) {
-                        func.marker.setVisible(zoom >= 14);
-                    };
+                    func.marker.setVisible(zoom >= 14);
                 });
             } else {
                 this.marker.setVisible(true);
             };
+        };
+
+        // Create a hotzone radius
+        this.hotzoneMaker = function(data) {
+            var func = this;
+            this.hotzone = new google.maps.Circle({
+                strokeColor: '#FF0000',
+                strokeOpacity: 0.4,
+                strokeWeight: 2,
+                fillColor: '#FF0000',
+                fillOpacity: 0.075,
+                map: app.map,
+                center: data.location,
+                radius: parseFloat(data.radius)
+            });
+            console.log(this.hotzone);
+            // Set visibility based on zoom
+            google.maps.event.addListener(app.map, 'zoom_changed', function() {
+                var zoom = app.map.getZoom();
+                func.hotzone.setVisible(zoom >= 14);
+            });
         };
 
         this.infoWindow = new google.maps.InfoWindow();
@@ -179,6 +202,9 @@ var app = app || {};
                 self.markers.push(new self.markerMaker(data));
             };
         });
+
+        this.hotzones = [];
+        self.hotzones.push(new self.hotzoneMaker(data));
     };
 
 })();

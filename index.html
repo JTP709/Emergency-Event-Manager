@@ -31,7 +31,14 @@
                     <button id="new_com_post" data-bind="click: newComPostMarker">Command Post</button><br>
                     <button id="new_com_post" data-bind="click: newDeconMarker">DECON Point</button><br>
 
-                    <label><b>Casualties: </b></label><select id="new_cas"></select><br>
+                    <label><b>Hotzone Radius: </b></label><select id="new_rad" class="numDropDownMenu"></select>
+                    <button id="new_hotzone" data-bind="click: newHotzone">Preview</button><br>
+                    <div data-bind="visible: errorHotzonePreview">
+                        <b>You must first set the Event Location Marker!</b>
+                    </div>
+                    <br>
+
+                    <label><b>Casualties: </b></label><select id="new_cas" class="numDropDownMenu"></select><br>
 
                     <label><b>PPE:</b></label><br>
                     <input type="radio" name="ppe" value="LEVEL A" class="new_ppe">LEVEL A<br>
