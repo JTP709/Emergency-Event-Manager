@@ -66,6 +66,8 @@
                             <label data-bind="text: type, attr: {for: type}"></label>
                             <br>
                     </div>
+                    <input type="checkbox" data-bind="checked: clearEvents">
+                    <label>Show Clear Events</label>
 
                 <h2>Emergency Events</h2>
                 <div data-bind="foreach: filteredList">
@@ -80,6 +82,8 @@
                         <label>PPE Level: <label data-bind="text: ppe"></label></label>
                         <br>
                         <button data-bind="click: $parent.changeCenter">Go To Emergency</button>
+                        <br>
+                        <button data-bind="click: $parent.allClear">All Clear</button>
                     </div>
                 </div>
             </div>

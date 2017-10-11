@@ -12,6 +12,7 @@ var app = app || {};
             com_post: {lat: 39.175396, lng: -84.507062},
             decon: {lat: 39.174987, lng: -84.507533},
             radius: 50,
+            clear: false
         },
         {
             id: 2,
@@ -23,6 +24,7 @@ var app = app || {};
             com_post: {lat: 39.086947, lng: -84.727718},
             decon: null,
             radius: 50,
+            clear: false
         },
         {
             id: 3,
@@ -34,6 +36,7 @@ var app = app || {};
             com_post: {lat: 38.992819, lng: -84.649519},
             decon: null,
             radius: 55,
+            clear: false
         },
         {
             id: 4,
@@ -45,6 +48,7 @@ var app = app || {};
             com_post: {lat: 39.113600, lng: -84.527466},
             decon: null,
             radius: 100,
+            clear: false
         },
         {
             id: 5,
@@ -56,6 +60,7 @@ var app = app || {};
             com_post: {lat: 39.115844, lng: -84.803381},
             decon: {lat: 39.116412, lng: -84.803169},
             radius: 150,
+            clear: false
         }
     ];
 
@@ -84,6 +89,7 @@ var app = app || {};
             }; 
         }, this);
         this.radius = ko.observable(data.radius);
+        this.clear = ko.observable(data.clear);
 
         this.markerData = [
             {
@@ -186,7 +192,6 @@ var app = app || {};
                 center: data.location,
                 radius: parseFloat(data.radius)
             });
-            console.log(this.hotzone);
             // Set visibility based on zoom
             google.maps.event.addListener(app.map, 'zoom_changed', function() {
                 var zoom = app.map.getZoom();

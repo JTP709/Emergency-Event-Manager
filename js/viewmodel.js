@@ -43,7 +43,9 @@ var app = app || {};
             new this.checkbox('ACTIVE SHOOTER')
         ];
 
-        
+        // Variable to check if old events are filtered; false indicates unchecked/unselected
+        this.clearEvents = ko.observable(false);
+
         // Fliter the list based on filter check boxes
         this.filteredList = ko.computed(function(){
             var selectedEvents = ko.utils.arrayFilter(self.filters, function(p){
@@ -56,11 +58,26 @@ var app = app || {};
                         mark.marker.setVisible(true);
                     });
                 });
-                return self.initialList();
+                var y = ko.utils.arrayFilter(self.initialList(), function(item){
+                    return item.clear() == self.clearEvents()
+                });
+                // Set all markers to invisible
+                self.initialList().forEach(function(mark){
+                    mark.markers.forEach(function(marks){
+                        marks.marker.setVisible(false);
+                    });
+                });
+                // set only the filtered markers to visible
+                y.forEach(function(mark){
+                    mark.markers.forEach(function(marks){
+                        marks.marker.setVisible(true);
+                    });
+                });
+                return y;
             } else {
                 var x = ko.utils.arrayFilter(self.initialList(), function(item){
                     return ko.utils.arrayFilter(selectedEvents, function(p) {
-                        return p.type == item.type()
+                        return p.type == item.type() && item.clear() == self.clearEvents()
                     }).length > 0;
                 });
                 // Set all markers to invisible
@@ -69,7 +86,6 @@ var app = app || {};
                         marks.marker.setVisible(false);
                     });
                 });
-                this.zoom = app.map.getZoom();
                 // set only the filtered markers to visible
                 x.forEach(function(mark){
                     mark.markers.forEach(function(marks){
@@ -94,6 +110,11 @@ var app = app || {};
         this.changeCenter = function(data) {
             app.map.setCenter(data.location());
             app.map.setZoom(17);
+        };
+
+        // Center and Zoom on selected Emergency Event
+        this.allClear = function(data) {
+            this.clear(true);
         };
 
         // Resets the map to overview of Cincinnati
@@ -260,7 +281,6 @@ var app = app || {};
                     center: center,
                     radius: radius
                 });
-                console.log(this.hotzone);
                 // Push the temp hotzone to the array
                 self.tempHotzones.push(this.hotzone);
                 // Remove the error message
