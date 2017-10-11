@@ -224,6 +224,7 @@ var app = app || {};
         this.newLocationMarker = function(){
             var func = this;
             this.clicker = google.maps.event.addListener(app.map,'click', function(event){
+                console.log(event.latLng);
                 self.placeMarker(event.latLng);
                 self.tempLocMarker = ko.observable(event.latLng);
                 google.maps.event.removeListener(func.clicker);

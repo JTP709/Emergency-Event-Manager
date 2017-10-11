@@ -55,12 +55,24 @@ var app = app || {};
             location: {lat: 39.117189, lng: -84.802841},
             casualties: 0,
             type: 'HAZMAT',
-            ppe: 'LEVEL A',
+            ppe: 'LEVEL B',
             assembly: {lat: 39.116347, lng: -84.799515},
             com_post: {lat: 39.115844, lng: -84.803381},
             decon: {lat: 39.116412, lng: -84.803169},
             radius: 150,
             clear: false
+        },
+        {
+            id: 6,
+            location: {lat: 39.068674, lng: -84.298888},
+            casualties: 3,
+            type: 'HAZMAT',
+            ppe: 'LEVEL C',
+            assembly: {lat: 39.066351, lng: -84.296343},
+            com_post: {lat: 39.066021, lng: -84.302850},
+            decon: {lat: 39.066473, lng: -84.301686},
+            radius: 250,
+            clear: true
         }
     ];
 
