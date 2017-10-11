@@ -79,6 +79,16 @@ var app = app || {};
             };
         });
 
+        // Highlight a marker when hovering over list div element
+        this.highlightedIcon = app.makeMarkerIcon('FFFF24');
+        this.defaultIcon = app.makeMarkerIcon('0091ff');
+        this.highlightMarker = function(data) {
+            this.markers[0].marker.setIcon(self.highlightedIcon);
+        };
+        this.defaultMarker = function(data) {
+            this.markers[0].marker.setIcon(self.defaultIcon);
+        }
+
         // Center and Zoom on selected Emergency Event
         this.changeCenter = function(data) {
             app.map.setCenter(data.location());

@@ -62,20 +62,18 @@
 
                 <h2>Emergency Events</h2>
                 <div data-bind="foreach: filteredList">
-                    <ul>
-                        <div>
-                            <h3>Emergency #<label data-bind="text: id"></label></h3>
-                            <label>Type: <label data-bind="text: type"></label></label>
-                            <br>
-                            <label>Number of Casualties: <label data-bind="text: casualties"></label></label>
-                            <br>
-                            <label> Casualty Level: <label data-bind="text: cas_level"></label></label>
-                            <br>
-                            <label>PPE Level: <label data-bind="text: ppe"></label></label>
-                            <br>
-                            <button data-bind="click: $parent.changeCenter">Go To Emergency</button>
-                        </div>
-                    </ul>
+                    <div data-bind="event: {mouseover: $parent.highlightMarker, mouseout: $parent.defaultMarker}">
+                        <h3>Emergency #<label data-bind="text: id"></label></h3>
+                        <label>Type: <label data-bind="text: type"></label></label>
+                        <br>
+                        <label>Number of Casualties: <label data-bind="text: casualties"></label></label>
+                        <br>
+                        <label> Casualty Level: <label data-bind="text: cas_level"></label></label>
+                        <br>
+                        <label>PPE Level: <label data-bind="text: ppe"></label></label>
+                        <br>
+                        <button data-bind="click: $parent.changeCenter">Go To Emergency</button>
+                    </div>
                 </div>
             </div>
         </div>

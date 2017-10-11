@@ -116,19 +116,45 @@ var app = app || {};
             }
         ];
 
+        // This function takes in a COLOR, and then creates a new marker
+        // icon of that color. The icon will be 21 px wide by 34 high, have an origin
+        // of 0, 0 and be anchored at 10, 34).
+        app.makeMarkerIcon = function(markerColor) {
+            var markerImage = new google.maps.MarkerImage(
+                'http://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|'+ markerColor +
+                '|40|_|%E2%80%A2',
+                new google.maps.Size(21, 34),
+                new google.maps.Point(0, 0),
+                new google.maps.Point(10, 34),
+                new google.maps.Size(21,34));
+            return markerImage;
+        };
+
         // Create markers with info windows
         this.markerMaker = function(data) {
             var func = this;
+            // Defaust icon color and image
+            this.defaultIcon = app.makeMarkerIcon('0091ff');
+            // Create the marker
             this.marker = new google.maps.Marker({
                     position: data.position,
                     title: data.title,
                     animation: google.maps.Animation.DROP,
                     map: app.map,
-                    visible: false
+                    visible: false,
+                    icon: this.defaultIcon
             });
             this.marker.addListener('click', function(){
                 self.infoWindow.open(app.map, func.marker);
                 self.infoWindow.setContent(data.content);
+            });
+            // Change marker color when hovering over
+            this.highlightedIcon = app.makeMarkerIcon('FFFF24');
+            this.marker.addListener('mouseover', function() {
+                this.setIcon(func.highlightedIcon);
+              });
+            this.marker.addListener('mouseout', function() {
+                this.setIcon(func.defaultIcon);
             });
             // Change markers on zoom
             if (data.type != 'primary') {
