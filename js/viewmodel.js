@@ -56,8 +56,10 @@ var app = app || {};
                         mark.marker.setVisible(true);
                     });
                 });
+                app.filterSelect(false);
                 return self.initialList();
             } else {
+                app.filterSelect(true);
                 var x = ko.utils.arrayFilter(self.initialList(), function(item){
                     return ko.utils.arrayFilter(selectedEvents, function(p) {
                         return p.type == item.type()
@@ -65,14 +67,14 @@ var app = app || {};
                 });
                 // Set all markers to invisible
                 self.initialList().forEach(function(mark){
-                    mark.markers.forEach(function(mark){
-                        mark.marker.setVisible(false);
+                    mark.markers.forEach(function(marks){
+                        marks.marker.setVisible(false);
                     });
                 });
                 // set only the filtered markers to visible
                 x.forEach(function(mark){
-                    mark.markers.forEach(function(mark){
-                        mark.marker.setVisible(true);
+                    mark.markers.forEach(function(marks){
+                        marks.marker.setVisible(true);
                     });
                 });
                 return x;
@@ -184,7 +186,7 @@ var app = app || {};
                 this.cas_reset.selectedIndex = 0;
                 self.errorForm(false);
 
-                // Reset view if greater than 14
+                //Reset view if greater than 14
                 var zoom = app.map.getZoom();
                 if (zoom <= 14) {
                     self.reset();

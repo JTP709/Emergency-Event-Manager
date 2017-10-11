@@ -39,7 +39,7 @@ var app = app || {};
             type: 'ACTIVE SHOOTER',
             ppe: 'LEVEL D',
             assembly: {lat: 39.112839, lng: -84.526615},
-            com_post: {lat: 39.115844, lng: -84.803381},
+            com_post: {lat: 39.113600, lng: -84.527466},
             decon: null
         },
         {
@@ -49,7 +49,7 @@ var app = app || {};
             type: 'HAZMAT',
             ppe: 'LEVEL A',
             assembly: {lat: 39.116347, lng: -84.799515},
-            com_post: {lat: 39.113600, lng: -84.527466},
+            com_post: {lat: 39.115844, lng: -84.803381},
             decon: {lat: 39.116412, lng: -84.803169}
         }
     ];
@@ -131,6 +131,7 @@ var app = app || {};
         };
 
         // Create markers with info windows
+        app.filterSelect = ko.observable(false);
         this.markerMaker = function(data) {
             var func = this;
             // Defaust icon color and image
@@ -156,12 +157,14 @@ var app = app || {};
             this.marker.addListener('mouseout', function() {
                 this.setIcon(func.defaultIcon);
             });
-            // Change markers on zoom
+            //Change markers on zoom
             if (data.type != 'primary') {
                 this.marker.setVisible(false);
                 google.maps.event.addListener(app.map, 'zoom_changed', function() {
                     var zoom = app.map.getZoom();
-                    func.marker.setVisible(zoom >= 14);
+                    if (app.filterSelect() == false) {
+                        func.marker.setVisible(zoom >= 14);
+                    };
                 });
             } else {
                 this.marker.setVisible(true);
