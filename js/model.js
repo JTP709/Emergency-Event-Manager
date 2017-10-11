@@ -105,10 +105,11 @@ var app = app || {};
 
         this.markerData = [
             {
-                title: data.type + 'Incident',
+                title: data.type + ' EVENT',
                 position: data.location,
                 content: '<div id="content">'+
                     '<label><b>' + data.type + ' EVENT</b></label>' +
+                    '<p><b> Emergency Event #' + data.id + '</b></p>' +
                     '<p>' + this.cas_level() + '</p>' +
                     '</div>',
                 type: 'primary'

@@ -32,12 +32,12 @@
                     <button id="new_com_post" data-bind="click: newDeconMarker">DECON Point</button><br>
 
                     <label><b>Hotzone Radius: </b></label><select id="new_rad" class="numDropDownMenu"></select>
-                    <button id="new_hotzone" data-bind="click: newHotzone">Preview</button><br>
+                    <button id="new_hotzone" data-bind="click: newHotzone">Preview</button>
                     <div data-bind="visible: errorHotzonePreview">
+                        <br>
                         <b>You must first set the Event Location Marker!</b>
                     </div>
                     <br>
-
                     <label><b>Casualties: </b></label><select id="new_cas" class="numDropDownMenu"></select><br>
 
                     <label><b>PPE:</b></label><br>
@@ -58,8 +58,7 @@
                 </form>
             </div>
             <div id="map_tab">
-                <h4>Filter List:</h4>
-                
+                <p><b>List Filter:</b></p>
                 <div id="checkbox_list">
                     <div data-bind="foreach: filters">
                             <input type="checkbox" data-bind="checked:selected, attr: {id: type}">

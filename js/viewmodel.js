@@ -4,7 +4,10 @@ var app = app || {};
     app.ViewModel = function() {
         var self = this;
 
-        // Navigation Bar Functions
+        /*
+        Navigation Bar Function
+        */
+
         var new_tab = document.getElementById('new_tab');
         var map_tab = document.getElementById('map_tab');
         new_tab.style.display = 'none';
@@ -23,14 +26,51 @@ var app = app || {};
             };
         };
 
+        // Resets the map to overview of Cincinnati
+        this.reset = function() {
+            app.map.setCenter({lat: 39.106171, lng: -84.515712});
+            app.map.setZoom(10);
+        };
+
+        /*
+        Initial Setup and basic functions
+        */
+
         // Create an observable array and populate with Emergency Events
         this.initialList = ko.observableArray([]);
         app.initialEmergency.forEach(function(item){
             self.initialList.push(new app.EventListing(item));
         });
 
+        // Flash message hidden initially
+        this.newEventMsg = ko.observable(false);
+        this.errorForm = ko.observable(false);
+        this.errorHotzonePreview = ko.observable(false);
 
-        // Filter Function
+        // Highlight a marker when hovering over list div element
+        this.highlightedIcon = app.makeMarkerIcon('FFFF24');
+        this.defaultIcon = app.makeMarkerIcon('ff0000');
+        this.highlightMarker = function(data) {
+            this.markers[0].marker.setIcon(self.highlightedIcon);
+        };
+        this.defaultMarker = function(data) {
+            this.markers[0].marker.setIcon(self.defaultIcon);
+        }
+
+        // Center and Zoom on selected Emergency Event
+        this.changeCenter = function(data) {
+            app.map.setCenter(data.location());
+            app.map.setZoom(17);
+        };
+
+        // Sets Emergency Event to "all clear" and removes from active list
+        this.allClear = function(data) {
+            this.clear(true);
+        };
+
+        /*
+        Filter Function
+        */
 
         // Create an array of filters
         this.checkbox = function(x) {
@@ -96,34 +136,9 @@ var app = app || {};
             };
         });
 
-        // Highlight a marker when hovering over list div element
-        this.highlightedIcon = app.makeMarkerIcon('FFFF24');
-        this.defaultIcon = app.makeMarkerIcon('ff0000');
-        this.highlightMarker = function(data) {
-            this.markers[0].marker.setIcon(self.highlightedIcon);
-        };
-        this.defaultMarker = function(data) {
-            this.markers[0].marker.setIcon(self.defaultIcon);
-        }
-
-        // Center and Zoom on selected Emergency Event
-        this.changeCenter = function(data) {
-            app.map.setCenter(data.location());
-            app.map.setZoom(17);
-        };
-
-        // Center and Zoom on selected Emergency Event
-        this.allClear = function(data) {
-            this.clear(true);
-        };
-
-        // Resets the map to overview of Cincinnati
-        this.reset = function() {
-            app.map.setCenter({lat: 39.106171, lng: -84.515712});
-            app.map.setZoom(10);
-        };
-
-        // Create a new Emergency Event
+        /*
+        Create a new Emergency Event
+        */
         
         // Set observables for marker lat-long data
         this.tempLocMarker = ko.observable(null);
@@ -131,18 +146,17 @@ var app = app || {};
         this.tempComPostMarker = ko.observable(null);
         this.tempDeconMarker = ko.observable(null);
 
-        // Casualty Number Dropdown for New Emergency Event menu
-        
+        // Set empty arrays for temp markers and temp hotzones
+        this.tempHotzones = [];
+        this.tempMarkers = [];
+
+        // Number Dropdown for New Emergency Event menu
         var $select = $(".numDropDownMenu");
         for (i=0;i<=500;i++){
             $select.append($('<option></option>').val(i).html(i))
         };
 
-        // Flash message hidden initially
-        this.newEventMsg = ko.observable(false);
-        this.errorForm = ko.observable(false);
-        this.errorHotzonePreview = ko.observable(false);
-
+        // Create a new event
         this.newEvent = function(){
             // Check to make sure the form is filled out
             var typeCheck = document.querySelector('input[name = "type"]:checked');
@@ -178,7 +192,8 @@ var app = app || {};
                         assembly: this.assembly,
                         com_post: this.com_post,
                         decon: this.decon,
-                        radius: this.rad
+                        radius: this.rad,
+                        clear: false
                     }
                 ];
 
@@ -218,19 +233,17 @@ var app = app || {};
             };
         };
 
-        this.tempHotzones = [];
-        this.tempMarkers = [];
-
+        // Creats a temporary marker and captures lat-long data for later
         this.newLocationMarker = function(){
             var func = this;
             this.clicker = google.maps.event.addListener(app.map,'click', function(event){
-                console.log(event.latLng);
                 self.placeMarker(event.latLng);
                 self.tempLocMarker = ko.observable(event.latLng);
                 google.maps.event.removeListener(func.clicker);
             });
         };
 
+        // Creats a temporary marker and captures lat-long data for later
         this.newAssemblyMarker = function(){
             var func = this;
             this.clicker = google.maps.event.addListener(app.map,'click', function(event){
@@ -240,6 +253,7 @@ var app = app || {};
             });
         };
 
+        // Creats a temporary marker and captures lat-long data for later
         this.newComPostMarker = function(){
             var func = this; 
             this.clicker = google.maps.event.addListener(app.map,'click', function(event){
@@ -249,6 +263,7 @@ var app = app || {};
             });
         };
 
+        // Creats a temporary marker and captures lat-long data for later
         this.newDeconMarker = function(){
             var func = this;
             this.clicker = google.maps.event.addListener(app.map,'click', function(event){
@@ -258,6 +273,7 @@ var app = app || {};
             });
         };
 
+        // Creats a temporary hotzone and captures lat-long data for later
         this.newHotzone = function(){
             if (self.tempLocMarker() == null) {
                 this.errorHotzonePreview(true);
@@ -289,6 +305,7 @@ var app = app || {};
             };
         };
         
+        // Creats a temporary marker
         this.placeMarker = function(location) {
             this.marker = new google.maps.Marker({
                 position: location,
