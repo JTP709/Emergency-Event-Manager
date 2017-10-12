@@ -118,12 +118,17 @@ var app = app || {};
             };
         });
 
+        // Create an array for hold the google event listeners
+        this.zoomListeners = [];
+
         // Filter the markers based on the filtered list
         this.filteredMarkers = ko.computed(function(){
             // Get the filtered list
             this.filteredList = self.filteredList()
             // Remove google listener
-            google.maps.event.clearListeners(app.map, 'zoom_changed');
+            self.zoomListeners.forEach(function(mark){
+                google.maps.event.removeListener(mark);
+            });
             // Set only the filtered markers to visible
             this.filteredList.forEach(function(mark){
                 var zoom = app.map.getZoom();
@@ -140,7 +145,7 @@ var app = app || {};
                     mark.markers[0].marker.setVisible(true);
                 };
                 // Add google maps listener to change visiblity based on zoom level
-                google.maps.event.addListener(app.map, 'zoom_changed', function() {
+                var zoomChange = google.maps.event.addListener(app.map, 'zoom_changed', function() {
                     var zoom = app.map.getZoom();
                     // If there is more than one marker set for the event, set those to show only when zoomed in
                     if (mark.markers.length > 1) {
@@ -155,6 +160,7 @@ var app = app || {};
                         };
                     };
                 });
+                self.zoomListeners.push(zoomChange);
             });
         })
 
@@ -169,8 +175,11 @@ var app = app || {};
         this.tempDeconMarker = ko.observable(null);
 
         // Set empty arrays for temp markers and temp hotzones
+        this.tempLocMarkersArray = [];
+        this.tempAssemblyMarkersArray = [];
+        this.tempComPostMarkersArray = [];
+        this.tempDeconMarkersArray = [];
         this.tempHotzones = [];
-        this.tempMarkers = [];
 
         // Number Dropdown for New Emergency Event menu
         var $select = $(".numDropDownMenu");
@@ -234,13 +243,25 @@ var app = app || {};
                 this.tempAssemblyMarker = ko.observable(null);
                 this.tempComPostMarker = ko.observable(null);
                 this.tempDeconMarker = ko.observable(null);
-                for (var i = 0; i < self.tempMarkers.length; i++) {
-                  self.tempMarkers[i].setMap(null);
+                for (var i = 0; i < self.tempLocMarkersArray.length; i++) {
+                  self.tempLocMarkersArray[i].setMap(null);
+                };
+                for (var i = 0; i < self.tempAssemblyMarkersArray.length; i++) {
+                  self.tempAssemblyMarkersArray[i].setMap(null);
+                };
+                for (var i = 0; i < self.tempComPostMarkersArray.length; i++) {
+                  self.tempComPostMarkersArray[i].setMap(null);
+                };
+                for (var i = 0; i < self.tempDeconMarkersArray.length; i++) {
+                  self.tempDeconMarkersArray[i].setMap(null);
                 };
                 for (var i = 0; i < self.tempHotzones.length; i++) {
                   self.tempHotzones[i].setMap(null);
                 };
-                self.tempMarkers = [];
+                self.tempLocMarkersArray = [];
+                self.tempAssemblyMarkersArray = [];
+                self.tempComPostMarkersArray = [];
+                self.tempDeconMarkersArray = [];
                 self.tempHotzones = [];
 
                 // Reset the form
@@ -258,23 +279,48 @@ var app = app || {};
         };
 
         // Creats a temporary marker and captures lat-long data for later
-        this.tempMarkerButton = ko.observable();
         this.newTempMarker = function(x){
             var func = this;
-            self.tempMarkerButton(x);
             this.clicker = google.maps.event.addListener(app.map,'click', function(event){
-                self.placeMarker(event.latLng);
-                if (self.tempMarkerButton() == 'location') {
+                this.marker = new google.maps.Marker({
+                    position: event.latLng,
+                    map: app.map
+                });
+                if (x == 'location') {
+                    if (self.tempLocMarkersArray.length > 0) {
+                        for (var i = 0; i < self.tempLocMarkersArray.length; i++) {
+                          self.tempLocMarkersArray[i].setMap(null);
+                        };
+                    };
                     self.tempLocMarker(event.latLng);
+                    self.tempLocMarkersArray.push(this.marker);
                 };
-                if (self.tempMarkerButton() == 'assembly') {
+                if (x == 'assembly') {
+                    if (self.tempAssemblyMarkersArray.length > 0) {
+                        for (var i = 0; i < self.tempAssemblyMarkersArray.length; i++) {
+                          self.tempAssemblyMarkersArray[i].setMap(null);
+                        };
+                    };
                     self.tempAssemblyMarker(event.latLng);
+                    self.tempAssemblyMarkersArray.push(this.marker);
                 };
-                if (self.tempMarkerButton() == 'com_post') {
+                if (x == 'com_post') {
+                    if (self.tempComPostMarkersArray.length > 0) {
+                        for (var i = 0; i < self.tempComPostMarkersArray.length; i++) {
+                          self.tempComPostMarkersArray[i].setMap(null);
+                        };
+                    };
                     self.tempComPostMarker(event.latLng);
+                    self.tempComPostMarkersArray.push(this.marker);
                 };
-                if (self.tempMarkerButton() == 'decon') {
+                if (x == 'decon') {
+                    if (self.tempDeconMarkersArray.length > 0) {
+                        for (var i = 0; i < self.tempDeconMarkersArray.length; i++) {
+                          self.tempDeconMarkersArray[i].setMap(null);
+                        };
+                    };
                     self.tempDeconMarker(event.latLng);
+                    self.tempDeconMarkersArray.push(this.marker);
                 };
                 google.maps.event.removeListener(func.clicker);
             });
@@ -310,15 +356,6 @@ var app = app || {};
                 // Remove the error message
                 self.errorHotzonePreview(false);
             };
-        };
-        
-        // Creats a temporary marker
-        this.placeMarker = function(location) {
-            this.marker = new google.maps.Marker({
-                position: location,
-                map: app.map
-            });
-            self.tempMarkers.push(this.marker);
         };
 
         // Reset Map after markers have been placed
