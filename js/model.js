@@ -42,12 +42,12 @@ var app = app || {};
             id: 4,
             location: {lat: 39.114720, lng: -84.528539},
             casualties: 2,
-            type: 'ACTIVE SHOOTER',
-            ppe: 'LEVEL D',
+            type: 'CONFINED SPACE RESCUE',
+            ppe: 'LEVEL B',
             assembly: {lat: 39.112839, lng: -84.526615},
             com_post: {lat: 39.113600, lng: -84.527466},
             decon: null,
-            radius: 100,
+            radius: 30,
             clear: false
         },
         {
@@ -73,6 +73,54 @@ var app = app || {};
             decon: {lat: 39.066473, lng: -84.301686},
             radius: 250,
             clear: true
+        },
+        {
+            id: 7,
+            location: {lat: 39.030311, lng: -84.608230},
+            casualties: 3,
+            type: 'VEHICULAR COLLISION',
+            ppe: 'LEVEL D',
+            assembly: {lat: 39.030607, lng: -84.607927},
+            com_post: {lat: 39.030607, lng: -84.607927},
+            decon: null,
+            radius: 0,
+            clear: false
+        },
+        {
+            id: 8,
+            location: {lat: 39.302596, lng: -84.439124},
+            casualties: 2,
+            type: 'VEHICULAR COLLISION',
+            ppe: 'LEVEL D',
+            assembly: {lat: 39.302503, lng: -84.439175},
+            com_post: {lat: 39.302503, lng: -84.439175},
+            decon: null,
+            radius: 0,
+            clear: true
+        },
+        {
+            id: 9,
+            location: {lat: 39.157515, lng: -84.292828},
+            casualties: 2,
+            type: 'OTHER',
+            ppe: 'LEVEL D',
+            assembly: {lat: 39.157515, lng: -84.292828},
+            com_post: null,
+            decon: null,
+            radius: 0,
+            clear: false
+        },
+        {
+            id: 10,
+            location: {lat: 39.050350, lng: -84.494028},
+            casualties: 2,
+            type: 'OTHER',
+            ppe: 'LEVEL D',
+            assembly: null,
+            com_post: {lat: 39.050674, lng: -84.492918},
+            decon: null,
+            radius: 0,
+            clear: false
         }
     ];
 

@@ -80,7 +80,9 @@ var app = app || {};
         this.filters = [
             new this.checkbox('HAZMAT'),
             new this.checkbox('FIRE'),
-            new this.checkbox('ACTIVE SHOOTER')
+            new this.checkbox('CONFINED SPACE RESCUE'),
+            new this.checkbox('VEHICULAR COLLISION'),
+            new this.checkbox('OTHER')
         ];
 
         // Variable to check if old events are filtered; false indicates unchecked/unselected
