@@ -8,6 +8,7 @@
     </style>
 </head>
 <body>
+    <!-- Heading -->
     <h1>Emergency Response Coordinator</h1>
     <div id="navbar">
         <button data-bind="click: function(){nav('map_tab')}">Emergency Events</button>
@@ -15,51 +16,60 @@
         <button data-bind="click: reset">Reset Map</button>
     </div>
     <div class="container">
+        <!-- Side Bar Div -->
         <div id="side_bar">
+            <!-- Tab for New Emergency Event -->
             <div id="new_tab">
                 <h2>New Emergency</h2>
                 <form>
-                    <label><b>Event Type:</b></label><br>
-                    <div data-bind="foreach: filters">
-                            <input type="radio" name="type" data-bind="attr: {class: 'new_type', value: type}">
-                            <label data-bind="text: type"></label>
-                            <br>
-                    </div>
-
+                    <!-- Select Type -->
+                    <label><b>Event Type:</b></label>
+                    <select id="new_type" data-bind="foreach: filters">
+                        <option data-bind="text: type, attr: {class: 'new_type', value: type}"></option>
+                    </select>
+                    <!-- Select Marker Locations -->
                     <label><b>Marker Lockations:</b></label>
                     <br>
                     <button id="new_location" data-bind="click: function() {newTempMarker('location')}">Event Location</button> Required<br>
                     <button id="new_assembly" data-bind="click: function() {newTempMarker('assembly')}">Assembly Point</button> Optional<br>
                     <button id="new_com_post" data-bind="click: function() {newTempMarker('com_post')}">Command Post</button> Optional<br>
                     <button id="new_decon" data-bind="click: function() {newTempMarker('decon')}">DECON Point</button> Optional<br>
-
+                    <!-- Select Hotzone Radius -->
                     <label><b>Hotzone Radius: </b></label><select id="new_rad" class="numDropDownMenu"></select>
                     <button id="new_hotzone" data-bind="click: newHotzone">Preview</button>
+                    <!-- Message displayed if hotzone Preview is attempted before event marker is placed -->
                     <div data-bind="visible: errorHotzonePreview">
                         <br>
                         <b>You must first set the Event Location Marker!</b>
                     </div>
                     <br>
+                    <!-- Select # of casualties -->
                     <label><b>Casualties: </b></label><select id="new_cas" class="numDropDownMenu"></select><br>
-
-                    <label><b>PPE:</b></label><br>
-                    <input type="radio" name="ppe" value="LEVEL A" class="new_ppe">LEVEL A<br>
-                    <input type="radio" name="ppe" value="LEVEL B" class="new_ppe">LEVEL B<br>
-                    <input type="radio" name="ppe" value="LEVEL C" class="new_ppe">LEVEL C<br>
-                    <input type="radio" name="ppe" value="LEVEL D" class="new_ppe">LEVEL D<br>
-                    <input type="radio" name="ppe" value="Turnout" class="new_ppe">Turnout Gear<br>
+                    <!-- Select Maximum Required PPE -->
+                    <label><b>PPE:</b></label>
+                    <select id="new_ppe">
+                        <option value="LEVEL A" class="new_ppe">LEVEL A</option>
+                        <option value="LEVEL B" class="new_ppe">LEVEL B</option>
+                        <option value="LEVEL C" class="new_ppe">LEVEL C</option>
+                        <option value="LEVEL D" class="new_ppe">LEVEL D</option>
+                        <option value="Turnout" class="new_ppe">Turnout Gear</option>
+                    </select>
                     <br>
-
+                    <!-- Submit New Event Button -->
                     <button data-bind="click: newEvent">Submit</button>
+                    <!-- Message displayed when form is not complete -->
                     <div data-bind="visible: errorForm">
-                        <b>You must complete the entire form before submitting!</b>
+                        <b>You must establish an Event Location Marker!</b>
                     </div>
+                    <!-- Message displayed when the event has been added -->
                     <div data-bind="visible: newEventMsg">
                         <b>New Event has been added!</b>
                     </div>
                 </form>
             </div>
             <div id="map_tab">
+
+                <!-- Filter Options -->
                 <p><b>List Filter:</b></p>
                 <div id="checkbox_list">
                     <div data-bind="foreach: filters">
@@ -70,32 +80,98 @@
                     <input type="checkbox" data-bind="checked: clearEvents">
                     <label>Show Clear Events</label>
 
+                <!-- Events List -->
                 <h2>Emergency Events</h2>
                 <div data-bind="foreach: filteredList">
-                    <div data-bind="event: {mouseover: $parent.highlightMarker, mouseout: $parent.defaultMarker}">
+                    <!-- Mouse Over Event Listener on each element to highlight markers -->
+                    <div data-bind="event: {mouseover: $parent.highlightMarker, mouseout: $parent.defaultMarker}, attr: {id: id}">
                         <h3>Emergency #<label data-bind="text: id"></label></h3>
-                        <label>Type: <label data-bind="text: type"></label></label>
+                        <!-- Edit Button -->
+                        <div data-bind="visible: editOption">
+                            <button data-bind="click: $parent.showEditOptions">Edit</button><br>
+                        </div>
+                        <!-- Type Info-->
+                        <label>Type: 
+                            <!-- Current Information Display -->
+                            <label data-bind="text: type, visible: editOption"></label>
+                            <!-- Edit Information Display -->
+                            <select class="edit_type" data-bind="visible: edit, foreach: filters">
+                                <option data-bind="text: type, attr: {value: type}"></option>
+                                <br>
+                            </select>
+                        </label>
                         <br>
-                        <label>Number of Casualties: <label data-bind="text: casualties"></label></label>
+                        <!-- Casualty Info -->
+                        <label>Number of Casualties: 
+                            <!-- Current Information Display -->
+                            <label data-bind="text: casualties, visible: editOption"></label>
+                            <!-- Edit Information Display -->
+                            <select class="numDropDownMenu edit_cas" data-bind="visible: edit"></select>
+                        </label>
                         <br>
-                        <label> Casualty Level: <label data-bind="text: cas_level"></label></label>
+                        <label> Casualty Level: 
+                            <!-- Current Information Display -->
+                            <label data-bind="text: cas_level, visible: editOption"></label>
+                            <!-- Edit Information Display -->
+                            <label data-bind="visible: edit"><i>Waiting for Update...</i></label>
+                        </label>
                         <br>
-                        <label>PPE Level: <label data-bind="text: ppe"></label></label>
+                        <!-- PPE Info -->
+                        <label>PPE Level: 
+                            <!-- Current Information Display -->
+                            <label data-bind="text: ppe, visible: editOption"></label>
+                            <!-- Edit Information Display -->
+                            <select class="edit_ppe" data-bind="visible: edit">
+                                <option value="LEVEL A">LEVEL A</option>
+                                <option value="LEVEL B">LEVEL B</option>
+                                <option value="LEVEL C">LEVEL C</option>
+                                <option value="LEVEL D">LEVEL D</option>
+                                <option value="Turnout">Turnout Gear</option>
+                            </select>
+                        </label>
                         <br>
+                        <!-- Edit Hotzone Radius Option; only visible during edits -->
+                        <div data-bind="visible: edit">
+                            <label><b>Hotzone Radius: </b></label><select class="numDropDownMenu edit_rad"></select>
+                            <br>
+                        </div>
+                        <!-- GO TO Button -->
                         <button data-bind="click: $parent.changeCenter">Go To Emergency</button>
                         <br>
-                        <button data-bind="click: $parent.allClear, visible: clearOption">All Clear</button>
+                        <!-- Submit Edit Button; only visible during edits -->
+                        <div data-bind="visible: edit">
+                            <button data-bind="click: $parent.editEvent">Submit Edit</button>
+                        </div>
+                        <!-- Cancel Edit Button; only visible during edits -->
+                        <div data-bind="visible: edit">
+                            <button data-bind="click: $parent.cancelEditEvent">Cancel Edit</button>
+                        </div>
+                        <!-- All Clear Button; hidden when an event is clear or when editing -->
+                        <div data-bind="visible: editOption">
+                            <button data-bind="click: $parent.allClear, visible: clearOption">All Clear</button>
+                        </div>
+                        <!-- Still Hot Button; hidden when an event is clear or when editing -->
+                        <div data-bind="visible: editOption">
+                            <button data-bind="click: $parent.allClear, visible: clear">Still Hot!</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- Map Div -->
         <div id="map"></div>
     </div>
+    <!-- jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- Knockout.js -->
     <script src="js/lib/knockout-min.js"></script>
+    <!-- Model -->
     <script src="js/model.js"></script>
+    <!-- ViewModel -->
     <script src="js/viewmodel.js"></script>
+    <!-- app init -->
     <script src="js/app.js"></script>
+    <!-- Google Maps JavaScript API -->
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDoRGx-MJnUukNuhDV7ulWlmMjV6AJVCZs&v=3&callback=app.initMap&libraries=drawing"></script>
 </body>
 </html>

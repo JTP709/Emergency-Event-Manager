@@ -71,26 +71,14 @@ var app = app || {};
         /*
         Filter Function
         */
-
-        // Create an array of filters
-        this.checkbox = function(x) {
-            this.type = x;
-            this.selected = ko.observable(false);
-        };
-        this.filters = [
-            new this.checkbox('HAZMAT'),
-            new this.checkbox('FIRE'),
-            new this.checkbox('CONFINED SPACE RESCUE'),
-            new this.checkbox('VEHICULAR COLLISION'),
-            new this.checkbox('OTHER')
-        ];
+        this.filters = app.typeFilters();
 
         // Variable to check if old events are filtered; false indicates unchecked/unselected
         this.clearEvents = ko.observable(false);
 
         // Fliter the list based on filter check boxes
         this.filteredList = ko.computed(function(){
-            var selectedEvents = ko.utils.arrayFilter(self.filters, function(p){
+            var selectedEvents = ko.utils.arrayFilter(app.typeFilters(), function(p){
                 return p.selected();
             });
             // Set all markers to invisible
@@ -189,44 +177,44 @@ var app = app || {};
 
         // Create a new event
         this.newEvent = function(){
-            // Check to make sure the form is filled out
-            var typeCheck = document.querySelector('input[name = "type"]:checked');
-            var ppeCheck = document.querySelector('input[name = "ppe"]:checked');
-            /*
-            var locCheck = self.tempLocMarker();
-            || locCheck == null
-            */
-            if (typeCheck == null || ppeCheck == null || self.tempLocMarker() == null){
+            if (self.tempLocMarker() == null){
                 self.errorForm(true);
                 self.newEventMsg(false);
             } else {
                 // Counts current number of events in the list
                 var event_num = self.initialList().length;
-
-                // Pull the data from the form input
                 this.id = event_num + 1;
+                // Pull the data from the form input
+                this.cas = document.getElementById("new_cas");
+                this.cas_v = this.cas.options[this.cas.selectedIndex].value;
+                this.rad = document.getElementById("new_rad");
+                this.rad_v = this.rad.options[this.rad.selectedIndex].value;
+                this.type = document.getElementById("new_type");
+                this.type_v = this.type.options[this.type.selectedIndex].value;
+                this.ppe = document.getElementById("new_ppe");
+                this.ppe_v = this.ppe.options[this.ppe.selectedIndex].value;
+                // Pull the marker data
                 this.location = self.tempLocMarker();
-                this.cas = document.getElementById("new_cas").value;
-                this.rad = document.getElementById("new_rad").value;
-                this.type = document.querySelector('input[name = "type"]:checked').value;
-                this.ppe = document.querySelector('input[name = "ppe"]:checked').value;
                 this.assembly = self.tempAssemblyMarker();
                 this.com_post = self.tempComPostMarker();
                 this.decon = self.tempDeconMarker();
+
+                console.log(this.cas);
 
                 // Populate a new array with the data
                 this.newData = [
                     {
                         id: this.id,
                         location: this.location,
-                        casualties: this.cas,
-                        type: this.type,
-                        ppe: this.ppe,
+                        casualties: this.cas_v,
+                        type: this.type_v,
+                        ppe: this.ppe_v,
                         assembly: this.assembly,
                         com_post: this.com_post,
                         decon: this.decon,
-                        radius: this.rad,
-                        clear: false
+                        radius: this.rad_v,
+                        clear: false,
+                        edit: false
                     }
                 ];
 
@@ -265,14 +253,10 @@ var app = app || {};
                 self.tempHotzones = [];
 
                 // Reset the form
-                this.cas_reset = document.getElementById("new_cas");
-                this.rad_reset = document.getElementById("new_rad");
-                this.type_reset = document.querySelector('input[name = "type"]:checked');
-                this.ppe_reset = document.querySelector('input[name = "ppe"]:checked');
-                this.type_reset.checked = false;
-                this.ppe_reset.checked = false;
-                this.cas_reset.selectedIndex = 0;
-                this.rad_reset.selectedIndex = 0;
+                this.type.selectedIndex = 0;
+                this.ppe.selectedIndex = 0;
+                this.cas.selectedIndex = 0;
+                this.rad.selectedIndex = 0;
                 self.errorForm(false);
                 this.errorHotzonePreview(false);
             };
@@ -356,6 +340,86 @@ var app = app || {};
                 // Remove the error message
                 self.errorHotzonePreview(false);
             };
+        };
+
+        /*
+        Edit Event
+        */
+
+        this.showEditOptions = function(data) {
+            this.edit(true);
+            // Make selected markers draggable
+            data.markers.forEach(function(marks){
+                marks.marker.setDraggable(true);
+            });
+            // Make old hotzone grey
+            data.hotzones.forEach(function(marks){
+                marks.hotzone.setOptions({
+                    fillColor: '#8e8e8e'
+                });
+            });
+        };
+
+        this.cancelEditEvent = function(data){
+            this.edit(false);
+            // Make selected markers draggable
+            data.markers.forEach(function(marks){
+                marks.marker.setDraggable(false);
+            });
+            // Make old hotzone grey
+            data.hotzones.forEach(function(marks){
+                marks.hotzone.setOptions({
+                    fillColor: '#FF0000'
+                });
+            });
+        };
+
+        this.editEvent = function(data){
+            var func = this;
+
+            var num = this.id();
+            var n = num.toString();
+
+            // Grab new Data
+            this.e_id = document.getElementById(n);
+            this.e_cas = this.e_id.getElementsByClassName("edit_cas");
+            this.e_type = this.e_id.getElementsByClassName("edit_type");
+            this.e_ppe = this.e_id.getElementsByClassName("edit_ppe");
+            this.e_rad = this.e_id.getElementsByClassName("edit_rad");
+            this.e_rad_loc = data.markers[0].marker.getPosition();
+
+            // Grab new data values
+            this.e_v_type = this.e_type[0].value;
+            this.e_v_ppe = this.e_ppe[0].value;
+            this.e_v_rad = this.e_rad[0].value;
+            this.e_v_cas = this.e_cas[0].value;
+
+            // Update the event with the new data
+            this.casualties(this.e_v_cas);
+            this.type(this.e_v_type);
+            this.ppe(this.e_v_ppe);
+
+            // Update the hotzone location and reset color
+            data.hotzones.forEach(function(marks){
+                marks.hotzone.setOptions({
+                    center: func.e_rad_loc,
+                    strokeColor: '#FF0000',
+                    fillColor: '#FF0000',
+                    radius: parseFloat(func.e_v_rad)
+                });
+            });
+
+            // Turn off draggable markers
+            data.markers.forEach(function(marks){
+                marks.marker.setDraggable(false);
+            });
+
+            // Reset the form
+            const e_type_reset = this.e_type.selectedIndex = 0;
+            const e_ppe_reset = this.e_ppe.selectedIndex = 0;
+            const e_cas_reset = this.e_cas.selectedIndex = 0;
+            const e_rad_reset = this.e_rad.selectedIndex = 0;
+            this.edit(false);
         };
 
         // Reset Map after markers have been placed

@@ -12,7 +12,8 @@ var app = app || {};
             com_post: {lat: 39.175396, lng: -84.507062},
             decon: {lat: 39.174987, lng: -84.507533},
             radius: 50,
-            clear: false
+            clear: false,
+            edit: false
         },
         {
             id: 2,
@@ -24,7 +25,8 @@ var app = app || {};
             com_post: {lat: 39.086947, lng: -84.727718},
             decon: null,
             radius: 50,
-            clear: false
+            clear: false,
+            edit: false
         },
         {
             id: 3,
@@ -36,7 +38,8 @@ var app = app || {};
             com_post: {lat: 38.992819, lng: -84.649519},
             decon: null,
             radius: 55,
-            clear: false
+            clear: false,
+            edit: false
         },
         {
             id: 4,
@@ -48,7 +51,8 @@ var app = app || {};
             com_post: {lat: 39.113600, lng: -84.527466},
             decon: null,
             radius: 30,
-            clear: false
+            clear: false,
+            edit: false
         },
         {
             id: 5,
@@ -60,7 +64,8 @@ var app = app || {};
             com_post: {lat: 39.115844, lng: -84.803381},
             decon: {lat: 39.116412, lng: -84.803169},
             radius: 150,
-            clear: false
+            clear: false,
+            edit: false
         },
         {
             id: 6,
@@ -72,7 +77,8 @@ var app = app || {};
             com_post: {lat: 39.066021, lng: -84.302850},
             decon: {lat: 39.066473, lng: -84.301686},
             radius: 250,
-            clear: true
+            clear: true,
+            edit: false
         },
         {
             id: 7,
@@ -84,7 +90,8 @@ var app = app || {};
             com_post: {lat: 39.030607, lng: -84.607927},
             decon: null,
             radius: 0,
-            clear: false
+            clear: false,
+            edit: false
         },
         {
             id: 8,
@@ -96,7 +103,8 @@ var app = app || {};
             com_post: {lat: 39.302503, lng: -84.439175},
             decon: null,
             radius: 0,
-            clear: true
+            clear: true,
+            edit: false
         },
         {
             id: 9,
@@ -108,7 +116,8 @@ var app = app || {};
             com_post: null,
             decon: null,
             radius: 0,
-            clear: false
+            clear: false,
+            edit: false
         },
         {
             id: 10,
@@ -120,9 +129,26 @@ var app = app || {};
             com_post: {lat: 39.050674, lng: -84.492918},
             decon: null,
             radius: 0,
-            clear: false
+            clear: false,
+            edit: false
         }
     ];
+
+    // Create an array of filters
+    app.checkbox = function(x) {
+        this.type = x;
+        this.selected = ko.observable(false);
+    };
+    app.typeFilters = function() {
+        return ko.observableArray([
+            new this.checkbox('HAZMAT'),
+            new this.checkbox('FIRE'),
+            new this.checkbox('CONFINED SPACE RESCUE'),
+            new this.checkbox('VEHICULAR COLLISION'),
+            new this.checkbox('OTHER')
+        ]);
+    };
+
 
     app.EventListing = function(data) {
         var self = this;
@@ -157,6 +183,15 @@ var app = app || {};
                 return false
             }
         });
+        this.edit = ko.observable(data.edit);
+        this.editOption = ko.computed(function(){
+            if (self.edit() == false) {
+                return true
+            } else {
+                return false
+            }
+        });
+        this.filters = app.typeFilters();
 
         this.markerData = [
             {
