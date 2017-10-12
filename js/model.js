@@ -104,7 +104,7 @@ var app = app || {};
             casualties: 2,
             type: 'OTHER',
             ppe: 'LEVEL D',
-            assembly: {lat: 39.157515, lng: -84.292828},
+            assembly: {lat: 39.157760, lng: -84.292542},
             com_post: null,
             decon: null,
             radius: 0,

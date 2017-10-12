@@ -124,14 +124,33 @@ var app = app || {};
             this.filteredList = self.filteredList()
             // Set only the filtered markers to visible
             this.filteredList.forEach(function(mark){
-                mark.markers[0].marker.setVisible(true);
+                var zoom = app.map.getZoom();
+                if (zoom >= 14) {
+                    // Set all markers to visible if zoomed in
+                    mark.markers.forEach(function(marks){
+                        marks.marker.setVisible(true);
+                    });
+                    mark.hotzones.forEach(function(marks){
+                        marks.hotzone.setVisible(true);
+                    });
+                } else {
+                    // Only set even marker to visible if zoomed out
+                    mark.markers[0].marker.setVisible(true);
+                };
+                // Add google maps listener to change visiblity based on zoom level
                 google.maps.event.addListener(app.map, 'zoom_changed', function() {
                     var zoom = app.map.getZoom();
-                    for (i=1; i < mark.markers.length; i++) {
-                        mark.markers[i].marker.setVisible(zoom >= 14);
+                    // If there is more than one marker set for the event, set those to show only when zoomed in
+                    if (mark.markers.length > 1) {
+                        for (i=1; i < mark.markers.length; i++) {
+                            mark.markers[i].marker.setVisible(zoom >= 14);
+                        };
                     };
-                    for (i=0; i < mark.hotzones.length; i++) {
-                        mark.hotzones[i].hotzone.setVisible(zoom >= 14);
+                    // If there is a hotzone set for the event, set those to show only when zoomed in
+                    if (mark.hotzones.length >0) {
+                        for (i=0; i < mark.hotzones.length; i++) {
+                            mark.hotzones[i].hotzone.setVisible(zoom >= 14);
+                        };
                     };
                 });
             });
@@ -166,13 +185,14 @@ var app = app || {};
             var locCheck = self.tempLocMarker();
             || locCheck == null
             */
-            if (typeCheck == null || ppeCheck == null){
+            if (typeCheck == null || ppeCheck == null || self.tempLocMarker() == null){
                 self.errorForm(true);
                 self.newEventMsg(false);
             } else {
                 // Counts current number of events in the list
                 var event_num = self.initialList().length;
 
+                // Pull the data from the form input
                 this.id = event_num + 1;
                 this.location = self.tempLocMarker();
                 this.cas = document.getElementById("new_cas").value;
@@ -182,6 +202,7 @@ var app = app || {};
                 this.assembly = self.tempAssemblyMarker();
                 this.com_post = self.tempComPostMarker();
                 this.decon = self.tempDeconMarker();
+                
                 // Populate a new array with the data
                 this.newData = [
                     {

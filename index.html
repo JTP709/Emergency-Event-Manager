@@ -20,16 +20,18 @@
                 <h2>New Emergency</h2>
                 <form>
                     <label><b>Event Type:</b></label><br>
-                    <input type="radio" name="type" value="HAZMAT" class="new_type">HAZMAT<br>
-                    <input type="radio" name="type" value="FIRE" class="new_type">FIRE<br>
-                    <input type="radio" name="type" value="ACTIVE SHOOTER" class="new_type">ACTIVE SHOOTER<br>
+                    <div data-bind="foreach: filters">
+                            <input type="radio" name="type" data-bind="attr: {class: 'new_type', value: type}">
+                            <label data-bind="text: type"></label>
+                            <br>
+                    </div>
 
                     <label><b>Marker Lockations:</b></label>
                     <br>
-                    <button id="new_location" data-bind="click: function() {newTempMarker('location')}">Event Location</button><br>
-                    <button id="new_assembly" data-bind="click: function() {newTempMarker('assembly')}">Assembly Point</button><br>
-                    <button id="new_com_post" data-bind="click: function() {newTempMarker('com_post')}">Command Post</button><br>
-                    <button id="new_decon" data-bind="click: function() {newTempMarker('decon')}">DECON Point</button><br>
+                    <button id="new_location" data-bind="click: function() {newTempMarker('location')}">Event Location</button> Required<br>
+                    <button id="new_assembly" data-bind="click: function() {newTempMarker('assembly')}">Assembly Point</button> Optional<br>
+                    <button id="new_com_post" data-bind="click: function() {newTempMarker('com_post')}">Command Post</button> Optional<br>
+                    <button id="new_decon" data-bind="click: function() {newTempMarker('decon')}">DECON Point</button> Optional<br>
 
                     <label><b>Hotzone Radius: </b></label><select id="new_rad" class="numDropDownMenu"></select>
                     <button id="new_hotzone" data-bind="click: newHotzone">Preview</button>
