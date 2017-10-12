@@ -71,14 +71,19 @@ var app = app || {};
         /*
         Filter Function
         */
-        this.filters = app.typeFilters();
+
+        // Build the filter list
+        this.filters = [];
+        app.typeList.forEach(function(item){
+            self.filters.push(new app.typeFilter(item));
+        });
 
         // Variable to check if old events are filtered; false indicates unchecked/unselected
         this.clearEvents = ko.observable(false);
 
         // Fliter the list based on filter check boxes
         this.filteredList = ko.computed(function(){
-            var selectedEvents = ko.utils.arrayFilter(app.typeFilters(), function(p){
+            var selectedEvents = ko.utils.arrayFilter(self.filters, function(p){
                 return p.selected();
             });
             // Set all markers to invisible
@@ -184,6 +189,7 @@ var app = app || {};
                 // Counts current number of events in the list
                 var event_num = self.initialList().length;
                 this.id = event_num + 1;
+                
                 // Pull the data from the form input
                 this.cas = document.getElementById("new_cas");
                 this.cas_v = this.cas.options[this.cas.selectedIndex].value;
@@ -193,13 +199,12 @@ var app = app || {};
                 this.type_v = this.type.options[this.type.selectedIndex].value;
                 this.ppe = document.getElementById("new_ppe");
                 this.ppe_v = this.ppe.options[this.ppe.selectedIndex].value;
+
                 // Pull the marker data
                 this.location = self.tempLocMarker();
                 this.assembly = self.tempAssemblyMarker();
                 this.com_post = self.tempComPostMarker();
                 this.decon = self.tempDeconMarker();
-
-                console.log(this.cas);
 
                 // Populate a new array with the data
                 this.newData = [

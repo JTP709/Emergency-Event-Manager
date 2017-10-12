@@ -134,19 +134,28 @@ var app = app || {};
         }
     ];
 
+    app.typeList = [
+        {
+            type: 'HAZMAT'
+        },
+        {
+            type: 'FIRE'
+        },
+        {
+            type: 'CONFINED SPACE RESCUE'
+        },
+        {
+            type: 'VEHICULAR COLLISION'
+        },
+        {
+            type: 'OTHER'
+        },
+    ];
+
     // Create an array of filters
-    app.checkbox = function(x) {
-        this.type = x;
+    app.typeFilter = function(x) {
+        this.type = x.type;
         this.selected = ko.observable(false);
-    };
-    app.typeFilters = function() {
-        return ko.observableArray([
-            new this.checkbox('HAZMAT'),
-            new this.checkbox('FIRE'),
-            new this.checkbox('CONFINED SPACE RESCUE'),
-            new this.checkbox('VEHICULAR COLLISION'),
-            new this.checkbox('OTHER')
-        ]);
     };
 
 
@@ -191,7 +200,7 @@ var app = app || {};
                 return false
             }
         });
-        this.filters = app.typeFilters();
+        this.filters = app.typeList;
 
         this.markerData = [
             {
