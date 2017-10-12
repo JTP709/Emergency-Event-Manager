@@ -68,6 +68,11 @@ var app = app || {};
             this.clear(true);
         };
 
+        // Sets Emergency Event to "active" and adds it back to the active list
+        this.stillHot = function(data) {
+            this.clear(false);
+        };
+
         /*
         Filter Function
         */
