@@ -368,6 +368,22 @@ var app = app || {};
                     fillColor: '#8e8e8e'
                 });
             });
+
+            // Determine events ID nad convert to string
+            var num = this.id();
+            var n = num.toString();
+            // Grab new selection elements
+            this.e_id = document.getElementById(n);
+            this.e_cas = this.e_id.getElementsByClassName("edit_cas");
+            this.e_type = this.e_id.getElementsByClassName("edit_type");
+            this.e_ppe = this.e_id.getElementsByClassName("edit_ppe");
+            this.e_rad = this.e_id.getElementsByClassName("edit_rad");
+
+            // Grab new data values
+            this.e_v_type = this.e_type[0].value = this.type();
+            this.e_v_ppe = this.e_ppe[0].value = this.ppe();
+            this.e_v_rad = this.e_rad[0].selectedIndex = this.radius();
+            this.e_v_cas = this.e_cas[0].selectedIndex = this.casualties();
         };
 
         this.cancelEditEvent = function(data){
@@ -387,6 +403,7 @@ var app = app || {};
         this.editEvent = function(data){
             var func = this;
 
+            // Determine events ID nad convert to string
             var num = this.id();
             var n = num.toString();
 
@@ -425,10 +442,10 @@ var app = app || {};
             });
 
             // Reset the form
-            const e_type_reset = this.e_type.selectedIndex = 0;
-            const e_ppe_reset = this.e_ppe.selectedIndex = 0;
-            const e_cas_reset = this.e_cas.selectedIndex = 0;
-            const e_rad_reset = this.e_rad.selectedIndex = 0;
+            const e_type_reset = this.e_type[0].selectedIndex = 0;
+            const e_ppe_reset = this.e_ppe[0].selectedIndex = 0;
+            const e_cas_reset = this.e_cas[0].selectedIndex = 0;
+            const e_rad_reset = this.e_rad[0].selectedIndex = 0;
             this.edit(false);
         };
 
