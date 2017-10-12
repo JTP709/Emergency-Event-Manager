@@ -96,6 +96,9 @@ var app = app || {};
                 mark.markers.forEach(function(marks){
                     marks.marker.setVisible(false);
                 });
+                mark.hotzones.forEach(function(marks){
+                    marks.hotzone.setVisible(false);
+                });
             });
             // Return the entire list of no checkboxes are checked
             if (selectedEvents.length == 0) {
@@ -119,8 +122,15 @@ var app = app || {};
             this.filteredList = self.filteredList()
             // Set only the filtered markers to visible
             this.filteredList.forEach(function(mark){
-                mark.markers.forEach(function(marks){
-                    marks.marker.setVisible(true);
+                mark.markers[0].marker.setVisible(true);
+                google.maps.event.addListener(app.map, 'zoom_changed', function() {
+                    var zoom = app.map.getZoom();
+                    for (i=1; i < mark.markers.length; i++) {
+                        mark.markers[i].marker.setVisible(zoom >= 14);
+                    };
+                    for (i=0; i < mark.hotzones.length; i++) {
+                        mark.hotzones[i].hotzone.setVisible(zoom >= 14);
+                    };
                 });
             });
         })

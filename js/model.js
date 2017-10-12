@@ -181,16 +181,6 @@ var app = app || {};
             this.marker.addListener('mouseout', function() {
                 this.setIcon(func.defaultIcon);
             });
-            // Set marker visibility based on zoom
-            if (data.type != 'primary') {
-                this.marker.setVisible(false);
-                google.maps.event.addListener(app.map, 'zoom_changed', function() {
-                    var zoom = app.map.getZoom();
-                    func.marker.setVisible(zoom >= 14);
-                });
-            } else {
-                this.marker.setVisible(true);
-            };
         };
 
         // Create a hotzone radius
@@ -205,11 +195,6 @@ var app = app || {};
                 map: app.map,
                 center: data.location,
                 radius: parseFloat(data.radius)
-            });
-            // Set visibility based on zoom
-            google.maps.event.addListener(app.map, 'zoom_changed', function() {
-                var zoom = app.map.getZoom();
-                func.hotzone.setVisible(zoom >= 14);
             });
         };
 
