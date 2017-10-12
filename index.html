@@ -9,7 +9,9 @@
 </head>
 <body>
     <!-- Heading -->
-    <h1>Emergency Response Coordinator</h1>
+    <div id="heading">
+        <h1>Emergency Response Coordinator</h1>
+    </div>
     <div id="navbar">
         <button data-bind="click: function(){nav('map_tab')}">Emergency Events</button>
         <button data-bind="click: function(){nav('new_tab')}">New Emergency</button>
@@ -70,8 +72,8 @@
             <div id="map_tab">
 
                 <!-- Filter Options -->
-                <p><b>List Filter:</b></p>
                 <div id="checkbox_list">
+                    <p><b>List Filter:</b></p>
                     <div data-bind="foreach: filters">
                             <input type="checkbox" data-bind="checked:selected, attr: {id: type}">
                             <label data-bind="text: type, attr: {for: type}"></label>
@@ -79,80 +81,83 @@
                     </div>
                     <input type="checkbox" data-bind="checked: clearEvents">
                     <label>Show Clear Events</label>
+                </div>
 
                 <!-- Events List -->
-                <h2>Emergency Events</h2>
-                <div data-bind="foreach: filteredList">
-                    <!-- Mouse Over Event Listener on each element to highlight markers -->
-                    <div data-bind="event: {mouseover: $parent.highlightMarker, mouseout: $parent.defaultMarker}, attr: {id: id}">
-                        <h3>Emergency #<label data-bind="text: id"></label></h3>
-                        <!-- Edit Button -->
-                        <div data-bind="visible: editOption">
-                            <button data-bind="click: $parent.showEditOptions">Edit</button><br>
-                        </div>
-                        <!-- Type Info-->
-                        <label>Type: 
-                            <!-- Current Information Display -->
-                            <label data-bind="text: type, visible: editOption"></label>
-                            <!-- Edit Information Display -->
-                            <select class="edit_type" data-bind="visible: edit, foreach: filters">
-                                <option data-bind="text: type, attr: {value: type}"></option>
-                                <br>
-                            </select>
-                        </label>
-                        <br>
-                        <!-- Casualty Info -->
-                        <label>Number of Casualties: 
-                            <!-- Current Information Display -->
-                            <label data-bind="text: casualties, visible: editOption"></label>
-                            <!-- Edit Information Display -->
-                            <select class="numDropDownMenu edit_cas" data-bind="visible: edit"></select>
-                        </label>
-                        <br>
-                        <label> Casualty Level: 
-                            <!-- Current Information Display -->
-                            <label data-bind="text: cas_level, visible: editOption"></label>
-                            <!-- Edit Information Display -->
-                            <label data-bind="visible: edit"><i>Waiting for Update...</i></label>
-                        </label>
-                        <br>
-                        <!-- PPE Info -->
-                        <label>PPE Level: 
-                            <!-- Current Information Display -->
-                            <label data-bind="text: ppe, visible: editOption"></label>
-                            <!-- Edit Information Display -->
-                            <select class="edit_ppe" data-bind="visible: edit">
-                                <option value="LEVEL A">LEVEL A</option>
-                                <option value="LEVEL B">LEVEL B</option>
-                                <option value="LEVEL C">LEVEL C</option>
-                                <option value="LEVEL D">LEVEL D</option>
-                                <option value="Turnout">Turnout Gear</option>
-                            </select>
-                        </label>
-                        <br>
-                        <!-- Edit Hotzone Radius Option; only visible during edits -->
-                        <div data-bind="visible: edit">
-                            <label><b>Hotzone Radius: </b></label><select class="numDropDownMenu edit_rad"></select>
+                <div id="eventList">
+                    <h2>Emergency Events</h2>
+                    <div data-bind="foreach: filteredList">
+                        <!-- Mouse Over Event Listener on each element to highlight markers -->
+                        <div class="eventListing" data-bind="event: {mouseover: $parent.highlightMarker, mouseout: $parent.defaultMarker}, attr: {id: id}">
+                            <h3>Emergency #<label data-bind="text: id"></label></h3>
+                            <!-- Edit Button -->
+                            <div data-bind="visible: editOption">
+                                <button data-bind="click: $parent.showEditOptions">Edit</button><br>
+                            </div>
+                            <!-- Type Info-->
+                            <label>Type: 
+                                <!-- Current Information Display -->
+                                <label data-bind="text: type, visible: editOption"></label>
+                                <!-- Edit Information Display -->
+                                <select class="edit_type" data-bind="visible: edit, foreach: filters">
+                                    <option data-bind="text: type, attr: {value: type}"></option>
+                                    <br>
+                                </select>
+                            </label>
                             <br>
-                        </div>
-                        <!-- GO TO Button -->
-                        <button data-bind="click: $parent.changeCenter">Go To Emergency</button>
-                        <br>
-                        <!-- Submit Edit Button; only visible during edits -->
-                        <div data-bind="visible: edit">
-                            <button data-bind="click: $parent.editEvent">Submit Edit</button>
-                        </div>
-                        <!-- Cancel Edit Button; only visible during edits -->
-                        <div data-bind="visible: edit">
-                            <button data-bind="click: $parent.cancelEditEvent">Cancel Edit</button>
-                        </div>
-                        <!-- All Clear Button; hidden when an event is clear or when editing -->
-                        <div data-bind="visible: editOption">
-                            <button data-bind="click: $parent.allClear, visible: clearOption">All Clear</button>
-                        </div>
-                        <!-- Still Hot Button; hidden when an event is clear or when editing -->
-                        <div data-bind="visible: editOption">
-                            <button data-bind="click: $parent.allClear, visible: clear">Still Hot!</button>
+                            <!-- Casualty Info -->
+                            <label>Number of Casualties: 
+                                <!-- Current Information Display -->
+                                <label data-bind="text: casualties, visible: editOption"></label>
+                                <!-- Edit Information Display -->
+                                <select class="numDropDownMenu edit_cas" data-bind="visible: edit"></select>
+                            </label>
+                            <br>
+                            <label> Casualty Level: 
+                                <!-- Current Information Display -->
+                                <label data-bind="text: cas_level, visible: editOption"></label>
+                                <!-- Edit Information Display -->
+                                <label data-bind="visible: edit"><i>Waiting for Update...</i></label>
+                            </label>
+                            <br>
+                            <!-- PPE Info -->
+                            <label>PPE Level: 
+                                <!-- Current Information Display -->
+                                <label data-bind="text: ppe, visible: editOption"></label>
+                                <!-- Edit Information Display -->
+                                <select class="edit_ppe" data-bind="visible: edit">
+                                    <option value="LEVEL A">LEVEL A</option>
+                                    <option value="LEVEL B">LEVEL B</option>
+                                    <option value="LEVEL C">LEVEL C</option>
+                                    <option value="LEVEL D">LEVEL D</option>
+                                    <option value="Turnout">Turnout Gear</option>
+                                </select>
+                            </label>
+                            <br>
+                            <!-- Edit Hotzone Radius Option; only visible during edits -->
+                            <div data-bind="visible: edit">
+                                <label><b>Hotzone Radius: </b></label><select class="numDropDownMenu edit_rad"></select>
+                                <br>
+                            </div>
+                            <!-- GO TO Button -->
+                            <button data-bind="click: $parent.changeCenter">Go To Emergency</button>
+                            <br>
+                            <!-- Submit Edit Button; only visible during edits -->
+                            <div data-bind="visible: edit">
+                                <button data-bind="click: $parent.editEvent">Submit Edit</button>
+                            </div>
+                            <!-- Cancel Edit Button; only visible during edits -->
+                            <div data-bind="visible: edit">
+                                <button data-bind="click: $parent.cancelEditEvent">Cancel Edit</button>
+                            </div>
+                            <!-- All Clear Button; hidden when an event is clear or when editing -->
+                            <div data-bind="visible: editOption">
+                                <button data-bind="click: $parent.allClear, visible: clearOption">All Clear</button>
+                            </div>
+                            <!-- Still Hot Button; hidden when an event is clear or when editing -->
+                            <div data-bind="visible: editOption">
+                                <button data-bind="click: $parent.allClear, visible: clear">Still Hot!</button>
+                            </div>
                         </div>
                     </div>
                 </div>

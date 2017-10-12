@@ -6,7 +6,7 @@ body {
     padding: 0;
 }
 .container {
-    height: 100%;
+    height: calc(100% - 67px);
     position: relative;
 }
 input {
@@ -15,12 +15,9 @@ input {
 h1 {
     color: #525454;
     font-size: 22px;
-    margin: 10px 10px 10px 10px;
     text-align: center;
-}
-#hide-listings,
-#show-listings {
-    width: 48%;
+    padding: 0px;
+    margin: 0px;
 }
 hr {
     background: #D0D7D9;
@@ -28,10 +25,17 @@ hr {
     margin: 20px 0 20px 0;
     border: none;
 }
+#heading {
+    height: 30px;
+    padding: 5px;
+}
+#navbar {
+    height: 25px;
+}
 #map {
     bottom:0px;
     height: 100%;
-    left: 362px;
+    left: 342px;
     position: absolute;
     right: 0px;
 }
@@ -41,29 +45,23 @@ hr {
     border-radius: 3px;
     height: 100%;
     line-height: 35px;
-    padding: 10px 10px 30px 10px;
     text-align: left;
     width: 340px;
 }
-#pano {
-    width: 200px;
-    height: 200px;
-}
-#places-search,
-#search-within-time-text {
-    width: 84%;
-}
-.text {
-    font-size: 12px;
-}
-#toggle-drawing {
-    width: 27%;
+#checkbox_list {
     position: relative;
-    margin-left: 10px;
+    height: 250px;
+    margin-bottom: 10px;
 }
-#zoom-to-area-text {
-    width: 70%;
+#eventList {
+    position: absolute;
+    max-height: calc(100% - 315px);
+    max-width: 100%;
+    overflow: auto;
 }
-#zoom-to-area {
-    width: 24%;
+.eventListing {
+    margin: 10px;
+    border: 1px solid #999;
+    border-radius: 3px;
+    padding: 5px;
 }
