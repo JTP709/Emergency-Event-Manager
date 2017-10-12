@@ -80,7 +80,7 @@
                             <br>
                     </div>
                     <input type="checkbox" data-bind="checked: clearEvents">
-                    <label>Show Clear Events</label>
+                    <label>Show Past Events</label>
                 </div>
 
                 <!-- Events List -->
@@ -103,7 +103,7 @@
                                 <button data-bind="click: $parent.cancelEditEvent">Cancel Edit</button>
                             </div>
                             <!-- Type Info-->
-                            <label>Type: 
+                            <label><b>Type: </b>
                                 <!-- Current Information Display -->
                                 <label data-bind="text: type, visible: editOption"></label>
                                 <!-- Edit Information Display -->
@@ -114,22 +114,22 @@
                             </label>
                             <br>
                             <!-- Casualty Info -->
-                            <label>Number of Casualties: 
-                                <!-- Current Information Display -->
-                                <label data-bind="text: casualties, visible: editOption"></label>
-                                <!-- Edit Information Display -->
-                                <select class="numDropDownMenu edit_cas" data-bind="visible: edit"></select>
-                            </label>
-                            <br>
-                            <label> Casualty Level: 
+                            <label><b>Casualty Level: </b>
                                 <!-- Current Information Display -->
                                 <label data-bind="text: cas_level, visible: editOption"></label>
                                 <!-- Edit Information Display -->
                                 <label data-bind="visible: edit"><i>Waiting for Update...</i></label>
                             </label>
                             <br>
+                            <label><b>Number of Casualties: </b>
+                                <!-- Current Information Display -->
+                                <label data-bind="text: casualties, visible: editOption"></label>
+                                <!-- Edit Information Display -->
+                                <select class="numDropDownMenu edit_cas" data-bind="visible: edit"></select>
+                            </label>
+                            <br>
                             <!-- PPE Info -->
-                            <label>PPE Level: 
+                            <label><b>PPE: </b>
                                 <!-- Current Information Display -->
                                 <label data-bind="text: ppe, visible: editOption"></label>
                                 <!-- Edit Information Display -->
