@@ -122,6 +122,8 @@ var app = app || {};
         this.filteredMarkers = ko.computed(function(){
             // Get the filtered list
             this.filteredList = self.filteredList()
+            // Remove google listener
+            google.maps.event.clearListeners(app.map, 'zoom_changed');
             // Set only the filtered markers to visible
             this.filteredList.forEach(function(mark){
                 var zoom = app.map.getZoom();
@@ -202,7 +204,7 @@ var app = app || {};
                 this.assembly = self.tempAssemblyMarker();
                 this.com_post = self.tempComPostMarker();
                 this.decon = self.tempDeconMarker();
-                
+
                 // Populate a new array with the data
                 this.newData = [
                     {
