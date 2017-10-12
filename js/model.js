@@ -102,6 +102,13 @@ var app = app || {};
         }, this);
         this.radius = ko.observable(data.radius);
         this.clear = ko.observable(data.clear);
+        this.clearOption = ko.computed(function(){
+            if (self.clear() == false) {
+                return true
+            } else {
+                return false
+            }
+        });
 
         this.markerData = [
             {
