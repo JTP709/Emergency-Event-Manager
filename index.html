@@ -84,8 +84,10 @@
                 </div>
 
                 <!-- Events List -->
-                <div id="eventList">
+                <div id="eventListHeader">
                     <h2>Emergency Events</h2>
+                </div>
+                <div id="eventList">
                     <div data-bind="foreach: filteredList">
                         <!-- Mouse Over Event Listener on each element to highlight markers -->
                         <div class="eventListing" data-bind="event: {mouseover: $parent.highlightMarker, mouseout: $parent.defaultMarker}, attr: {id: id}">
@@ -93,6 +95,12 @@
                             <!-- Edit Button -->
                             <div data-bind="visible: editOption">
                                 <button data-bind="click: $parent.showEditOptions">Edit</button><br>
+                            </div>
+                            <!-- Submit Edit Button; only visible during edits -->
+                            <div data-bind="visible: edit">
+                                <button data-bind="click: $parent.editEvent">Submit Edit</button>
+                                <!-- Cancel Edit Button; only visible during edits -->
+                                <button data-bind="click: $parent.cancelEditEvent">Cancel Edit</button>
                             </div>
                             <!-- Type Info-->
                             <label>Type: 
@@ -142,14 +150,6 @@
                             <!-- GO TO Button -->
                             <button data-bind="click: $parent.changeCenter">Go To Emergency</button>
                             <br>
-                            <!-- Submit Edit Button; only visible during edits -->
-                            <div data-bind="visible: edit">
-                                <button data-bind="click: $parent.editEvent">Submit Edit</button>
-                            </div>
-                            <!-- Cancel Edit Button; only visible during edits -->
-                            <div data-bind="visible: edit">
-                                <button data-bind="click: $parent.cancelEditEvent">Cancel Edit</button>
-                            </div>
                             <!-- All Clear Button; hidden when an event is clear or when editing -->
                             <div data-bind="visible: editOption">
                                 <button data-bind="click: $parent.allClear, visible: clearOption">All Clear</button>
