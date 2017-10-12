@@ -109,7 +109,7 @@ var app = app || {};
                 position: data.location,
                 content: '<div id="content">'+
                     '<label><b>' + data.type + ' EVENT</b></label>' +
-                    '<p><b> Emergency Event #' + data.id + '</b></p>' +
+                    '<p> Emergency Event #' + data.id + '</p>' +
                     '<p>' + this.cas_level() + '</p>' +
                     '</div>',
                 type: 'primary'
@@ -127,6 +127,7 @@ var app = app || {};
                 position: data.assembly,
                 content: '<div id="content">'+
                     '<p>Assembly Point</p>' +
+                    '<p>Casualties: ' + data.casualties + '</p>' +
                     '</div>',
                 type: 'secondary'
             },

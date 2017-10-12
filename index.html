@@ -26,10 +26,10 @@
 
                     <label><b>Marker Lockations:</b></label>
                     <br>
-                    <button id="new_location" data-bind="click: newLocationMarker">Event Location</button><br>
-                    <button id="new_assembly" data-bind="click: newAssemblyMarker">Assembly Point</button><br>
-                    <button id="new_com_post" data-bind="click: newComPostMarker">Command Post</button><br>
-                    <button id="new_com_post" data-bind="click: newDeconMarker">DECON Point</button><br>
+                    <button id="new_location" data-bind="click: function() {newTempMarker('location')}">Event Location</button><br>
+                    <button id="new_assembly" data-bind="click: function() {newTempMarker('assembly')}">Assembly Point</button><br>
+                    <button id="new_com_post" data-bind="click: function() {newTempMarker('com_post')}">Command Post</button><br>
+                    <button id="new_decon" data-bind="click: function() {newTempMarker('decon')}">DECON Point</button><br>
 
                     <label><b>Hotzone Radius: </b></label><select id="new_rad" class="numDropDownMenu"></select>
                     <button id="new_hotzone" data-bind="click: newHotzone">Preview</button>

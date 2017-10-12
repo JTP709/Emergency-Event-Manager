@@ -91,50 +91,39 @@ var app = app || {};
             var selectedEvents = ko.utils.arrayFilter(self.filters, function(p){
                 return p.selected();
             });
+            // Set all markers to invisible
+            self.initialList().forEach(function(mark){
+                mark.markers.forEach(function(marks){
+                    marks.marker.setVisible(false);
+                });
+            });
             // Return the entire list of no checkboxes are checked
             if (selectedEvents.length == 0) {
-                self.initialList().forEach(function(mark){
-                    mark.markers.forEach(function(mark){
-                        mark.marker.setVisible(true);
-                    });
-                });
-                var y = ko.utils.arrayFilter(self.initialList(), function(item){
+                var x = ko.utils.arrayFilter(self.initialList(), function(item){
                     return item.clear() == self.clearEvents()
                 });
-                // Set all markers to invisible
-                self.initialList().forEach(function(mark){
-                    mark.markers.forEach(function(marks){
-                        marks.marker.setVisible(false);
-                    });
-                });
-                // set only the filtered markers to visible
-                y.forEach(function(mark){
-                    mark.markers.forEach(function(marks){
-                        marks.marker.setVisible(true);
-                    });
-                });
-                return y;
+                return x;
             } else {
                 var x = ko.utils.arrayFilter(self.initialList(), function(item){
                     return ko.utils.arrayFilter(selectedEvents, function(p) {
                         return p.type == item.type() && item.clear() == self.clearEvents()
                     }).length > 0;
                 });
-                // Set all markers to invisible
-                self.initialList().forEach(function(mark){
-                    mark.markers.forEach(function(marks){
-                        marks.marker.setVisible(false);
-                    });
-                });
-                // set only the filtered markers to visible
-                x.forEach(function(mark){
-                    mark.markers.forEach(function(marks){
-                        marks.marker.setVisible(true);
-                    });
-                });
                 return x;
             };
         });
+
+        // Filter the markers based on the filtered list
+        this.filteredMarkers = ko.computed(function(){
+            // Get the filtered list
+            this.filteredList = self.filteredList()
+            // Set only the filtered markers to visible
+            this.filteredList.forEach(function(mark){
+                mark.markers.forEach(function(marks){
+                    marks.marker.setVisible(true);
+                });
+            });
+        })
 
         /*
         Create a new Emergency Event
@@ -234,41 +223,24 @@ var app = app || {};
         };
 
         // Creats a temporary marker and captures lat-long data for later
-        this.newLocationMarker = function(){
+        this.tempMarkerButton = ko.observable();
+        this.newTempMarker = function(x){
             var func = this;
+            self.tempMarkerButton(x);
             this.clicker = google.maps.event.addListener(app.map,'click', function(event){
                 self.placeMarker(event.latLng);
-                self.tempLocMarker = ko.observable(event.latLng);
-                google.maps.event.removeListener(func.clicker);
-            });
-        };
-
-        // Creats a temporary marker and captures lat-long data for later
-        this.newAssemblyMarker = function(){
-            var func = this;
-            this.clicker = google.maps.event.addListener(app.map,'click', function(event){
-                self.placeMarker(event.latLng);
-                self.tempAssemblyMarker = ko.observable(event.latLng);
-                google.maps.event.removeListener(func.clicker);
-            });
-        };
-
-        // Creats a temporary marker and captures lat-long data for later
-        this.newComPostMarker = function(){
-            var func = this; 
-            this.clicker = google.maps.event.addListener(app.map,'click', function(event){
-                self.placeMarker(event.latLng);
-                self.tempComPostMarker = ko.observable(event.latLng);
-                google.maps.event.removeListener(func.clicker);
-            });
-        };
-
-        // Creats a temporary marker and captures lat-long data for later
-        this.newDeconMarker = function(){
-            var func = this;
-            this.clicker = google.maps.event.addListener(app.map,'click', function(event){
-                self.placeMarker(event.latLng);
-                self.tempDeconMarker = ko.observable(event.latLng);
+                if (self.tempMarkerButton() == 'location') {
+                    self.tempLocMarker(event.latLng);
+                };
+                if (self.tempMarkerButton() == 'assembly') {
+                    self.tempAssemblyMarker(event.latLng);
+                };
+                if (self.tempMarkerButton() == 'com_post') {
+                    self.tempComPostMarker(event.latLng);
+                };
+                if (self.tempMarkerButton() == 'decon') {
+                    self.tempDeconMarker(event.latLng);
+                };
                 google.maps.event.removeListener(func.clicker);
             });
         };
