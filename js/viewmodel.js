@@ -1,3 +1,23 @@
+/*
+Emergency Response Coordinator
+*/
+
+/*
+TODO
+
+reset the map based on the bounds of visible markers
+
+add another API
+    - Weather
+    - Show nearby Police and Fire stations
+
+filter based on a distance to an address
+
+change marker images
+
+rework CSS; make it pretty
+
+*/
 var app = app || {};
 
 (function() {
