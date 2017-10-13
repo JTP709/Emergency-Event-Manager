@@ -25,34 +25,6 @@ var app = app || {};
         var self = this;
 
         /*
-        Navigation Bar Function
-        */
-
-        var new_tab = document.getElementById('new_tab');
-        var map_tab = document.getElementById('map_tab');
-        new_tab.style.display = 'none';
-        this.nav = function(z) {
-            self.newEventMsg(false);
-            self.errorForm(false);
-            var x = new_tab;
-            var y = map_tab;
-            if (z === 'new_tab') {
-                x.style.display = 'block';
-                y.style.display = 'none';
-            };
-            if (z === 'map_tab') {
-                x.style.display = 'none';
-                y.style.display = 'block';
-            };
-        };
-
-        // Resets the map to overview of Cincinnati
-        this.reset = function() {
-            app.map.setCenter({lat: 39.106171, lng: -84.515712});
-            app.map.setZoom(10);
-        };
-
-        /*
         Initial Setup and basic functions
         */
 
@@ -91,6 +63,46 @@ var app = app || {};
         // Sets Emergency Event to "active" and adds it back to the active list
         this.stillHot = function(data) {
             this.clear(false);
+        };
+
+        /*
+        Navigation Bar Function
+        */
+
+        // Switches between the sidebar 'tabs'
+        var new_tab = document.getElementById('new_tab');
+        var map_tab = document.getElementById('map_tab');
+        new_tab.style.display = 'none';
+        this.nav = function(z) {
+            self.newEventMsg(false);
+            self.errorForm(false);
+            var x = new_tab;
+            var y = map_tab;
+            if (z === 'new_tab') {
+                x.style.display = 'block';
+                y.style.display = 'none';
+            };
+            if (z === 'map_tab') {
+                x.style.display = 'none';
+                y.style.display = 'block';
+            };
+        };
+
+        // Resets the map to overview of Cincinnati
+        this.reset = function() {
+            //app.map.setCenter({lat: 39.106171, lng: -84.515712});
+            //app.map.setZoom(10);
+            var func = this;
+            this.bounds = new google.maps.LatLngBounds();
+            //Extend the boundaries of the map for each visible marker
+            this.initialList().forEach(function(mark){
+                mark.markers.forEach(function(marks){
+                    if (marks.marker.getVisible() == true) {
+                        func.bounds.extend(marks.marker.position);
+                        app.map.fitBounds(func.bounds);
+                    };
+                });
+            });
         };
 
         /*
