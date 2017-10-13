@@ -95,16 +95,7 @@
                         <!-- Mouse Over Event Listener on each element to highlight markers -->
                         <div class="eventListing" data-bind="event: {mouseover: $parent.highlightMarker, mouseout: $parent.defaultMarker}, attr: {id: id}">
                             <h3>Emergency #<label data-bind="text: id"></label></h3>
-                            <!-- Edit Button -->
-                            <div data-bind="visible: editOption && clearOption">
-                                <button class="event_button" data-bind="click: $parent.showEditOptions">Edit</button><br>
-                            </div>
-                            <!-- Submit Edit Button; only visible during edits -->
-                            <div data-bind="visible: edit">
-                                <button class="event_button" data-bind="click: $parent.editEvent">Submit Edit</button>
-                                <!-- Cancel Edit Button; only visible during edits -->
-                                <button class="event_button" data-bind="click: $parent.cancelEditEvent">Cancel Edit</button>
-                            </div>
+                            
                             <!-- Type Info-->
                             <label><b>Type: </b>
                                 <!-- Current Information Display -->
@@ -145,20 +136,36 @@
                                 </select>
                             </label>
                             <br>
+
                             <!-- Edit Hotzone Radius Option; only visible during edits -->
                             <div data-bind="visible: edit">
                                 <label><b>Hotzone Radius: </b></label><select class="numDropDownMenu edit_rad"></select>
                                 <br>
                             </div>
-                            <!-- GO TO Button -->
-                            <div class="button_div" >
-                                <button class="event_button" data-bind="click: $parent.changeCenter">GO TO</button>
-                            </div>
-                            <div data-bind="visible: editOption">
-                                <!-- All Clear Button; hidden when an event is clear or when editing -->
-                                <button class="event_button" data-bind="click: $parent.allClear, visible: clearOption">All Clear!</button>
-                                <!-- Still Hot Button; hidden when an event is clear or when editing -->
-                                <button class="event_button" data-bind="click: $parent.stillHot, visible: clear">Still Hot!</button>
+                            <div class="button_container">
+                                <!-- GO TO Button -->
+                                <div class="button_div" >
+                                    <button class="event_button" data-bind="click: $parent.changeCenter">GO TO</button>
+                                </div>
+
+                                <!-- Edit Button -->
+                                <div class="button_div" data-bind="visible: editOption">
+                                    <button class="event_button" data-bind="click: $parent.showEditOptions">Edit</button>
+                                </div>
+
+                                <!-- Submit Edit Button; only visible during edits -->
+                                <div class="" data-bind="visible: edit">
+                                    <button class="event_button" data-bind="click: $parent.editEvent">Submit Edit</button>
+                                    <!-- Cancel Edit Button; only visible during edits -->
+                                    <button class="event_button" data-bind="click: $parent.cancelEditEvent">Cancel Edit</button>
+                                </div>
+
+                                <div class="" data-bind="visible: editOption">
+                                    <!-- All Clear Button; hidden when an event is clear or when editing -->
+                                    <button class="event_button" data-bind="click: $parent.allClear, visible: clearOption">All Clear!</button>
+                                    <!-- Still Hot Button; hidden when an event is clear or when editing -->
+                                    <button class="event_button" data-bind="click: $parent.stillHot, visible: clear">Still Hot!</button>
+                                </div>
                             </div>
                         </div>
                     </div>
