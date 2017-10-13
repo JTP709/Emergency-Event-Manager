@@ -88,7 +88,7 @@ var app = app || {};
             };
         };
 
-        // Shows/hides filter list options
+        /* Shows/hides filter list options
         this.filterShow = ko.observable(false);
         this.showFilterList = function() {
             var func = this;
@@ -99,6 +99,28 @@ var app = app || {};
             } else {
                 self.filterShow(false);
                 func.element.style.maxheight = 'calc(100% - 100px)';
+            };
+        };
+        */
+
+        /* When the user clicks on the button, 
+        toggle between hiding and showing the dropdown content */
+        this.showFilterList = function() {
+            document.getElementById("checkbox_list").classList.toggle("show");
+        }
+
+        // Close the dropdown menu if the user clicks outside of it
+        window.onclick = function(event) {
+        if (!event.target.matches('.filter_button')) {
+
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                    };
+                };
             };
         };
 

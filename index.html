@@ -77,16 +77,21 @@
                 </div>
 
                 <!-- Filter Options -->
-                <button class="filter_button event_button" data-bind="click: showFilterList">List Filters</button>
-
-                <div data-bind="visible: filterShow" id="checkbox_list">
-                    <div data-bind="foreach: filters">
-                        <input type="checkbox" data-bind="checked:selected, attr: {id: type}">
-                        <label data-bind="text: type, attr: {for: type}"></label>
-                        <br>
+                <div class="dropdown">
+                    <button class="filter_button event_button" data-bind="click: showFilterList">List Filters</button>
+                    <div id="checkbox_list" class="dropdown-content">
+                        <div data-bind="foreach: filters">
+                            <span>
+                                <input type="checkbox" data-bind="checked:selected, attr: {id: type}">
+                                <label data-bind="text: type, attr: {for: type}"></label>
+                                <br>
+                            </span>
+                        </div>
+                        <span>
+                            <input type="checkbox" data-bind="checked: clearEvents">
+                            <label>Show Past Events</label>
+                        </span>
                     </div>
-                    <input type="checkbox" data-bind="checked: clearEvents">
-                    <label>Show Past Events</label>
                 </div>
 
                 <!-- Events List -->
