@@ -38,7 +38,7 @@ button {
     background-color: #4CAF50; /* Green */
 }
 /* Dropdown button on hover & focus */
-button:hover, button:focus {
+button:hover {
     background-color: #3e8e41;
 }
 .container {
@@ -65,11 +65,28 @@ button:hover, button:focus {
     height: 30px;
     padding: 3px 10px 3px 10px;
 }
+.new_marker_button {
+    width: 112px;
+    height: 20px;
+}
+.new_marker_text {
+    font-size: 15px;
+}
 .filter_button {
     margin: 0px 0px 10px 10px;
     position: relative;
     display: inline-block;
     width: 300px;
+}
+#submit_button {
+    width: 50%;
+    margin: 0 auto;
+}
+#submit_button button {
+    width: 100%;
+}
+#new_hotzone {
+    height: 20px;
 }
 .dropdown {
     position: relative;
@@ -135,6 +152,9 @@ button:hover, button:focus {
     line-height: 35px;
     text-align: left;
     width: 342px;
+}
+#new_tab {
+    padding-left: 10px;
 }
 #eventListHeader {
     height: 35px;

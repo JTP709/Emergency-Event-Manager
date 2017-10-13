@@ -32,12 +32,12 @@
                         <option data-bind="text: type, attr: {class: 'new_type', value: type}"></option>
                     </select>
                     <!-- Select Marker Locations -->
-                    <label><b>Marker Lockations:</b></label>
+                    <label><b>Marker Locations:</b></label>
                     <br>
-                    <button class="event_button" id="new_location" data-bind="click: function() {newTempMarker('location')}">Event Location</button> Required<br>
-                    <button class="event_button" id="new_assembly" data-bind="click: function() {newTempMarker('assembly')}">Assembly Point</button> Optional<br>
-                    <button class="event_button" id="new_com_post" data-bind="click: function() {newTempMarker('com_post')}">Command Post</button> Optional<br>
-                    <button class="event_button" id="new_decon" data-bind="click: function() {newTempMarker('decon')}">DECON Point</button> Optional<br>
+                    <button class="event_button new_marker_button" id="new_location" data-bind="click: function() {newTempMarker('location')}">Event Location</button><span class="new_marker_text"> Required</span><br>
+                    <button class="event_button new_marker_button" id="new_assembly" data-bind="click: function() {newTempMarker('assembly')}">Assembly Point</button><span class="new_marker_text"> Optional</span><br>
+                    <button class="event_button new_marker_button" id="new_com_post" data-bind="click: function() {newTempMarker('com_post')}">Command Post</button><span class="new_marker_text"> Optional</span><br>
+                    <button class="event_button new_marker_button" id="new_decon" data-bind="click: function() {newTempMarker('decon')}">DECON Point</button><span class="new_marker_text"> Optional</span><br>
                     <!-- Select Hotzone Radius -->
                     <label><b>Hotzone Radius: </b></label><select id="new_rad" class="numDropDownMenu"></select>
                     <button class="event_button" id="new_hotzone" data-bind="click: newHotzone">Preview</button>
@@ -59,8 +59,11 @@
                         <option value="Turnout" class="new_ppe">Turnout Gear</option>
                     </select>
                     <br>
+                    <hr>
                     <!-- Submit New Event Button -->
-                    <button class="event_button" data-bind="click: newEvent">Submit</button>
+                    <div id="submit_button">
+                        <button class="event_button" data-bind="click: newEvent">Submit</button>
+                    </div>
                     <!-- Message displayed when form is not complete -->
                     <div data-bind="visible: errorForm">
                         <b>You must establish an Event Location Marker!</b>
