@@ -5,8 +5,6 @@ Emergency Response Coordinator
 /*
 TODO
 
-reset the map based on the bounds of visible markers
-
 add another API
     - Weather
     - Show nearby Police and Fire stations
@@ -74,8 +72,10 @@ var app = app || {};
         var map_tab = document.getElementById('map_tab');
         new_tab.style.display = 'none';
         this.nav = function(z) {
+            // Reset the flash messages on the new event page when you change tabs
             self.newEventMsg(false);
             self.errorForm(false);
+            // Figure out which tab the user is clicking and make it visible while hiding the other
             var x = new_tab;
             var y = map_tab;
             if (z === 'new_tab') {
