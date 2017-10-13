@@ -93,7 +93,7 @@
                         <div class="eventListing" data-bind="event: {mouseover: $parent.highlightMarker, mouseout: $parent.defaultMarker}, attr: {id: id}">
                             <h3>Emergency #<label data-bind="text: id"></label></h3>
                             <!-- Edit Button -->
-                            <div data-bind="visible: editOption">
+                            <div data-bind="visible: editOption && clearOption">
                                 <button data-bind="click: $parent.showEditOptions">Edit</button><br>
                             </div>
                             <!-- Submit Edit Button; only visible during edits -->
