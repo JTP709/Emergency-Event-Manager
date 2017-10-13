@@ -1,21 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Emergency Response</title>    
+    <title>Emergency Manager</title>    
     <meta name="viewport" content="initial-scale=1.0">
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="css/style.css">
     </style>
 </head>
 <body>
-    <!-- Heading -->
-    <div id="heading">
-        <h1>Emergency Response Coordinator</h1>
-    </div>
-    <div id="navbar">
-        <button data-bind="click: function(){nav('map_tab')}">Emergency Events</button>
-        <button data-bind="click: function(){nav('new_tab')}">New Emergency</button>
-        <button data-bind="click: reset">Reset Map</button>
+    <div class="header">
+        <!-- Heading -->
+        <div id="navbar">
+            <button class="nav_button" data-bind="click: function(){nav('map_tab')}">Emergency Events</button>
+            <button class="nav_button" data-bind="click: function(){nav('new_tab')}">New Emergency</button>
+            <button class="nav_button" data-bind="click: reset">Reset Map</button>
+        </div>
+        <div id="heading">
+            <h1 id="page_title">Emergency Event <span id="page_title_end">Manager</span></h1>
+        </div>
     </div>
     <div class="container">
         <!-- Side Bar Div -->
@@ -32,13 +34,13 @@
                     <!-- Select Marker Locations -->
                     <label><b>Marker Lockations:</b></label>
                     <br>
-                    <button id="new_location" data-bind="click: function() {newTempMarker('location')}">Event Location</button> Required<br>
-                    <button id="new_assembly" data-bind="click: function() {newTempMarker('assembly')}">Assembly Point</button> Optional<br>
-                    <button id="new_com_post" data-bind="click: function() {newTempMarker('com_post')}">Command Post</button> Optional<br>
-                    <button id="new_decon" data-bind="click: function() {newTempMarker('decon')}">DECON Point</button> Optional<br>
+                    <button class="event_button" id="new_location" data-bind="click: function() {newTempMarker('location')}">Event Location</button> Required<br>
+                    <button class="event_button" id="new_assembly" data-bind="click: function() {newTempMarker('assembly')}">Assembly Point</button> Optional<br>
+                    <button class="event_button" id="new_com_post" data-bind="click: function() {newTempMarker('com_post')}">Command Post</button> Optional<br>
+                    <button class="event_button" id="new_decon" data-bind="click: function() {newTempMarker('decon')}">DECON Point</button> Optional<br>
                     <!-- Select Hotzone Radius -->
                     <label><b>Hotzone Radius: </b></label><select id="new_rad" class="numDropDownMenu"></select>
-                    <button id="new_hotzone" data-bind="click: newHotzone">Preview</button>
+                    <button class="event_button" id="new_hotzone" data-bind="click: newHotzone">Preview</button>
                     <!-- Message displayed if hotzone Preview is attempted before event marker is placed -->
                     <div data-bind="visible: errorHotzonePreview">
                         <br>
@@ -58,7 +60,7 @@
                     </select>
                     <br>
                     <!-- Submit New Event Button -->
-                    <button data-bind="click: newEvent">Submit</button>
+                    <button class="event_button" data-bind="click: newEvent">Submit</button>
                     <!-- Message displayed when form is not complete -->
                     <div data-bind="visible: errorForm">
                         <b>You must establish an Event Location Marker!</b>
@@ -70,23 +72,24 @@
                 </form>
             </div>
             <div id="map_tab">
+                <div id="eventListHeader">
+                    <h2>Emergency Events</h2>
+                </div>
 
                 <!-- Filter Options -->
-                <div id="checkbox_list">
-                    <p><b>List Filter:</b></p>
+                <button class="filter_button event_button" data-bind="click: showFilterList">List Filters</button>
+
+                <div data-bind="visible: filterShow" id="checkbox_list">
                     <div data-bind="foreach: filters">
-                            <input type="checkbox" data-bind="checked:selected, attr: {id: type}">
-                            <label data-bind="text: type, attr: {for: type}"></label>
-                            <br>
+                        <input type="checkbox" data-bind="checked:selected, attr: {id: type}">
+                        <label data-bind="text: type, attr: {for: type}"></label>
+                        <br>
                     </div>
                     <input type="checkbox" data-bind="checked: clearEvents">
                     <label>Show Past Events</label>
                 </div>
 
                 <!-- Events List -->
-                <div id="eventListHeader">
-                    <h2>Emergency Events</h2>
-                </div>
                 <div id="eventList">
                     <div data-bind="foreach: filteredList">
                         <!-- Mouse Over Event Listener on each element to highlight markers -->
@@ -94,13 +97,13 @@
                             <h3>Emergency #<label data-bind="text: id"></label></h3>
                             <!-- Edit Button -->
                             <div data-bind="visible: editOption && clearOption">
-                                <button data-bind="click: $parent.showEditOptions">Edit</button><br>
+                                <button class="event_button" data-bind="click: $parent.showEditOptions">Edit</button><br>
                             </div>
                             <!-- Submit Edit Button; only visible during edits -->
                             <div data-bind="visible: edit">
-                                <button data-bind="click: $parent.editEvent">Submit Edit</button>
+                                <button class="event_button" data-bind="click: $parent.editEvent">Submit Edit</button>
                                 <!-- Cancel Edit Button; only visible during edits -->
-                                <button data-bind="click: $parent.cancelEditEvent">Cancel Edit</button>
+                                <button class="event_button" data-bind="click: $parent.cancelEditEvent">Cancel Edit</button>
                             </div>
                             <!-- Type Info-->
                             <label><b>Type: </b>
@@ -148,15 +151,14 @@
                                 <br>
                             </div>
                             <!-- GO TO Button -->
-                            <button data-bind="click: $parent.changeCenter">Go To Emergency</button>
-                            <br>
-                            <!-- All Clear Button; hidden when an event is clear or when editing -->
-                            <div data-bind="visible: editOption">
-                                <button data-bind="click: $parent.allClear, visible: clearOption">All Clear</button>
+                            <div class="button_div" >
+                                <button class="event_button" data-bind="click: $parent.changeCenter">GO TO</button>
                             </div>
-                            <!-- Still Hot Button; hidden when an event is clear or when editing -->
                             <div data-bind="visible: editOption">
-                                <button data-bind="click: $parent.stillHot, visible: clear">Still Hot!</button>
+                                <!-- All Clear Button; hidden when an event is clear or when editing -->
+                                <button class="event_button" data-bind="click: $parent.allClear, visible: clearOption">All Clear!</button>
+                                <!-- Still Hot Button; hidden when an event is clear or when editing -->
+                                <button class="event_button" data-bind="click: $parent.stillHot, visible: clear">Still Hot!</button>
                             </div>
                         </div>
                     </div>

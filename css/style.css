@@ -1,13 +1,10 @@
- html,
+html,
 body {
     font-family: Arial, sans-serif;
     height: 100%;
     margin: 0;
     padding: 0;
-}
-.container {
-    height: calc(100% - 67px);
-    position: relative;
+    color: #333333;
 }
 input {
     font-size: 12px;
@@ -19,9 +16,12 @@ h1 {
     padding: 0px;
     margin: 0px;
 }
+h2 {
+    margin: 0px 0px 0px 0px;
+}
 h3 {
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
 hr {
     background: #D0D7D9;
@@ -29,49 +29,98 @@ hr {
     margin: 20px 0 20px 0;
     border: none;
 }
-#heading {
+button {
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    background-color: #4CAF50; /* Green */
+}
+.container {
+    height: calc(100% - 56px);
+    position: relative;
+}
+.header {
+    height: 55px;
+    line-height: 55px;
+    position: relative;
+    background-color: #f1f1f1;
+    border-bottom: 1px solid #000066;
+}
+.button_container {
+    float: none;
+}
+.nav_button {
+    font-size: 16px;
+    padding: 10px 10px;
+    margin: 3px 0px 3px 3px;
+    border-radius: 2px;
+}
+.event_button {
     height: 30px;
-    padding: 5px;
+    padding: 3px 10px 3px 10px;
+}
+.filter_button {
+    margin: 0px 0px 10px 10px;
+}
+.button_div {
+    float: left;
+    margin: 0px 5px 0px 0px;
+    min-height: 30px;
+}
+#heading {
+    height: auto;
+    line-height: 55px;
+    overflow: hidden;
+}
+#page_title {
+    font-size: 28.5px;
+}
+#page_title_end {
+    color: #ff8533;
 }
 #navbar {
-    height: 25px;
+    height: 100%;
+    width: 420px;
+    position: absolute;
+    /*float: left;*/
 }
 #map {
-    bottom:0px;
+    bottom: 0px;
     height: 100%;
-    left: 354px;
+    left: 344px;
     position: absolute;
     right: 0px;
 }
 #side_bar {
-    background: #fff;
-    border: 1px solid #999;
-    border-radius: 3px;
+    background: #ffffff;
+    border-right: 1px solid #000066;
     height: 100%;
     line-height: 35px;
     text-align: left;
     width: 342px;
-    padding-left: 10px;
 }
 #checkbox_list {
     position: relative;
-    height: 250px;
     margin-bottom: 10px;
+    padding-left: 10px;
 }
 #eventListHeader {
     height: 35px;
-    margin-top: 20px;
-    margin-bottom: 10px;
+    padding: 10px 0px 10px 10px;
 }
 #eventList {
     position: absolute;
-    max-height: calc(100% - 380px);
+    max-height: calc(100% - 100px);
     max-width: 340px;
     overflow: auto;
+    background-color: #f1f1f1;
 }
 .eventListing {
     margin: 10px;
-    border: 1px solid #999;
+    border: 1px solid #000066;
     border-radius: 3px;
     padding: 5px;
+    background-color: #ffffff;
 }

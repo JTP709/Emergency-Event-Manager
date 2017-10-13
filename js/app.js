@@ -3,13 +3,10 @@ var app = app || {};
 (function() {
     'use strict';
     app.initMap = function() {
-        // Map Tab
         var map;
-        
-        // Constructor creates a new map - only center and zoom are required.
+        // Constructor creates a new map - zoom and center are provied in 
+        // ViewModel once markers have been applied
         app.map = new google.maps.Map(document.getElementById('map'), {
-              //center: {lat: 39.106171, lng: -84.515712},
-              //zoom: 10,
               mapTypeControl: false
         });
 

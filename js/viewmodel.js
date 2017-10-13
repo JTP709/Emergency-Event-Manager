@@ -88,6 +88,20 @@ var app = app || {};
             };
         };
 
+        // Shows/hides filter list options
+        this.filterShow = ko.observable(false);
+        this.showFilterList = function() {
+            var func = this;
+            this.element = document.getElementById("eventList");
+            if (self.filterShow() == false) {
+                self.filterShow(true);
+                func.element.style.maxheight = 'calc(100% - 300px)';
+            } else {
+                self.filterShow(false);
+                func.element.style.maxheight = 'calc(100% - 100px)';
+            };
+        };
+
         // Resets the map to overview of Cincinnati
         this.reset = function() {
             //app.map.setCenter({lat: 39.106171, lng: -84.515712});
