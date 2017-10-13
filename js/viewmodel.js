@@ -494,6 +494,7 @@ var app = app || {};
             this.casualties(this.e_v_cas);
             this.type(this.e_v_type);
             this.ppe(this.e_v_ppe);
+            this.radius(this.e_v_rad);
 
             // Update the hotzone location and reset color
             data.hotzones.forEach(function(marks){
