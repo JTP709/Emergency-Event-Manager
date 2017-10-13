@@ -109,7 +109,7 @@ var app = app || {};
             document.getElementById("checkbox_list").classList.toggle("show");
         }
 
-        // Close the dropdown menu if the user clicks outside of it
+        /* Close the dropdown menu if the user clicks outside of it
         window.onclick = function(event) {
         if (!event.target.matches('.filter_button')) {
 
@@ -123,6 +123,7 @@ var app = app || {};
                 };
             };
         };
+        */
 
         // Resets the map to overview of Cincinnati
         this.reset = function() {
