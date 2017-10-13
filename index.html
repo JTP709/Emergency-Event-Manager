@@ -75,25 +75,27 @@
                 </form>
             </div>
             <div id="map_tab">
-                <div id="eventListHeader">
-                    <h2>Emergency Events</h2>
-                </div>
+                <div id="event_header">
+                    <div id="eventListHeader">
+                        <h2>Emergency Events</h2>
+                    </div>
 
-                <!-- Filter Options -->
-                <div class="dropdown">
-                    <button class="filter_button event_button" data-bind="click: showFilterList">List Filters</button>
-                    <div id="checkbox_list" class="dropdown-content">
-                        <div data-bind="foreach: filters">
+                    <!-- Filter Options -->
+                    <div class="dropdown">
+                        <button class="filter_button event_button" data-bind="click: showFilterList">List Filters</button>
+                        <div id="checkbox_list" class="dropdown-content">
+                            <div data-bind="foreach: filters">
+                                <span>
+                                    <input type="checkbox" data-bind="checked:selected, attr: {id: type}">
+                                    <label data-bind="text: type, attr: {for: type}"></label>
+                                    <br>
+                                </span>
+                            </div>
                             <span>
-                                <input type="checkbox" data-bind="checked:selected, attr: {id: type}">
-                                <label data-bind="text: type, attr: {for: type}"></label>
-                                <br>
+                                <input type="checkbox" data-bind="checked: clearEvents">
+                                <label>Show Past Events</label>
                             </span>
                         </div>
-                        <span>
-                            <input type="checkbox" data-bind="checked: clearEvents">
-                            <label>Show Past Events</label>
-                        </span>
                     </div>
                 </div>
 
