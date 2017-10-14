@@ -45,8 +45,17 @@ var app = app || {};
 
         // Center and Zoom on selected Emergency Event
         this.changeCenter = function(data) {
-            app.map.setCenter(data.location());
-            app.map.setZoom(17);
+            //app.map.setCenter(data.location());
+            //app.map.setZoom(17);
+            var func = this;
+            this.bounds = new google.maps.LatLngBounds();
+            //Extend the boundaries of the map for each visible marker
+            this.markers.forEach(function(marks){
+                if (marks.marker.getVisible() == true) {
+                    func.bounds.extend(marks.marker.position);
+                    app.map.fitBounds(func.bounds);
+                };
+            });
         };
 
         // Sets Emergency Event to "all clear" and removes from active list
@@ -422,6 +431,20 @@ var app = app || {};
         */
 
         this.showEditOptions = function(data) {
+            var func = this;
+
+            var zoom = app.map.getZoom();
+            if (zoom <= 14) {
+                this.bounds = new google.maps.LatLngBounds();
+                //Extend the boundaries of the map for each visible marker
+                func.markers.forEach(function(marks){
+                    if (marks.marker.getVisible() == true) {
+                        func.bounds.extend(marks.marker.position);
+                        app.map.fitBounds(func.bounds);
+                    };
+                });
+            };
+
             this.edit(true);
             // Make selected markers draggable and not animated
             data.markers.forEach(function(marks){
