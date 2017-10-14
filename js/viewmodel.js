@@ -507,7 +507,8 @@ var app = app || {};
                     center: func.e_rad_loc,
                     strokeColor: '#FF0000',
                     fillColor: '#FF0000',
-                    radius: parseFloat(func.e_v_rad)
+                    radius: parseFloat(func.e_v_rad),
+                    visible: true
                 });
             });
 
@@ -529,6 +530,42 @@ var app = app || {};
             const e_cas_reset = this.e_cas[0].selectedIndex = 0;
             const e_rad_reset = this.e_rad[0].selectedIndex = 0;
             this.edit(false);
+
+            // Reset temp hotzone
+            for (var i = 0; i < self.tempHotzones.length; i++) {
+              self.tempHotzones[i].setMap(null);
+            };
+            self.tempHotzones = [];
+        };
+
+        // Creats a temporary hotzone and captures lat-long data for later
+        this.editHotzone = function(data){
+            var func = this;
+            // Remove previous Hotzone previews
+            for (var i = 0; i < self.tempHotzones.length; i++) {
+              self.tempHotzones[i].setMap(null);
+            };
+            self.tempHotzones = [];
+            // Hide old hotzone
+            data.hotzones.forEach(function(marks){
+                marks.hotzone.setVisible(false);
+            });
+            // Establish radius and center
+            var radius = parseFloat(document.getElementsByClassName('edit_rad')[0].value);
+            var center = data.markers[0].marker.getPosition();
+            // Create the new hotzone preview
+            this.hotzone = new google.maps.Circle({
+                strokeColor: '#FF0000',
+                strokeOpacity: 0.4,
+                strokeWeight: 2,
+                fillColor: '#FF0000',
+                fillOpacity: 0.075,
+                map: app.map,
+                center: center,
+                radius: radius
+            });
+            // Push the temp hotzone to the array
+            self.tempHotzones.push(this.hotzone);
         };
 
         // Reset Map after markers have been placed
