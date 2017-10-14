@@ -1,3 +1,5 @@
+// Maps Icons Collection https://mapicons.mapsmarker.com
+
 var app = app || {};
 
 (function(){

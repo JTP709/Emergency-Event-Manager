@@ -11,9 +11,7 @@ add another API
 
 filter based on a distance to an address
 
-change marker images
-
-rework CSS; make it pretty
+refactor css to make it mobile responsive
 
 */
 var app = app || {};
@@ -43,7 +41,7 @@ var app = app || {};
         };
         this.defaultMarker = function(data) {
             this.markers[0].marker.setAnimation(null);
-        }
+        };
 
         // Center and Zoom on selected Emergency Event
         this.changeCenter = function(data) {
