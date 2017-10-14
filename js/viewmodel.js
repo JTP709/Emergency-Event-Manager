@@ -43,6 +43,10 @@ var app = app || {};
             this.markers[0].marker.setAnimation(null);
         };
 
+        this.test = function() {
+            console.log('hi');
+        };
+
         // Center and Zoom on selected Emergency Event
         this.changeCenter = function(data) {
             //app.map.setCenter(data.location());
@@ -68,6 +72,32 @@ var app = app || {};
             this.clear(false);
         };
 
+        /*
+        Weather API Information
+        */
+        this.weatherMain = ko.observable();
+        this.weatherTemp = ko.observable();
+        this.weatherImg = ko.observable();
+        this.weather = function() {
+            const api = "http://api.openweathermap.org/data/2.5/forecast?id=4508722&APPID=00b1eab8137a0b1d81025d667dbb2f17&units=imperial"
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", api, false);
+            xhttp.send(null);
+            var results = JSON.parse(xhttp.responseText);
+
+            var weather_main = results.list[0].weather[0].main;
+            var weather_desc = results['list'][0]['weather'][0]['description'];
+            var weather_temp = results['list'][0]['main']['temp'];
+            var weather_icon = results['list'][0]['weather'][0]['icon'];
+            var weather_icon_img = 'http://openweathermap.org/img/w/' + weather_icon + '.png';
+
+            self.weatherMain(weather_main);
+            self.weatherTemp(weather_temp);
+            self.weatherImg(weather_icon_img);
+        };
+        this.weather();
+        console.log(this.weatherMain());
+        
         /*
         Navigation Bar Function
         */

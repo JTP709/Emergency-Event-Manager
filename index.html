@@ -8,13 +8,27 @@
     </style>
 </head>
 <body>
+    <!-- Heading -->
     <div class="header">
-        <!-- Heading -->
         <div id="navbar">
+            <!-- Navigation Buttons -->
             <button class="nav_button" data-bind="click: function(){nav('map_tab')}">Emergency Events</button>
             <button class="nav_button" data-bind="click: function(){nav('new_tab')}">New Emergency</button>
             <button class="nav_button" data-bind="click: reset">Reset Map</button>
         </div>
+        <!-- Weather -->
+        <div id="weatherContainer">
+            <div class="weather">
+                <h2 id="weatherTemp" data-bind="text: weatherTemp"></h2>
+            </div>
+            <div class="weather">
+                <img data-bind="attr: {src: weatherImg}">
+            </div>
+            <div class="weather">
+                <h2 id="weatherMain" data-bind="text: weatherMain"></h2>
+            </div>
+        </div>
+        <!-- Header -->
         <div id="heading">
             <h1 id="page_title">Emergency Event <span id="page_title_end">Manager</span></h1>
         </div>

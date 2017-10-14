@@ -52,6 +52,44 @@ button:hover {
     background-color: #f1f1f1;
     border-bottom: 1px solid #000066;
 }
+#navbar {
+    height: 100%;
+    width: 420px;
+    position: absolute;
+    /*float: left;*/
+}
+#weatherContainer {
+    width: 420px;
+    position: relative;
+    float: right;
+}
+.weather {
+    height: 100%;
+    position: relative;
+    line-height: 55px;
+    float: right;
+    margin-right: 20px;
+}
+#weatherInfo {
+    line-height: 55px;
+    height: 100%;
+}
+#weatherTemp, #weatherMain {
+    font-weight: bold;
+    font-size: 20px;
+    display: inline-block;
+    position: relative;
+    margin-bottom: 16.5px;
+}
+#weather img {
+    margin-top: 2.5px;
+}
+#heading {
+    height: auto;
+    line-height: 55px;
+    overflow: hidden;
+    margin-left: 420px;
+}
 #event_header {
     margin-bottom: 10px;
 }
@@ -124,22 +162,11 @@ button:hover {
     margin: 0px 5px 0px 0px;
     min-height: 30px;
 }
-#heading {
-    height: auto;
-    line-height: 55px;
-    overflow: hidden;
-}
 #page_title {
     font-size: 28.5px;
 }
 #page_title_end {
     color: #ff8533;
-}
-#navbar {
-    height: 100%;
-    width: 420px;
-    position: absolute;
-    /*float: left;*/
 }
 #map {
     bottom: 0px;
