@@ -211,7 +211,8 @@ var app = app || {};
                     '<p> Emergency Event #' + data.id + '</p>' +
                     '<p>' + this.cas_level() + '</p>' +
                     '</div>',
-                type: 'primary'
+                type: 'primary',
+                icon: 'icon/' + data.type.replace(/\s+/g, "_") + '.png'
             },
             {
                 title: 'Command Post',
@@ -219,7 +220,8 @@ var app = app || {};
                 content: '<div id="content">'+
                     '<p>Command Post</p>' +
                     '</div>',
-                type: 'secondary'
+                type: 'secondary',
+                icon: 'icon/' + 'com_post' + '.png'
             },
             {
                 title: 'Assembly Point',
@@ -228,7 +230,8 @@ var app = app || {};
                     '<p>Assembly Point</p>' +
                     '<p>Casualties: ' + data.casualties + '</p>' +
                     '</div>',
-                type: 'secondary'
+                type: 'secondary',
+                icon: 'icon/' + 'assembly' + '.png'
             },
             {
                 title: 'Decontamination Point',
@@ -236,7 +239,8 @@ var app = app || {};
                 content: '<div id="content">'+
                     '<p>Decontamination Point</p>' +
                     '</div>',
-                type: 'secondary'
+                type: 'secondary',
+                icon: 'icon/' + 'decon' + '.png'
             }
         ];
 
@@ -257,8 +261,10 @@ var app = app || {};
         // Create markers with info windows
         this.markerMaker = function(data) {
             var func = this;
-            // Defaust icon color and image
+            // Default icon
             this.defaultIcon = app.makeMarkerIcon('ff0000');
+            // Highlighted icon
+            this.highlightedIcon = app.makeMarkerIcon('FFFF24');
             // Create the marker
             this.marker = new google.maps.Marker({
                     position: data.position,
@@ -266,19 +272,19 @@ var app = app || {};
                     animation: google.maps.Animation.DROP,
                     map: app.map,
                     visible: false,
-                    icon: this.defaultIcon
+                    icon: data.icon
             });
+            // Add the info window when clicked
             this.marker.addListener('click', function(){
                 self.infoWindow.open(app.map, func.marker);
                 self.infoWindow.setContent(data.content);
             });
             // Change marker color when hovering over
-            this.highlightedIcon = app.makeMarkerIcon('FFFF24');
             this.marker.addListener('mouseover', function() {
-                this.setIcon(func.highlightedIcon);
+                this.setAnimation(google.maps.Animation.BOUNCE);
               });
             this.marker.addListener('mouseout', function() {
-                this.setIcon(func.defaultIcon);
+                this.setAnimation(null);
             });
         };
 

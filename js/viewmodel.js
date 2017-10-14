@@ -38,13 +38,11 @@ var app = app || {};
         this.errorHotzonePreview = ko.observable(false);
 
         // Highlight a marker when hovering over list div element
-        this.highlightedIcon = app.makeMarkerIcon('FFFF24');
-        this.defaultIcon = app.makeMarkerIcon('ff0000');
         this.highlightMarker = function(data) {
-            this.markers[0].marker.setIcon(self.highlightedIcon);
+            this.markers[0].marker.setAnimation(google.maps.Animation.BOUNCE);
         };
         this.defaultMarker = function(data) {
-            this.markers[0].marker.setIcon(self.defaultIcon);
+            this.markers[0].marker.setAnimation(null);
         }
 
         // Center and Zoom on selected Emergency Event
