@@ -188,7 +188,7 @@ var app = app || {};
         this.filteredMarkers = ko.computed(function(){
             // Get the filtered list
             this.filteredList = self.filteredList()
-            // Remove google listener
+            // Remove google listener for zoom
             self.zoomListeners.forEach(function(mark){
                 google.maps.event.removeListener(mark);
             });
@@ -423,9 +423,11 @@ var app = app || {};
 
         this.showEditOptions = function(data) {
             this.edit(true);
-            // Make selected markers draggable
+            // Make selected markers draggable and not animated
             data.markers.forEach(function(marks){
                 marks.marker.setDraggable(true);
+                google.maps.event.clearListeners(marks.marker, 'mouseover');
+                google.maps.event.clearListeners(marks.marker, 'mouseout');
             });
             // Make old hotzone grey
             data.hotzones.forEach(function(marks){
@@ -456,6 +458,13 @@ var app = app || {};
             // Make selected markers draggable
             data.markers.forEach(function(marks){
                 marks.marker.setDraggable(false);
+                // Change marker color when hovering over
+                marks.marker.addListener('mouseover', function() {
+                    this.setAnimation(google.maps.Animation.BOUNCE);
+                  });
+                marks.marker.addListener('mouseout', function() {
+                    this.setAnimation(null);
+                });
             });
             // Make old hotzone grey
             data.hotzones.forEach(function(marks){
@@ -505,6 +514,13 @@ var app = app || {};
             // Turn off draggable markers
             data.markers.forEach(function(marks){
                 marks.marker.setDraggable(false);
+                // Change marker color when hovering over
+                marks.marker.addListener('mouseover', function() {
+                    this.setAnimation(google.maps.Animation.BOUNCE);
+                  });
+                marks.marker.addListener('mouseout', function() {
+                    this.setAnimation(null);
+                });
             });
 
             // Reset the form
