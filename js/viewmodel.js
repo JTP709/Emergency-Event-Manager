@@ -1,17 +1,20 @@
 /*
-Emergency Response Coordinator
+Emergency Event Manager
 */
 
 /*
 TODO
 
-add another API
-    - Weather
-    - Show nearby Police and Fire stations
+change API handling
 
-filter based on a distance to an address
+add error handling
 
 refactor css to make it mobile responsive
+
+maybes:
+    filter based on a distance to an address
+    build back end database to store data even when app is closed
+
 
 */
 var app = app || {};
@@ -43,10 +46,6 @@ var app = app || {};
             this.markers[0].marker.setAnimation(null);
         };
 
-        this.test = function() {
-            console.log('hi');
-        };
-
         // Center and Zoom on selected Emergency Event
         this.changeCenter = function(data) {
             //app.map.setCenter(data.location());
@@ -75,28 +74,33 @@ var app = app || {};
         /*
         Weather API Information
         */
+
+        // Establish weather ko observables
         this.weatherMain = ko.observable();
         this.weatherTemp = ko.observable();
         this.weatherImg = ko.observable();
         this.weather = function() {
+            // Open Weather Maps API call
             const api = "http://api.openweathermap.org/data/2.5/forecast?id=4508722&APPID=00b1eab8137a0b1d81025d667dbb2f17&units=imperial"
             var xhttp = new XMLHttpRequest();
             xhttp.open("GET", api, false);
             xhttp.send(null);
             var results = JSON.parse(xhttp.responseText);
 
+            // Store the values from the API results
             var weather_main = results.list[0].weather[0].main;
             var weather_desc = results['list'][0]['weather'][0]['description'];
             var weather_temp = results['list'][0]['main']['temp'];
             var weather_icon = results['list'][0]['weather'][0]['icon'];
             var weather_icon_img = 'http://openweathermap.org/img/w/' + weather_icon + '.png';
 
+            // Push the weather values to the ko observables
             self.weatherMain(weather_main);
             self.weatherTemp(weather_temp);
             self.weatherImg(weather_icon_img);
         };
+        // Initiate the weather function
         this.weather();
-        console.log(this.weatherMain());
         
         /*
         Navigation Bar Function

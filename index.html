@@ -19,7 +19,7 @@
         <!-- Weather -->
         <div id="weatherContainer">
             <div class="weather">
-                <h2 id="weatherTemp" data-bind="text: weatherTemp"></h2>
+                <h2 id="weatherTemp"><span data-bind="text: weatherTemp"></span><span> &#8457;</span></h2>
             </div>
             <div class="weather">
                 <img data-bind="attr: {src: weatherImg}">
@@ -30,7 +30,7 @@
         </div>
         <!-- Header -->
         <div id="heading">
-            <h1 id="page_title">Emergency Event <span id="page_title_end">Manager</span></h1>
+            <h1><a id="page_title" value="Refresh Page" onClick="window.location.reload()">Emergency Event <span id="page_title_end">Manager</span></a></h1>
         </div>
     </div>
     <div class="container">
@@ -107,7 +107,7 @@
                             </div>
                             <span>
                                 <input type="checkbox" data-bind="checked: clearEvents">
-                                <label>Show Past Events</label>
+                                <label>Switch To Past Events</label>
                             </span>
                         </div>
                     </div>

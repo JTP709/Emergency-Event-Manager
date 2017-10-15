@@ -16,6 +16,9 @@ h1 {
     padding: 0px;
     margin: 0px;
 }
+h1 a {
+    cursor: pointer;
+}
 h2 {
     margin: 0px 0px 0px 0px;
 }
@@ -36,6 +39,7 @@ button {
     text-decoration: none;
     display: inline-block;
     background-color: #4CAF50; /* Green */
+    cursor: pointer;
 }
 /* Dropdown button on hover & focus */
 button:hover {
@@ -164,6 +168,9 @@ button:hover {
 }
 #page_title {
     font-size: 28.5px;
+}
+#page_title:hover {
+    color: #ff8533;
 }
 #page_title_end {
     color: #ff8533;
