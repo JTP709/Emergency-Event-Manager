@@ -240,6 +240,9 @@ button:hover {
     margin: 0px 5px 0px 0px;
     min-height: 30px;
 }
+#filter_box {
+    width: 100%;
+}
 
 /* Map */
 
@@ -282,4 +285,31 @@ button:hover {
     padding: 5px;
     background-color: #ffffff;
     width: 293px;
+}
+@media screen and (max-width: 700px) {
+    #map {
+        height: 50%;
+        position: relative;
+        left: 0px;
+    }
+    #side_bar {
+        height: 50%;
+        width: 100%;
+        position: relative;
+    }
+    #eventList {
+        min-width: 100%;
+        max-height: calc(100% - 40px);
+    }
+    #eventListHeader {
+        display: none;
+    }
+    .eventListing {
+        width: calc(100% - 25px)
+    }
+    .filter_button {
+        min-width: 100%;
+        margin-left: 0px;
+        min-height: 100%;
+    }
 }
