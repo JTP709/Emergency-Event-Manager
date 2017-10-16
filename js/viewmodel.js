@@ -28,7 +28,7 @@ var app = app || {};
 
         // Highlight a marker when hovering over list div element
         this.highlightMarker = function(data) {
-            const eventMarker = this.markers[0].marker;
+            const eventMarker = data.markers[0].marker;
             const icon = eventMarker.getIcon();
             if (icon.startsWith('h_') == true) {
                 return null
@@ -38,7 +38,7 @@ var app = app || {};
             };
         };
         this.defaultMarker = function(data) {
-            const eventMarker = this.markers[0].marker;
+            const eventMarker = data.markers[0].marker;
             const icon = eventMarker.getIcon();
             if (icon.startsWith('h_') == false) {
                 return null
@@ -50,8 +50,6 @@ var app = app || {};
 
         // Center and Zoom on selected Emergency Event
         this.changeCenter = function(data) {
-            //app.map.setCenter(data.location());
-            //app.map.setZoom(17);
             var func = this;
             this.bounds = new google.maps.LatLngBounds();
             //Extend the boundaries of the map for each visible marker
@@ -66,11 +64,13 @@ var app = app || {};
         // Sets Emergency Event to "all clear" and removes from active list
         this.allClear = function(data) {
             this.clear(true);
+            self.defaultMarker(data);
         };
 
         // Sets Emergency Event to "active" and adds it back to the active list
         this.stillHot = function(data) {
             this.clear(false);
+            self.defaultMarker(data);
         };
 
         /*
