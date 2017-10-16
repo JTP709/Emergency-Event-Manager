@@ -61,6 +61,7 @@ var app = app || {};
                     app.map.fitBounds(func.bounds);
                 }
             });
+            console.log(data);
         };
 
         // Sets Emergency Event to "all clear" and removes from active list
@@ -74,36 +75,6 @@ var app = app || {};
             this.clear(false);
             self.defaultMarker(data);
         };
-
-        /*
-        Weather API Information
-        */
-
-        // Establish weather ko observables
-        this.weatherMain = ko.observable();
-        this.weatherTemp = ko.observable();
-        this.weatherImg = ko.observable();
-        this.weather = function() {
-            // Open Weather Maps API call
-            var api = "http://api.openweathermap.org/data/2.5/forecast?id=4508722&APPID=00b1eab8137a0b1d81025d667dbb2f17&units=imperial";
-            var xhttp = new XMLHttpRequest();
-            xhttp.open("GET", api, false);
-            xhttp.send(null);
-            var results = JSON.parse(xhttp.responseText);
-
-            // Store the values from the API results
-            var weather_main = results.list[0].weather[0].main;
-            var weather_temp = results.list[0].main.temp;
-            var weather_icon = results.list[0].weather[0].icon;
-            var weather_icon_img = 'http://openweathermap.org/img/w/' + weather_icon + '.png';
-
-            // Push the weather values to the ko observables
-            self.weatherMain(weather_main);
-            self.weatherTemp(weather_temp);
-            self.weatherImg(weather_icon_img);
-        };
-        // Initiate the weather function
-        this.weather();
 
         /*
         Navigation Bar Function

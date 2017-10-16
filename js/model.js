@@ -159,7 +159,39 @@ var app = app || {};
         this.type = x.type;
         this.selected = ko.observable(false);
     };
+    /*
+    app.weather = function(data) {
+        var self = this;
+        self.sync = false;
+        // Open Weather Maps API call
+        var lat = data.lat;
+        var lon = data.lng;
 
+        var api = 'http://api.openweathermap.org/data/2.5/weather?lat='+lat+'&lon='+lon+'&APPID=00b1eab8137a0b1d81025d667dbb2f17&units=imperial';
+
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("GET", api, true);
+        xhttp.send(null);
+        xhttp.addEventListener('load', function() {
+            if(xhttp.status >= 200 && xhttp.status <400) {
+                var results = JSON.parse(xhttp.responseText);
+                // Store the values from the API results
+                var weather_main = results.weather[0].main;
+                var weather_temp = results.main.temp;
+                var weather_icon = results.weather[0].icon;
+                console.log('1 '+self.weather_main());
+                var weather_icon_img = 'http://openweathermap.org/img/w/' + weather_icon + '.png';
+                self.sync = true;
+            } else {
+                console.log('Error in network request ' + xhttp.statusText);
+                console.log(xhttp);
+                console.log(xhttp.status);
+                self.sync = true;
+            }
+        });
+        return [{main: weather_main, temp: weather_temp, icon: weather_icon_img}];
+    };
+    */
 
     app.EventListing = function(data) {
         var self = this;
@@ -205,6 +237,30 @@ var app = app || {};
         });
         this.filters = app.typeList;
 
+        // Establish weather observables
+        this.weather_main = ko.observable();
+        this.weather_temp = ko.observable();
+        this.weather_icon = ko.observable();
+
+        // Get weather using Open Weather API
+        var api = 'http://api.openweathermap.org/data/2.5/weather?lat='+data.location.lat+'&lon='+data.location.lng+'&APPID=00b1eab8137a0b1d81025d667dbb2f17&units=imperial';
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("GET", api, true);
+        xhttp.send(null);
+        xhttp.addEventListener('load', function() {
+            if(xhttp.status >= 200 && xhttp.status <400) {
+                var results = JSON.parse(xhttp.responseText);
+                // Store the values from the API results
+                self.weather_main(results.weather[0].main);
+                self.weather_temp(results.main.temp);
+                var weather_icon = results.weather[0].icon;
+                self.weather_icon('http://openweathermap.org/img/w/' + weather_icon + '.png');
+            } else {
+                console.log('Error in network request ' + xhttp.statusText);
+            }
+        });
+
+
         this.markerData = [
             {
                 title: data.type + ' EVENT',
@@ -212,7 +268,7 @@ var app = app || {};
                 content: '<div id="content">'+
                     '<label><b>' + data.type + ' EVENT</b></label>' +
                     '<p> Emergency Event #' + data.id + '</p>' +
-                    '<p>' + this.cas_level() + '</p>' +
+                    '<p>' + self.cas_level() + '</p>' +
                     '</div>',
                 type: 'primary',
                 icon: 'icon/' + data.type.replace(/\s+/g, "_") + '.png'

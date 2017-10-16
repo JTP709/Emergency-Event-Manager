@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Emergency Manager</title>    
+    <title>Emergency Manager</title>
     <meta name="viewport" content="initial-scale=1.0">
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="css/style.css">
@@ -20,18 +20,6 @@
                 <a href="javascript:void(0);" class="nav_link" data-bind="click: function(){nav('map_tab')}">Emergency Events</a>
                 <a href="javascript:void(0);" class="nav_link" data-bind="click: function(){nav('new_tab')}">New Emergency</a>
                 <a href="javascript:void(0);" class="nav_link" data-bind="click: reset">Reset Map</a>
-            </div>
-        </div>
-        <!-- Weather -->
-        <div id="weatherContainer">
-            <div class="weather">
-                <h2 id="weatherTemp"><span data-bind="text: weatherTemp"></span><span> &#8457;</span></h2>
-            </div>
-            <div class="weather">
-                <img data-bind="attr: {src: weatherImg}">
-            </div>
-            <div class="weather">
-                <h2 id="weatherMain" data-bind="text: weatherMain"></h2>
             </div>
         </div>
         <!-- Header -->
@@ -124,8 +112,12 @@
                     <div data-bind="foreach: filteredList">
                         <!-- Mouse Over Event Listener on each element to highlight markers -->
                         <div class="eventListing" data-bind="event: {mouseover: $parent.highlightMarker, mouseout: $parent.defaultMarker}, attr: {id: id}">
-                            <h3>Emergency #<label data-bind="text: id"></label></h3>
-                            
+                            <div class="eventHead">
+                                <h3>Emergency #<label data-bind="text: id"></label></h3>
+                                <!-- Weather -->
+                                <img class="weatherIcon" data-bind="attr: {src: weather_icon}">
+                                <label class="weatherInfo"><span data-bind="text: weather_temp"></span><span>&#8457;</span></label>
+                            </div>
                             <!-- Type Info-->
                             <label><b>Type: </b>
                                 <!-- Current Information Display -->
