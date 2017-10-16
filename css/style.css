@@ -41,10 +41,12 @@ button {
     background-color: #4CAF50; /* Green */
     cursor: pointer;
 }
-/* Dropdown button on hover & focus */
 button:hover {
     background-color: #3e8e41;
 }
+
+/* Conainter boxes for body (.container) and header */
+
 .container {
     height: calc(100% - 56px);
     position: relative;
@@ -56,11 +58,36 @@ button:hover {
     background-color: #f1f1f1;
     border-bottom: 1px solid #000066;
 }
+
+/* Header elements */
+
 #navbar {
     height: 100%;
     width: 420px;
     position: absolute;
-    /*float: left;*/
+}
+#nav_list_button {
+    display: none;
+    font-size: 20px;
+}
+#navlist {
+    background-color: white;
+    overflow: hidden;
+}
+.nav_link {
+    font-weight: bold;
+    color: #525454;
+    float: left;
+    display: block;
+    text-align: left;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+    width: 100%;
+}
+.nav_link:hover {
+    background-color: #ddd;
+    color: #ff8533;
 }
 #weatherContainer {
     width: 420px;
@@ -94,9 +121,61 @@ button:hover {
     overflow: hidden;
     margin-left: 420px;
 }
+#page_title {
+    font-size: 28.5px;
+}
+#page_title:hover {
+    color: #ff8533;
+}
+#page_title_end {
+    color: #ff8533;
+}
+.head_full {
+    display: inline-block;
+}
+.head_full span {
+    white-space:pre;
+}
 #event_header {
     margin-bottom: 10px;
 }
+@media screen and (max-width: 1210px) {
+    #weatherContainer {
+        width: 276px;
+    }
+}
+@media screen and (max-width: 1062px) {
+    #weatherMain {
+        display: none;
+    }
+    #weatherContainer {
+        width: auto;
+    }
+    #navbar {
+        width: auto;
+    }
+    .nav_button {
+        display: none;
+    }
+    .nav_button#nav_list_button {
+        display: block;
+    }
+    #heading {
+        margin-left: 186px;
+    }
+}
+@media screen and (max-width: 750px) {
+    #heading {
+        margin-left: 42px;
+    }
+}
+@media screen and (max-width: 592px) {
+    .head_full {
+        display: none;
+    }
+}
+
+/* Button elements */
 .button_container {
     float: none;
 }
@@ -133,11 +212,12 @@ button:hover {
 #new_hotzone {
     height: 20px;
 }
+
+/* Dropdown Filter menu */
 .dropdown {
     position: relative;
     display: inline-block;
 }
-/* Dropdown Content (Hidden by Default) */
 .dropdown-content {
     margin-left: 10px;
     display: none;
@@ -148,33 +228,21 @@ button:hover {
     z-index: 1;
     padding-left: 5px;
 }
-
-/* Links inside the dropdown */
 .dropdown-content span {
     color: black;
     text-decoration: none;
     display: block;
 }
-
-/* Change color of dropdown links on hover */
 .dropdown-content span:hover {background-color: #f1f1f1}
-
-/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
 .show {display:block;}
 .button_div {
     float: left;
     margin: 0px 5px 0px 0px;
     min-height: 30px;
 }
-#page_title {
-    font-size: 28.5px;
-}
-#page_title:hover {
-    color: #ff8533;
-}
-#page_title_end {
-    color: #ff8533;
-}
+
+/* Map */
+
 #map {
     bottom: 0px;
     height: 100%;
@@ -182,6 +250,8 @@ button:hover {
     position: absolute;
     right: 0px;
 }
+
+/* Side bar elements */
 #side_bar {
     background: #ffffff;
     border-right: 1px solid #000066;

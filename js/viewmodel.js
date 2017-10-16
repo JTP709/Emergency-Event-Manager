@@ -7,8 +7,6 @@ TODO
 
 change API handling(?)
 
-add error handling
-
 refactor css to make it mobile responsive
 
 create readme.md
@@ -142,6 +140,14 @@ var app = app || {};
                 y.style.display = 'block';
             };
         };
+        this.responsiveNav = function () {
+            var x = document.getElementById("navlist");
+            if (x.className === "navList") {
+                x.className += " responsive";
+            } else {
+                x.className = "navList";
+            }
+        };
 
         /* Shows/hides filter list options
         this.filterShow = ko.observable(false);
@@ -160,8 +166,8 @@ var app = app || {};
 
         /* When the user clicks on the button, 
         toggle between hiding and showing the dropdown content */
-        this.showFilterList = function() {
-            document.getElementById("checkbox_list").classList.toggle("show");
+        this.showFilterList = function(x) {
+            document.getElementById(x).classList.toggle("show");
         }
 
         /* Close the dropdown menu if the user clicks outside of it

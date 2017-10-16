@@ -10,11 +10,17 @@
 <body>
     <!-- Heading -->
     <div class="header">
-        <div id="navbar">
+        <div id="navbar" class="navBar">
             <!-- Navigation Buttons -->
             <button class="nav_button" data-bind="click: function(){nav('map_tab')}">Emergency Events</button>
             <button class="nav_button" data-bind="click: function(){nav('new_tab')}">New Emergency</button>
             <button class="nav_button" data-bind="click: reset">Reset Map</button>
+            <button class="nav_button" id="nav_list_button" data-bind="click: function(){showFilterList('navlist')}">&#9776;</button>
+            <div id="navlist" class="dropdown-content">
+                <a href="javascript:void(0);" class="nav_link" data-bind="click: function(){nav('map_tab')}">Emergency Events</a>
+                <a href="javascript:void(0);" class="nav_link" data-bind="click: function(){nav('new_tab')}">New Emergency</a>
+                <a href="javascript:void(0);" class="nav_link" data-bind="click: reset">Reset Map</a>
+            </div>
         </div>
         <!-- Weather -->
         <div id="weatherContainer">
@@ -30,7 +36,7 @@
         </div>
         <!-- Header -->
         <div id="heading">
-            <h1><a id="page_title" value="Refresh Page" onClick="window.location.reload()">Emergency Event <span id="page_title_end">Manager</span></a></h1>
+            <h1><a id="page_title" value="Refresh Page" onClick="window.location.reload()">E<span class="head_full">mergency </span>E<span class="head_full">vent </span></span><span id="page_title_end">M<span class="head_full">anager</span></span></a></h1>
         </div>
     </div>
     <div class="container">
@@ -96,7 +102,7 @@
 
                     <!-- Filter Options -->
                     <div class="dropdown">
-                        <button class="filter_button event_button" data-bind="click: showFilterList">List Filters</button>
+                        <button class="filter_button event_button" data-bind="click: function(){showFilterList('checkbox_list')}">List Filters</button>
                         <div id="checkbox_list" class="dropdown-content">
                             <div data-bind="foreach: filters">
                                 <span>
