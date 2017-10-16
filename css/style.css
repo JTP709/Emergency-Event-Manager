@@ -291,6 +291,7 @@ button:hover {
         height: 50%;
         position: relative;
         left: 0px;
+        border-top: 1px solid #000066;
     }
     #side_bar {
         height: 50%;
@@ -300,6 +301,7 @@ button:hover {
     #eventList {
         min-width: 100%;
         max-height: calc(100% - 40px);
+        border-top: 1px solid #000066;
     }
     #eventListHeader {
         display: none;
