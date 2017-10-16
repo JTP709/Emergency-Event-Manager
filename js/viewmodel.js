@@ -40,10 +40,24 @@ var app = app || {};
 
         // Highlight a marker when hovering over list div element
         this.highlightMarker = function(data) {
-            this.markers[0].marker.setAnimation(google.maps.Animation.BOUNCE);
+            const eventMarker = this.markers[0].marker;
+            const icon = eventMarker.getIcon();
+            if (icon.startsWith('h_') == true) {
+                return null
+            } else {
+                const h_icon = 'h_' + icon;
+                eventMarker.setIcon(h_icon);
+            };
         };
         this.defaultMarker = function(data) {
-            this.markers[0].marker.setAnimation(null);
+            const eventMarker = this.markers[0].marker;
+            const icon = eventMarker.getIcon();
+            if (icon.startsWith('h_') == false) {
+                return null
+            } else {
+                const r_icon = icon.replace('h_','');
+                eventMarker.setIcon(r_icon);
+            };
         };
 
         // Center and Zoom on selected Emergency Event
@@ -515,13 +529,6 @@ var app = app || {};
             // Make selected markers draggable
             data.markers.forEach(function(marks){
                 marks.marker.setDraggable(false);
-                // Change marker color when hovering over
-                marks.marker.addListener('mouseover', function() {
-                    this.setAnimation(google.maps.Animation.BOUNCE);
-                  });
-                marks.marker.addListener('mouseout', function() {
-                    this.setAnimation(null);
-                });
             });
             // Make old hotzone grey
             data.hotzones.forEach(function(marks){
@@ -572,13 +579,6 @@ var app = app || {};
             // Turn off draggable markers
             data.markers.forEach(function(marks){
                 marks.marker.setDraggable(false);
-                // Change marker color when hovering over
-                marks.marker.addListener('mouseover', function() {
-                    this.setAnimation(google.maps.Animation.BOUNCE);
-                  });
-                marks.marker.addListener('mouseout', function() {
-                    this.setAnimation(null);
-                });
             });
 
             // Reset the form

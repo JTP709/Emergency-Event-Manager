@@ -264,13 +264,6 @@ var app = app || {};
                 self.infoWindow.open(app.map, func.marker);
                 self.infoWindow.setContent(data.content);
             });
-            // Change marker color when hovering over
-            this.marker.addListener('mouseover', function() {
-                this.setAnimation(google.maps.Animation.BOUNCE);
-              });
-            this.marker.addListener('mouseout', function() {
-                this.setAnimation(null);
-            });
         };
 
         // Create a hotzone radius

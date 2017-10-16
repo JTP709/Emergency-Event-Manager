@@ -192,6 +192,7 @@ button:hover {
 }
 #new_tab {
     padding-left: 10px;
+    padding-right: 10px;
 }
 #eventListHeader {
     height: 35px;
