@@ -308,7 +308,7 @@ button:hover {
     }
     #eventList {
         min-width: 100%;
-        max-height: calc(100% - 40px);
+        max-height: calc(100% - 60px);
         border-top: 1px solid #000066;
     }
     #eventListHeader {

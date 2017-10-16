@@ -1,22 +1,10 @@
 /*
 Emergency Event Manager
+Jonathan Prell
+https://github.com/JTP709/Udacity_EMC
 */
 
-/*
-TODO
 
-change API handling(?)
-
-refactor css to make it mobile responsive
-
-create readme.md
-
-maybes:
-    filter based on a distance to an address
-    build back end database to store data even when app is closed
-
-
-*/
 var app = app || {};
 
 (function() {
