@@ -5,11 +5,13 @@ Emergency Event Manager
 /*
 TODO
 
-change API handling
+change API handling(?)
 
 add error handling
 
 refactor css to make it mobile responsive
+
+create readme.md
 
 maybes:
     filter based on a distance to an address
@@ -26,6 +28,12 @@ var app = app || {};
         /*
         Initial Setup and basic functions
         */
+
+        // Error Handling
+        if (typeof google !== 'object' && typeof google.maps !== 'object') {
+            console.log('Google Maps failed to load');
+            document.getElementById('map').innerHTML('<h1>Google Maps failed to load</h1>');
+        };
 
         // Create an observable array and populate with Emergency Events
         this.initialList = ko.observableArray([]);
