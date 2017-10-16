@@ -28,26 +28,26 @@ var app = app || {};
 
         // Highlight a marker when hovering over list div element
         this.highlightMarker = function(data) {
-            const eventMarker = data.markers[0].marker;
-            const icon = eventMarker.getIcon();
-            if (icon.startsWith('h_') == true) {
-                return null
+            var eventMarker = data.markers[0].marker;
+            var icon = eventMarker.getIcon();
+            if (icon.startsWith('h_') === true) {
+                return null;
             } else {
-                const h_icon = 'h_' + icon;
+                var h_icon = 'h_' + icon;
                 eventMarker.setIcon(h_icon);
-            };
+            }
         };
 
         // Reset marker to default
         this.defaultMarker = function(data) {
-            const eventMarker = data.markers[0].marker;
-            const icon = eventMarker.getIcon();
-            if (icon.startsWith('h_') == false) {
-                return null
+            var eventMarker = data.markers[0].marker;
+            var icon = eventMarker.getIcon();
+            if (icon.startsWith('h_') === false) {
+                return null;
             } else {
-                const r_icon = icon.replace('h_','');
+                var r_icon = icon.replace('h_','');
                 eventMarker.setIcon(r_icon);
-            };
+            }
         };
 
         // Center and Zoom on selected Emergency Event
@@ -56,10 +56,10 @@ var app = app || {};
             this.bounds = new google.maps.LatLngBounds();
             //Extend the boundaries of the map for each visible marker
             this.markers.forEach(function(marks){
-                if (marks.marker.getVisible() == true) {
+                if (marks.marker.getVisible() === true) {
                     func.bounds.extend(marks.marker.position);
                     app.map.fitBounds(func.bounds);
-                };
+                }
             });
         };
 
@@ -85,7 +85,7 @@ var app = app || {};
         this.weatherImg = ko.observable();
         this.weather = function() {
             // Open Weather Maps API call
-            const api = "http://api.openweathermap.org/data/2.5/forecast?id=4508722&APPID=00b1eab8137a0b1d81025d667dbb2f17&units=imperial"
+            var api = "http://api.openweathermap.org/data/2.5/forecast?id=4508722&APPID=00b1eab8137a0b1d81025d667dbb2f17&units=imperial";
             var xhttp = new XMLHttpRequest();
             xhttp.open("GET", api, false);
             xhttp.send(null);
@@ -93,9 +93,8 @@ var app = app || {};
 
             // Store the values from the API results
             var weather_main = results.list[0].weather[0].main;
-            var weather_desc = results['list'][0]['weather'][0]['description'];
-            var weather_temp = results['list'][0]['main']['temp'];
-            var weather_icon = results['list'][0]['weather'][0]['icon'];
+            var weather_temp = results.list[0].main.temp;
+            var weather_icon = results.list[0].weather[0].icon;
             var weather_icon_img = 'http://openweathermap.org/img/w/' + weather_icon + '.png';
 
             // Push the weather values to the ko observables
@@ -124,17 +123,17 @@ var app = app || {};
             if (z === 'new_tab') {
                 x.style.display = 'block';
                 y.style.display = 'none';
-            };
+            }
             if (z === 'map_tab') {
                 x.style.display = 'none';
                 y.style.display = 'block';
-            };
+            }
         };
 
         // Toggle drop down menus
         this.showFilterList = function(x) {
             document.getElementById(x).classList.toggle("show");
-        }
+        };
 
         // Resets the map to overview of Cincinnati
         this.reset = function() {
@@ -145,10 +144,10 @@ var app = app || {};
             //Extend the boundaries of the map for each visible marker
             this.initialList().forEach(function(mark){
                 mark.markers.forEach(function(marks){
-                    if (marks.marker.getVisible() == true) {
+                    if (marks.marker.getVisible() === true) {
                         func.bounds.extend(marks.marker.position);
                         app.map.fitBounds(func.bounds);
-                    };
+                    }
                 });
             });
         };
@@ -181,19 +180,19 @@ var app = app || {};
                 });
             });
             // Return the entire list of no checkboxes are checked
-            if (selectedEvents.length == 0) {
+            if (selectedEvents.length === 0) {
                 var x = ko.utils.arrayFilter(self.initialList(), function(item){
-                    return item.clear() == self.clearEvents()
+                    return item.clear() == self.clearEvents();
                 });
                 return x;
             } else {
-                var x = ko.utils.arrayFilter(self.initialList(), function(item){
+                var y = ko.utils.arrayFilter(self.initialList(), function(item){
                     return ko.utils.arrayFilter(selectedEvents, function(p) {
-                        return p.type == item.type() && item.clear() == self.clearEvents()
+                        return p.type == item.type() && item.clear() == self.clearEvents();
                     }).length > 0;
                 });
-                return x;
-            };
+                return y;
+            }
         });
 
         // Create an array for hold the google event listeners
@@ -202,7 +201,7 @@ var app = app || {};
         // Filter the markers based on the filtered list
         this.filteredMarkers = ko.computed(function(){
             // Get the filtered list
-            this.filteredList = self.filteredList()
+            this.filteredList = self.filteredList();
             // Remove google listener for zoom
             self.zoomListeners.forEach(function(mark){
                 google.maps.event.removeListener(mark);
@@ -221,7 +220,7 @@ var app = app || {};
                 } else {
                     // Only set even marker to visible if zoomed out
                     mark.markers[0].marker.setVisible(true);
-                };
+                }
                 // Add google maps listener to change visiblity based on zoom level
                 var zoomChange = google.maps.event.addListener(app.map, 'zoom_changed', function() {
                     var zoom = app.map.getZoom();
@@ -229,14 +228,14 @@ var app = app || {};
                     if (mark.markers.length > 1) {
                         for (i=1; i < mark.markers.length; i++) {
                             mark.markers[i].marker.setVisible(zoom >= 14);
-                        };
-                    };
+                        }
+                    }
                     // If there is a hotzone set for the event, set those to show only when zoomed in
                     if (mark.hotzones.length >0) {
                         for (i=0; i < mark.hotzones.length; i++) {
                             mark.hotzones[i].hotzone.setVisible(zoom >= 14);
-                        };
-                    };
+                        }
+                    }
                 });
                 self.zoomListeners.push(zoomChange);
             });
@@ -262,12 +261,12 @@ var app = app || {};
         // Number Dropdown for New Emergency Event menu
         var $select = $(".numDropDownMenu");
         for (i=0;i<=500;i++){
-            $select.append($('<option></option>').val(i).html(i))
-        };
+            $select.append($('<option></option>').val(i).html(i));
+        }
 
         // Create a new event
         this.newEvent = function(){
-            if (self.tempLocMarker() == null){
+            if (self.tempLocMarker() === null){
                 self.errorForm(true);
                 self.newEventMsg(false);
             } else {
@@ -323,19 +322,19 @@ var app = app || {};
                 this.tempDeconMarker = ko.observable(null);
                 for (var i = 0; i < self.tempLocMarkersArray.length; i++) {
                   self.tempLocMarkersArray[i].setMap(null);
-                };
-                for (var i = 0; i < self.tempAssemblyMarkersArray.length; i++) {
-                  self.tempAssemblyMarkersArray[i].setMap(null);
-                };
-                for (var i = 0; i < self.tempComPostMarkersArray.length; i++) {
-                  self.tempComPostMarkersArray[i].setMap(null);
-                };
-                for (var i = 0; i < self.tempDeconMarkersArray.length; i++) {
-                  self.tempDeconMarkersArray[i].setMap(null);
-                };
-                for (var i = 0; i < self.tempHotzones.length; i++) {
-                  self.tempHotzones[i].setMap(null);
-                };
+                }
+                for (var j = 0; j < self.tempAssemblyMarkersArray.length; j++) {
+                  self.tempAssemblyMarkersArray[j].setMap(null);
+                }
+                for (var k = 0; k < self.tempComPostMarkersArray.length; k++) {
+                  self.tempComPostMarkersArray[k].setMap(null);
+                }
+                for (var l = 0; l < self.tempDeconMarkersArray.length; l++) {
+                  self.tempDeconMarkersArray[l].setMap(null);
+                }
+                for (var m = 0; m < self.tempHotzones.length; m++) {
+                  self.tempHotzones[m].setMap(null);
+                }
                 self.tempLocMarkersArray = [];
                 self.tempAssemblyMarkersArray = [];
                 self.tempComPostMarkersArray = [];
@@ -349,7 +348,7 @@ var app = app || {};
                 this.rad.selectedIndex = 0;
                 self.errorForm(false);
                 this.errorHotzonePreview(false);
-            };
+            }
         };
 
         // Creats a temporary marker and captures lat-long data for later
@@ -364,52 +363,51 @@ var app = app || {};
                     if (self.tempLocMarkersArray.length > 0) {
                         for (var i = 0; i < self.tempLocMarkersArray.length; i++) {
                           self.tempLocMarkersArray[i].setMap(null);
-                        };
-                    };
+                        }
+                    }
                     self.tempLocMarker(event.latLng);
                     self.tempLocMarkersArray.push(this.marker);
-                };
+                }
                 if (x == 'assembly') {
                     if (self.tempAssemblyMarkersArray.length > 0) {
-                        for (var i = 0; i < self.tempAssemblyMarkersArray.length; i++) {
-                          self.tempAssemblyMarkersArray[i].setMap(null);
-                        };
-                    };
+                        for (var j = 0; j < self.tempAssemblyMarkersArray.length; j++) {
+                          self.tempAssemblyMarkersArray[j].setMap(null);
+                        }
+                    }
                     self.tempAssemblyMarker(event.latLng);
                     self.tempAssemblyMarkersArray.push(this.marker);
-                };
+                }
                 if (x == 'com_post') {
                     if (self.tempComPostMarkersArray.length > 0) {
-                        for (var i = 0; i < self.tempComPostMarkersArray.length; i++) {
-                          self.tempComPostMarkersArray[i].setMap(null);
-                        };
-                    };
+                        for (var k = 0; k < self.tempComPostMarkersArray.length; k++) {
+                          self.tempComPostMarkersArray[k].setMap(null);
+                        }
+                    }
                     self.tempComPostMarker(event.latLng);
                     self.tempComPostMarkersArray.push(this.marker);
-                };
+                }
                 if (x == 'decon') {
                     if (self.tempDeconMarkersArray.length > 0) {
-                        for (var i = 0; i < self.tempDeconMarkersArray.length; i++) {
-                          self.tempDeconMarkersArray[i].setMap(null);
-                        };
-                    };
+                        for (var l = 0; l < self.tempDeconMarkersArray.length; l++) {
+                          self.tempDeconMarkersArray[l].setMap(null);
+                        }
+                    }
                     self.tempDeconMarker(event.latLng);
                     self.tempDeconMarkersArray.push(this.marker);
-                };
+                }
                 google.maps.event.removeListener(func.clicker);
             });
         };
 
         // Creats a temporary hotzone and captures lat-long data for later
         this.newHotzone = function(){
-            if (self.tempLocMarker() == null) {
+            if (self.tempLocMarker() === null) {
                 this.errorHotzonePreview(true);
             } else {
-                var func = this;
                 // Remove previous Hotzone previews
                 for (var i = 0; i < self.tempHotzones.length; i++) {
                   self.tempHotzones[i].setMap(null);
-                };
+                }
                 self.tempHotzones = [];
                 // Establish radius and center
                 var radius = parseFloat(document.getElementById('new_rad').value);
@@ -429,7 +427,7 @@ var app = app || {};
                 self.tempHotzones.push(this.hotzone);
                 // Remove the error message
                 self.errorHotzonePreview(false);
-            };
+            }
         };
 
         /*
@@ -445,12 +443,12 @@ var app = app || {};
                 this.bounds = new google.maps.LatLngBounds();
                 //Extend the boundaries of the map for each visible marker
                 func.markers.forEach(function(marks){
-                    if (marks.marker.getVisible() == true) {
+                    if (marks.marker.getVisible() === true) {
                         func.bounds.extend(marks.marker.position);
                         app.map.fitBounds(func.bounds);
-                    };
+                    }
                 });
-            };
+            }
 
             this.edit(true);
             // Make selected markers draggable and not animated
@@ -491,7 +489,7 @@ var app = app || {};
                 marks.marker.setDraggable(false);
             });
             // Reset positions
-            const positions = [
+            var positions = [
                 {position: data.location()},
                 {position: data.com_post()},
                 {position: data.assembly()},
@@ -509,7 +507,7 @@ var app = app || {};
             // Reset temp hotzone
             for (var i = 0; i < self.tempHotzones.length; i++) {
               self.tempHotzones[i].setMap(null);
-            };
+            }
             self.tempHotzones = [];
         };
 
@@ -558,30 +556,28 @@ var app = app || {};
             });
 
             // Reset the form
-            const e_type_reset = this.e_type[0].selectedIndex = 0;
-            const e_ppe_reset = this.e_ppe[0].selectedIndex = 0;
-            const e_cas_reset = this.e_cas[0].selectedIndex = 0;
-            const e_rad_reset = this.e_rad[0].selectedIndex = 0;
+            this.e_type[0].selectedIndex = 0;
+            this.e_ppe[0].selectedIndex = 0;
+            this.e_cas[0].selectedIndex = 0;
+            this.e_rad[0].selectedIndex = 0;
             this.edit(false);
 
             // Reset temp hotzone
             for (var i = 0; i < self.tempHotzones.length; i++) {
               self.tempHotzones[i].setMap(null);
-            };
+            }
             self.tempHotzones = [];
         };
 
         // Creats a temporary hotzone and captures lat-long data for later
         this.editHotzone = function(data){
-            var func = this;
-
             // Determine events ID nad convert to string
             var num = this.id();
             var n = num.toString();
             // Remove previous Hotzone previews
             for (var i = 0; i < self.tempHotzones.length; i++) {
               self.tempHotzones[i].setMap(null);
-            };
+            }
             self.tempHotzones = [];
             // Hide old hotzone
             data.hotzones.forEach(function(marks){
@@ -589,10 +585,8 @@ var app = app || {};
             });
             // Establish radius and center
             this.e_id = document.getElementById(n);
-            const radius = parseFloat(this.e_id.getElementsByClassName("edit_rad")[0].value);
-            const center = data.markers[0].marker.getPosition();
-            console.log(radius);
-            console.log(center);
+            var radius = parseFloat(this.e_id.getElementsByClassName("edit_rad")[0].value);
+            var center = data.markers[0].marker.getPosition();
             // Create the new hotzone preview
             this.hotzone = new google.maps.Circle({
                 strokeColor: '#FF0000',

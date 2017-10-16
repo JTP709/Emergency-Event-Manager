@@ -174,33 +174,33 @@ var app = app || {};
         this.decon = ko.observable(data.decon);
         this.cas_level = ko.computed(function() {
             if (this.casualties() === 0){
-                return "Zero Casualties"
-            };
+                return "Zero Casualties";
+            }
             if (this.casualties() === 1){
-                return "Single Casualty Event"
-            };
+                return "Single Casualty Event";
+            }
             if (this.casualties() > 1 && this.casualties() < 4){
-                return "Multiple Casualty Event"
-            };
+                return "Multiple Casualty Event";
+            }
             if (this.casualties() >= 4){
-                return "Mass Casualty Event"
-            };
+                return "Mass Casualty Event";
+            }
         }, this);
         this.radius = ko.observable(data.radius);
         this.clear = ko.observable(data.clear);
         this.clearOption = ko.computed(function(){
-            if (self.clear() == false) {
-                return true
+            if (self.clear() === false) {
+                return true;
             } else {
-                return false
+                return false;
             }
         });
         this.edit = ko.observable(data.edit);
         this.editOption = ko.computed(function(){
-            if (self.edit() == false) {
-                return true
+            if (self.edit() === false) {
+                return true;
             } else {
-                return false
+                return false;
             }
         });
         this.filters = app.typeList;
@@ -272,7 +272,6 @@ var app = app || {};
 
         // Create a hotzone radius
         this.hotzoneMaker = function(data) {
-            var func = this;
             this.hotzone = new google.maps.Circle({
                 strokeColor: '#FF0000',
                 strokeOpacity: 0.4,
@@ -289,9 +288,9 @@ var app = app || {};
 
         this.markers =[];
         this.markerData.forEach(function(data){
-            if (data.position != null) {
+            if (data.position !== null) {
                 self.markers.push(new self.markerMaker(data));
-            };
+            }
         });
 
         this.hotzones = [];
