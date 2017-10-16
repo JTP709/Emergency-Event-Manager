@@ -29,12 +29,6 @@ var app = app || {};
         Initial Setup and basic functions
         */
 
-        // Error Handling
-        if (typeof google !== 'object' && typeof google.maps !== 'object') {
-            console.log('Google Maps failed to load');
-            document.getElementById('map').innerHTML('<h1>Google Maps failed to load</h1>');
-        };
-
         // Create an observable array and populate with Emergency Events
         this.initialList = ko.observableArray([]);
         app.initialEmergency.forEach(function(item){
