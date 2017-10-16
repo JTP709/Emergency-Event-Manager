@@ -261,8 +261,11 @@ var app = app || {};
             });
             // Add the info window when clicked
             this.marker.addListener('click', function(){
+                var mark = this;
                 self.infoWindow.open(app.map, func.marker);
                 self.infoWindow.setContent(data.content);
+                this.setAnimation(google.maps.Animation.BOUNCE);
+                setTimeout(function(){ mark.setAnimation(null); }, 750);
             });
         };
 
