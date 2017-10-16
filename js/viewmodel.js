@@ -37,6 +37,8 @@ var app = app || {};
                 eventMarker.setIcon(h_icon);
             };
         };
+
+        // Reset marker to default
         this.defaultMarker = function(data) {
             const eventMarker = data.markers[0].marker;
             const icon = eventMarker.getIcon();
@@ -128,17 +130,8 @@ var app = app || {};
                 y.style.display = 'block';
             };
         };
-        this.responsiveNav = function () {
-            var x = document.getElementById("navlist");
-            if (x.className === "navList") {
-                x.className += " responsive";
-            } else {
-                x.className = "navList";
-            }
-        };
 
-        /* When the user clicks on the button,
-        toggle between hiding and showing the dropdown content */
+        // Toggle drop down menus
         this.showFilterList = function(x) {
             document.getElementById(x).classList.toggle("show");
         }
@@ -443,6 +436,7 @@ var app = app || {};
         Edit Event
         */
 
+        // Substitues card information with edit options
         this.showEditOptions = function(data) {
             var func = this;
 
@@ -489,6 +483,7 @@ var app = app || {};
             this.e_v_cas = this.e_cas[0].selectedIndex = this.casualties();
         };
 
+        // Cancels an edit and resets the information to original data
         this.cancelEditEvent = function(data){
             this.edit(false);
             // Make selected markers draggable
@@ -518,7 +513,7 @@ var app = app || {};
             self.tempHotzones = [];
         };
 
-
+        // Submit the temp edit data to the model and reset the form
         this.editEvent = function(data){
             var func = this;
 
