@@ -4,13 +4,13 @@
 ### Author: Jonathan Prell
 ### v1.0 - 10/16/2017
 
-#___
+___
 
 ## Changelog:
 
 v1.0 - Initial Release
 
-#___
+___
 
 ## About:
 
@@ -30,7 +30,7 @@ This application was writen in JavaScript, using the powerful [Knockout.js frame
 
 This version of the application currently stands as a demo. It does not interact with a database, so any changes to the information will be lost when the page is refreshed.
 
-#___
+___
 
 ## How to Use:
 
@@ -54,13 +54,13 @@ To create a new event, click the "New Emergency" button at the top of ths creen 
 To edit an active event, simply click in "edit" button in the event's card. This will zoom in to the event, and open up drop down menus for the current information on the dab card for the user to change. A user may also drag the markers to new locations, and preview any new hotzone radius settings.
 * Please note: all radius markers are measured in meters.
 
-#___
+___
 
 ## Installation:
 
 Simply open 'index.html' in your web browser of choice.
 
-#___
+___
 
 ## Free online icons used:
 
