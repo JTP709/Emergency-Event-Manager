@@ -127,14 +127,14 @@ button:hover {
 #page_title:hover {
     color: #ff8533;
 }
+#page_title span {
+    white-space:pre;
+}
 #page_title_end {
     color: #ff8533;
 }
 .head_full {
     display: inline-block;
-}
-.head_full span {
-    white-space:pre;
 }
 #event_header {
     margin-bottom: 10px;
@@ -169,9 +169,17 @@ button:hover {
         margin-left: 42px;
     }
 }
-@media screen and (max-width: 592px) {
+@media screen and (max-width: 670px) {
     .head_full {
         display: none;
+    }
+    #heading {
+        margin-left: 186px;
+    }
+}
+@media screen and (max-width: 460px) {
+    #heading {
+        margin-left: 43px;
     }
 }
 
