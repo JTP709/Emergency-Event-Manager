@@ -171,6 +171,7 @@ var app = app || {};
         this.ppe = ko.observable(data.ppe);
         this.assembly = ko.observable(data.assembly);
         this.com_post = ko.observable(data.com_post);
+        this.decon = ko.observable(data.decon);
         this.cas_level = ko.computed(function() {
             if (this.casualties() === 0){
                 return "Zero Casualties"
@@ -183,7 +184,7 @@ var app = app || {};
             };
             if (this.casualties() >= 4){
                 return "Mass Casualty Event"
-            }; 
+            };
         }, this);
         this.radius = ko.observable(data.radius);
         this.clear = ko.observable(data.clear);
@@ -249,7 +250,7 @@ var app = app || {};
         // Create markers with info windows
         this.markerMaker = function(data) {
             var func = this;
-            
+
             // Create the marker
             this.marker = new google.maps.Marker({
                     position: data.position,

@@ -103,7 +103,7 @@ var app = app || {};
         };
         // Initiate the weather function
         this.weather();
-        
+
         /*
         Navigation Bar Function
         */
@@ -137,42 +137,11 @@ var app = app || {};
             }
         };
 
-        /* Shows/hides filter list options
-        this.filterShow = ko.observable(false);
-        this.showFilterList = function() {
-            var func = this;
-            this.element = document.getElementById("eventList");
-            if (self.filterShow() == false) {
-                self.filterShow(true);
-                func.element.style.maxheight = 'calc(100% - 300px)';
-            } else {
-                self.filterShow(false);
-                func.element.style.maxheight = 'calc(100% - 100px)';
-            };
-        };
-        */
-
-        /* When the user clicks on the button, 
+        /* When the user clicks on the button,
         toggle between hiding and showing the dropdown content */
         this.showFilterList = function(x) {
             document.getElementById(x).classList.toggle("show");
         }
-
-        /* Close the dropdown menu if the user clicks outside of it
-        window.onclick = function(event) {
-        if (!event.target.matches('.filter_button')) {
-
-            var dropdowns = document.getElementsByClassName("dropdown-content");
-            var i;
-            for (i = 0; i < dropdowns.length; i++) {
-                var openDropdown = dropdowns[i];
-                if (openDropdown.classList.contains('show')) {
-                    openDropdown.classList.remove('show');
-                    };
-                };
-            };
-        };
-        */
 
         // Resets the map to overview of Cincinnati
         this.reset = function() {
@@ -278,12 +247,12 @@ var app = app || {};
                 });
                 self.zoomListeners.push(zoomChange);
             });
-        })
+        });
 
         /*
         Create a new Emergency Event
         */
-        
+
         // Set observables for marker lat-long data
         this.tempLocMarker = ko.observable(null);
         this.tempAssemblyMarker = ko.observable(null);
@@ -312,7 +281,7 @@ var app = app || {};
                 // Counts current number of events in the list
                 var event_num = self.initialList().length;
                 this.id = event_num + 1;
-                
+
                 // Pull the data from the form input
                 this.cas = document.getElementById("new_cas");
                 this.cas_v = this.cas.options[this.cas.selectedIndex].value;
@@ -526,13 +495,29 @@ var app = app || {};
             data.markers.forEach(function(marks){
                 marks.marker.setDraggable(false);
             });
-            // Make old hotzone grey
+            // Reset positions
+            const positions = [
+                {position: data.location()},
+                {position: data.com_post()},
+                {position: data.assembly()},
+                {position: data.decon()}
+                ];
+            for (i=0; i<data.markers.length; i++) {
+                data.markers[i].marker.setPosition(positions[i].position);
+            }
+            // Make old hotzone red
             data.hotzones.forEach(function(marks){
                 marks.hotzone.setOptions({
                     fillColor: '#FF0000'
                 });
             });
+            // Reset temp hotzone
+            for (var i = 0; i < self.tempHotzones.length; i++) {
+              self.tempHotzones[i].setMap(null);
+            };
+            self.tempHotzones = [];
         };
+
 
         this.editEvent = function(data){
             var func = this;
@@ -594,6 +579,10 @@ var app = app || {};
         // Creats a temporary hotzone and captures lat-long data for later
         this.editHotzone = function(data){
             var func = this;
+
+            // Determine events ID nad convert to string
+            var num = this.id();
+            var n = num.toString();
             // Remove previous Hotzone previews
             for (var i = 0; i < self.tempHotzones.length; i++) {
               self.tempHotzones[i].setMap(null);
@@ -604,8 +593,11 @@ var app = app || {};
                 marks.hotzone.setVisible(false);
             });
             // Establish radius and center
-            var radius = parseFloat(document.getElementsByClassName('edit_rad')[0].value);
-            var center = data.markers[0].marker.getPosition();
+            this.e_id = document.getElementById(n);
+            const radius = parseFloat(this.e_id.getElementsByClassName("edit_rad")[0].value);
+            const center = data.markers[0].marker.getPosition();
+            console.log(radius);
+            console.log(center);
             // Create the new hotzone preview
             this.hotzone = new google.maps.Circle({
                 strokeColor: '#FF0000',
