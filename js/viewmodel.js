@@ -75,14 +75,6 @@ var app = app || {};
             self.defaultMarker(data);
         };
 
-        // Resets the create and edit form values
-        this.resetForm = function() {
-            self.casualtiesValue(0);
-            self.radiusValue(0);
-            self.typeValue('HAZMAT');
-            self.ppeValue('LEVEL A');
-        };
-
         /*
         Navigation Bar Function
         */
@@ -265,6 +257,14 @@ var app = app || {};
         this.radiusValue = ko.observable();
         this.ppeValue = ko.observable();
         this.typeValue = ko.observable();
+
+        // Resets the create and edit form values
+        this.resetForm = function() {
+            self.casualtiesValue(0);
+            self.radiusValue(0);
+            self.typeValue('HAZMAT');
+            self.ppeValue('LEVEL A');
+        };
 
         // Change Event Icon Dynamicall while creating new event
         this.iconManager = ko.computed(function(){
@@ -589,7 +589,6 @@ var app = app || {};
             this.e_v_rad = self.radiusValue();
             this.e_v_cas = self.casualtiesValue();
             this.e_rad_loc = data.markers[0].marker.getPosition();
-            console.log(data.markers);
 
             for (var i = 0; i < data.markers.length; i++) {
                 if (data.markers[i].marker.title === 'Command Post') {

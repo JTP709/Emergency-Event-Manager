@@ -122,8 +122,8 @@
                             <!-- Current Information Display -->
                             <label data-bind="text: type, visible: editOption"></label>
                             <!-- Edit Information Display -->
-                            <select class="edit_type" data-bind="visible: edit, foreach: filters">
-                                <option data-bind="text: type, attr: {value: type}, value: $parent.typeValue"></option>
+                            <select class="edit_type" data-bind="visible: edit, foreach: filters, value: $parent.typeValue">
+                                <option data-bind="text: type"></option>
                                 <br>
                             </select>
                             <br>
