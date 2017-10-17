@@ -177,7 +177,7 @@ var app = app || {};
         this.com_post = ko.observable(data.com_post);
         this.decon = ko.observable(data.decon);
         this.cas_level = ko.computed(function() {
-            if (this.casualties() === 0){
+            if (this.casualties() <= 0){
                 return "Zero Casualties";
             }
             if (this.casualties() === 1){
