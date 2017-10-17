@@ -589,8 +589,22 @@ var app = app || {};
             this.e_v_rad = self.radiusValue();
             this.e_v_cas = self.casualtiesValue();
             this.e_rad_loc = data.markers[0].marker.getPosition();
+            console.log(data.markers);
+
+            for (var i = 0; i < data.markers.length; i++) {
+                if (data.markers[i].marker.title === 'Command Post') {
+                    this.com_post(data.markers[i].marker.position);
+                }
+                if (data.markers[i].marker.title === 'Assembly Point') {
+                    this.assembly(data.markers[i].marker.position);
+                }
+                if (data.markers[i].marker.title === 'Decontamination Point') {
+                    this.decon(data.markers[i].marker.position);
+                }
+            }
 
             // Update the event with the new data
+            this.location(this.e_rad_loc);
             this.casualties(this.e_v_cas);
             this.type(this.e_v_type);
             this.ppe(this.e_v_ppe);
