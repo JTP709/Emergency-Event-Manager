@@ -517,6 +517,15 @@ var app = app || {};
                     data.edit(false);
             });
 
+            // Change Event Icon Dynamicall while creating new event
+            this.editIconManager = ko.computed(function(){
+                var icon = self.typeValue();
+                if (func.edit() === true) {
+                    var img = 'icon/' + icon.replace(/\s+/g, "_") + '.png';
+                    func.markers[0].marker.setIcon(img);
+                }
+            });
+
             // Fit event markers into window
             this.bounds = new google.maps.LatLngBounds();
             //Extend the boundaries of the map for each visible marker
