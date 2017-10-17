@@ -1,4 +1,8 @@
-// Maps Icons Collection https://mapicons.mapsmarker.com
+/*
+Emergency Event Manager
+Jonathan Prell
+https://github.com/JTP709/Udacity_EMC
+*/
 
 var app = app || {};
 
@@ -159,39 +163,7 @@ var app = app || {};
         this.type = x.type;
         this.selected = ko.observable(false);
     };
-    /*
-    app.weather = function(data) {
-        var self = this;
-        self.sync = false;
-        // Open Weather Maps API call
-        var lat = data.lat;
-        var lon = data.lng;
 
-        var api = 'http://api.openweathermap.org/data/2.5/weather?lat='+lat+'&lon='+lon+'&APPID=00b1eab8137a0b1d81025d667dbb2f17&units=imperial';
-
-        var xhttp = new XMLHttpRequest();
-        xhttp.open("GET", api, true);
-        xhttp.send(null);
-        xhttp.addEventListener('load', function() {
-            if(xhttp.status >= 200 && xhttp.status <400) {
-                var results = JSON.parse(xhttp.responseText);
-                // Store the values from the API results
-                var weather_main = results.weather[0].main;
-                var weather_temp = results.main.temp;
-                var weather_icon = results.weather[0].icon;
-                console.log('1 '+self.weather_main());
-                var weather_icon_img = 'http://openweathermap.org/img/w/' + weather_icon + '.png';
-                self.sync = true;
-            } else {
-                console.log('Error in network request ' + xhttp.statusText);
-                console.log(xhttp);
-                console.log(xhttp.status);
-                self.sync = true;
-            }
-        });
-        return [{main: weather_main, temp: weather_temp, icon: weather_icon_img}];
-    };
-    */
 
     app.EventListing = function(data) {
         var self = this;
@@ -275,6 +247,11 @@ var app = app || {};
                 console.log('Error in network request ' + xhttp.statusText);
             }
         });
+        xhttp.onerror = function() {
+            self.weather_main('Error');
+            self.weather_temp('Error');
+            self.weather_icon('');
+        };
 
         // Establish marker data for each type
         this.markerData = [

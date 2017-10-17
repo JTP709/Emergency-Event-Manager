@@ -176,7 +176,6 @@ button:hover {
 }
 .dropdown-content {
     margin-left: 10px;
-    display: none;
     position: absolute;
     background-color: #f9f9f9;
     width: 300px;
@@ -189,8 +188,9 @@ button:hover {
     text-decoration: none;
     display: block;
 }
-.dropdown-content span:hover {background-color: #f1f1f1}
-.show {display:block;}
+.dropdown-content span:hover {
+    background-color: #f1f1f1
+}
 .button_div {
     float: left;
     margin: 0px 5px 0px 0px;

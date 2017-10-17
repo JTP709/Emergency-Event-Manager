@@ -16,7 +16,7 @@
             <button class="nav_button" data-bind="click: function(){nav('new_tab')}">New Emergency</button>
             <button class="nav_button" data-bind="click: reset">Reset Map</button>
             <button class="nav_button" id="nav_list_button" data-bind="click: function(){showFilterList('navlist')}">&#9776;</button>
-            <div id="navlist" class="dropdown-content">
+            <div id="navlist" class="dropdown-content" data-bind="visible: navlist">
                 <a href="javascript:void(0);" class="nav_link" data-bind="click: function(){nav('map_tab')}">Emergency Events</a>
                 <a href="javascript:void(0);" class="nav_link" data-bind="click: function(){nav('new_tab')}">New Emergency</a>
                 <a href="javascript:void(0);" class="nav_link" data-bind="click: reset">Reset Map</a>
@@ -31,12 +31,12 @@
         <!-- Side Bar Div -->
         <div id="side_bar">
             <!-- Tab for New Emergency Event -->
-            <div id="new_tab">
+            <div id="new_tab" data-bind="visible: new_tab">
                 <h2>New Emergency</h2>
                 <form>
                     <!-- Select Type -->
                     <label><b>Event Type:</b></label>
-                    <select id="new_type" data-bind="foreach: filters">
+                    <select id="new_type" data-bind="foreach: filters, value: typeValue">
                         <option data-bind="text: type, attr: {class: 'new_type', value: type}"></option>
                     </select>
                     <!-- Select Marker Locations -->
@@ -47,7 +47,7 @@
                     <button class="event_button new_marker_button" id="new_com_post" data-bind="click: function() {newTempMarker('com_post')}">Command Post</button><span class="new_marker_text"> Optional</span><br>
                     <button class="event_button new_marker_button" id="new_decon" data-bind="click: function() {newTempMarker('decon')}">DECON Point</button><span class="new_marker_text"> Optional</span><br>
                     <!-- Select Hotzone Radius -->
-                    <label><b>Hotzone Radius: </b></label><select id="new_rad" class="numDropDownMenu"></select>
+                    <label><b>Hotzone Radius: </b></label><select id="new_rad" class="numDropDownMenu" data-bind="options: dropDownNumbers, value: radiusValue"></select>
                     <button class="event_button" id="new_hotzone" data-bind="click: newHotzone">Preview</button>
                     <!-- Message displayed if hotzone Preview is attempted before event marker is placed -->
                     <div data-bind="visible: errorHotzonePreview">
@@ -56,10 +56,10 @@
                     </div>
                     <br>
                     <!-- Select # of casualties -->
-                    <label><b>Casualties: </b></label><select id="new_cas" class="numDropDownMenu"></select><br>
+                    <label><b>Casualties: </b></label><select id="new_cas" class="numDropDownMenu" data-bind="options: dropDownNumbers, value: casualtiesValue"></select><br>
                     <!-- Select Maximum Required PPE -->
                     <label><b>PPE:</b></label>
-                    <select id="new_ppe">
+                    <select id="new_ppe" data-bind="value: ppeValue">
                         <option value="LEVEL A" class="new_ppe">LEVEL A</option>
                         <option value="LEVEL B" class="new_ppe">LEVEL B</option>
                         <option value="LEVEL C" class="new_ppe">LEVEL C</option>
@@ -82,7 +82,7 @@
                     </div>
                 </form>
             </div>
-            <div id="map_tab">
+            <div id="map_tab" data-bind="visible: map_tab">
                 <div id="event_header">
                     <div id="eventListHeader">
                         <h2>Emergency Events</h2>
@@ -91,7 +91,7 @@
                     <!-- Filter Options -->
                     <div class="dropdown" id="filter_box">
                         <button class="filter_button event_button" data-bind="click: function(){showFilterList('checkbox_list')}">List Filters</button>
-                        <div id="checkbox_list" class="dropdown-content">
+                        <div id="checkbox_list" class="dropdown-content" data-bind="visible: checkbox_list">
                             <div data-bind="foreach: filters">
                                 <span>
                                     <input type="checkbox" data-bind="checked:selected, attr: {id: type}">
@@ -124,7 +124,7 @@
                                 <label data-bind="text: type, visible: editOption"></label>
                                 <!-- Edit Information Display -->
                                 <select class="edit_type" data-bind="visible: edit, foreach: filters">
-                                    <option data-bind="text: type, attr: {value: type}"></option>
+                                    <option data-bind="text: type, attr: {value: type}, value: $parent.typeValue"></option>
                                     <br>
                                 </select>
                             </label>
@@ -141,7 +141,7 @@
                                 <!-- Current Information Display -->
                                 <label data-bind="text: casualties, visible: editOption"></label>
                                 <!-- Edit Information Display -->
-                                <select class="numDropDownMenu edit_cas" data-bind="visible: edit"></select>
+                                <select class="numDropDownMenu edit_cas" data-bind="visible: edit, options: $parent.dropDownNumbers, value: $parent.casualtiesValue"></select>
                             </label>
                             <br>
                             <!-- PPE Info -->
@@ -149,7 +149,7 @@
                                 <!-- Current Information Display -->
                                 <label data-bind="text: ppe, visible: editOption"></label>
                                 <!-- Edit Information Display -->
-                                <select class="edit_ppe" data-bind="visible: edit">
+                                <select class="edit_ppe" data-bind="visible: edit, value: $parent.ppeValue">
                                     <option value="LEVEL A">LEVEL A</option>
                                     <option value="LEVEL B">LEVEL B</option>
                                     <option value="LEVEL C">LEVEL C</option>
@@ -161,7 +161,7 @@
 
                             <!-- Edit Hotzone Radius Option; only visible during edits -->
                             <div data-bind="visible: edit">
-                                <label><b>Hotzone Radius: </b></label><select class="numDropDownMenu edit_rad"></select>
+                                <label><b>Hotzone Radius: </b></label><select data-bind="options: $parent.dropDownNumbers, value: $parent.radiusValue"" class="numDropDownMenu edit_rad"></select>
                                 <button class="event_button" id="new_hotzone" data-bind="click: $parent.editHotzone">Preview</button>
                                 <br>
                             </div>

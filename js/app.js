@@ -1,3 +1,9 @@
+/*
+Emergency Event Manager
+Jonathan Prell
+https://github.com/JTP709/Udacity_EMC
+*/
+
 var app = app || {};
 
 (function() {

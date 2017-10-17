@@ -80,29 +80,48 @@ var app = app || {};
         */
 
         // Switches between the sidebar 'tabs'
-        var new_tab = document.getElementById('new_tab');
-        var map_tab = document.getElementById('map_tab');
-        new_tab.style.display = 'none';
+        this.new_tab = ko.observable(false);
+        this.map_tab = ko.observable(true);
         this.nav = function(z) {
             // Reset the flash messages on the new event page when you change tabs
             self.newEventMsg(false);
             self.errorForm(false);
             // Figure out which tab the user is clicking and make it visible while hiding the other
-            var x = new_tab;
-            var y = map_tab;
             if (z === 'new_tab') {
-                x.style.display = 'block';
-                y.style.display = 'none';
+                self.new_tab(true);
+                self.map_tab(false);
+                // Reset the form
+                self.errorForm(false);
+                this.errorHotzonePreview(false);
+                self.casualtiesValue(0);
+                self.radiusValue(0);
+                self.typeValue('HAZMAT');
+                self.ppeValue('LEVEL A');
+                // Close edit options for other cards if opened
+                self.initialList().forEach(function(data){
+                    data.edit(false);
+                });
             }
             if (z === 'map_tab') {
-                x.style.display = 'none';
-                y.style.display = 'block';
+                self.new_tab(false);
+                self.map_tab(true);
             }
         };
 
         // Toggle drop down menus
-        this.showFilterList = function(x) {
-            document.getElementById(x).classList.toggle("show");
+        this.checkbox_list = ko.observable(false);
+        this.navlist = ko.observable(false);
+        this.showFilterList = function(list) {
+            if(list === 'checkbox_list' && self.checkbox_list() === false) {
+                self.checkbox_list(true);
+            } else {
+                self.checkbox_list(false);
+            }
+            if (list === 'navlist' && self.navlist() === false) {
+                self.navlist(true);
+            } else {
+                self.navlist(false);
+            }
         };
 
         // Resets the map to overview of Cincinnati
@@ -228,13 +247,19 @@ var app = app || {};
         this.tempDeconMarkersArray = [];
         this.tempHotzones = [];
 
-        // Number Dropdown for New Emergency Event menu
-        var $select = $(".numDropDownMenu");
-        for (i=0;i<=500;i++){
-            $select.append($('<option></option>').val(i).html(i));
+        // Number Dropdown for Radius and Casualties
+        this.dropDownNumbers = ko.observableArray([]);
+        for (i = 0; i <= 500; i++){
+            this.dropDownNumbers.push(i.toString());
         }
 
-        // Create a new event
+        // Drop down values - for use in create and edit functions
+        this.casualtiesValue = ko.observable();
+        this.radiusValue = ko.observable();
+        this.ppeValue = ko.observable();
+        this.typeValue = ko.observable();
+
+        // Create a new event function
         this.newEvent = function(){
             if (self.tempLocMarker() === null){
                 self.errorForm(true);
@@ -245,14 +270,10 @@ var app = app || {};
                 this.id = event_num + 1;
 
                 // Pull the data from the form input
-                this.cas = document.getElementById("new_cas");
-                this.cas_v = this.cas.options[this.cas.selectedIndex].value;
-                this.rad = document.getElementById("new_rad");
-                this.rad_v = this.rad.options[this.rad.selectedIndex].value;
-                this.type = document.getElementById("new_type");
-                this.type_v = this.type.options[this.type.selectedIndex].value;
-                this.ppe = document.getElementById("new_ppe");
-                this.ppe_v = this.ppe.options[this.ppe.selectedIndex].value;
+                this.cas_v = self.casualtiesValue();
+                this.rad_v = self.radiusValue();
+                this.type_v = self.typeValue();
+                this.ppe_v = self.ppeValue();
 
                 // Pull the marker data
                 this.location = self.tempLocMarker();
@@ -312,12 +333,12 @@ var app = app || {};
                 self.tempHotzones = [];
 
                 // Reset the form
-                this.type.selectedIndex = 0;
-                this.ppe.selectedIndex = 0;
-                this.cas.selectedIndex = 0;
-                this.rad.selectedIndex = 0;
                 self.errorForm(false);
                 this.errorHotzonePreview(false);
+                self.casualtiesValue(0);
+                self.radiusValue(0);
+                self.typeValue('HAZMAT');
+                self.ppeValue('LEVEL A');
             }
         };
 
@@ -380,7 +401,7 @@ var app = app || {};
                 }
                 self.tempHotzones = [];
                 // Establish radius and center
-                var radius = parseFloat(document.getElementById('new_rad').value);
+                var radius = parseFloat(self.radiusValue());
                 var center = self.tempLocMarker();
                 // Create the new hotzone preview
                 this.hotzone = new google.maps.Circle({
@@ -408,17 +429,20 @@ var app = app || {};
         this.showEditOptions = function(data) {
             var func = this;
 
-            var zoom = app.map.getZoom();
-            if (zoom <= 14) {
-                this.bounds = new google.maps.LatLngBounds();
-                //Extend the boundaries of the map for each visible marker
-                func.markers.forEach(function(marks){
-                    if (marks.marker.getVisible() === true) {
-                        func.bounds.extend(marks.marker.position);
-                        app.map.fitBounds(func.bounds);
-                    }
-                });
-            }
+            // Close edit options for other cards if opened
+            self.initialList().forEach(function(data){
+                    data.edit(false);
+            });
+
+            // Fit event markers into window
+            this.bounds = new google.maps.LatLngBounds();
+            //Extend the boundaries of the map for each visible marker
+            func.markers.forEach(function(marks){
+                if (marks.marker.getVisible() === true) {
+                    func.bounds.extend(marks.marker.position);
+                    app.map.fitBounds(func.bounds);
+                }
+            });
 
             this.edit(true);
             // Make selected markers draggable and not animated
@@ -434,21 +458,11 @@ var app = app || {};
                 });
             });
 
-            // Determine events ID nad convert to string
-            var num = this.id();
-            var n = num.toString();
-            // Grab new selection elements
-            this.e_id = document.getElementById(n);
-            this.e_cas = this.e_id.getElementsByClassName("edit_cas");
-            this.e_type = this.e_id.getElementsByClassName("edit_type");
-            this.e_ppe = this.e_id.getElementsByClassName("edit_ppe");
-            this.e_rad = this.e_id.getElementsByClassName("edit_rad");
-
             // Grab new data values
-            this.e_v_type = this.e_type[0].value = this.type();
-            this.e_v_ppe = this.e_ppe[0].value = this.ppe();
-            this.e_v_rad = this.e_rad[0].selectedIndex = this.radius();
-            this.e_v_cas = this.e_cas[0].selectedIndex = this.casualties();
+            self.typeValue(this.type());
+            self.ppeValue(this.ppe());
+            self.radiusValue(this.radius());
+            self.casualtiesValue(this.casualties());
         };
 
         // Cancels an edit and resets the information to original data
@@ -479,29 +493,22 @@ var app = app || {};
               self.tempHotzones[i].setMap(null);
             }
             self.tempHotzones = [];
+            self.casualtiesValue(0);
+            self.radiusValue(0);
+            self.typeValue('HAZMAT');
+            self.ppeValue('LEVEL A');
         };
 
         // Submit the temp edit data to the model and reset the form
         this.editEvent = function(data){
             var func = this;
 
-            // Determine events ID nad convert to string
-            var num = this.id();
-            var n = num.toString();
-
-            // Grab new Data
-            this.e_id = document.getElementById(n);
-            this.e_cas = this.e_id.getElementsByClassName("edit_cas");
-            this.e_type = this.e_id.getElementsByClassName("edit_type");
-            this.e_ppe = this.e_id.getElementsByClassName("edit_ppe");
-            this.e_rad = this.e_id.getElementsByClassName("edit_rad");
-            this.e_rad_loc = data.markers[0].marker.getPosition();
-
             // Grab new data values
-            this.e_v_type = this.e_type[0].value;
-            this.e_v_ppe = this.e_ppe[0].value;
-            this.e_v_rad = this.e_rad[0].value;
-            this.e_v_cas = this.e_cas[0].value;
+            this.e_v_type = self.typeValue();
+            this.e_v_ppe = self.ppeValue();
+            this.e_v_rad = self.radiusValue();
+            this.e_v_cas = self.casualtiesValue();
+            this.e_rad_loc = data.markers[0].marker.getPosition();
 
             // Update the event with the new data
             this.casualties(this.e_v_cas);
@@ -526,11 +533,11 @@ var app = app || {};
             });
 
             // Reset the form
-            this.e_type[0].selectedIndex = 0;
-            this.e_ppe[0].selectedIndex = 0;
-            this.e_cas[0].selectedIndex = 0;
-            this.e_rad[0].selectedIndex = 0;
             this.edit(false);
+            self.casualtiesValue(0);
+            self.radiusValue(0);
+            self.typeValue('HAZMAT');
+            self.ppeValue('LEVEL A');
 
             // Reset temp hotzone
             for (var i = 0; i < self.tempHotzones.length; i++) {
@@ -554,8 +561,7 @@ var app = app || {};
                 marks.hotzone.setVisible(false);
             });
             // Establish radius and center
-            this.e_id = document.getElementById(n);
-            var radius = parseFloat(this.e_id.getElementsByClassName("edit_rad")[0].value);
+            var radius = parseFloat(self.radiusValue());
             var center = data.markers[0].marker.getPosition();
             // Create the new hotzone preview
             this.hotzone = new google.maps.Circle({
