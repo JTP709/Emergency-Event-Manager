@@ -215,14 +215,14 @@ var app = app || {};
                     var zoom = app.map.getZoom();
                     // If there is more than one marker set for the event, set those to show only when zoomed in
                     if (mark.markers.length > 1) {
-                        for (i=1; i < mark.markers.length; i++) {
+                        for (var i=1; i < mark.markers.length; i++) {
                             mark.markers[i].marker.setVisible(zoom >= 14);
                         }
                     }
                     // If there is a hotzone set for the event, set those to show only when zoomed in
                     if (mark.hotzones.length >0) {
-                        for (i=0; i < mark.hotzones.length; i++) {
-                            mark.hotzones[i].hotzone.setVisible(zoom >= 14);
+                        for (var j=0; j < mark.hotzones.length; j++) {
+                            mark.hotzones[j].hotzone.setVisible(zoom >= 14);
                         }
                     }
                 });
@@ -249,7 +249,7 @@ var app = app || {};
 
         // Number Dropdown for Radius and Casualties
         this.dropDownNumbers = ko.observableArray([]);
-        for (i = 0; i <= 500; i++){
+        for (var i = 0; i <= 500; i++){
             this.dropDownNumbers.push(i.toString());
         }
 
@@ -479,7 +479,7 @@ var app = app || {};
                 {position: data.assembly()},
                 {position: data.decon()}
                 ];
-            for (i=0; i<data.markers.length; i++) {
+            for (var i=0; i<data.markers.length; i++) {
                 data.markers[i].marker.setPosition(positions[i].position);
             }
             // Make old hotzone red
@@ -489,8 +489,8 @@ var app = app || {};
                 });
             });
             // Reset temp hotzone
-            for (var i = 0; i < self.tempHotzones.length; i++) {
-              self.tempHotzones[i].setMap(null);
+            for (var j = 0; j < self.tempHotzones.length; j++) {
+              self.tempHotzones[j].setMap(null);
             }
             self.tempHotzones = [];
             self.casualtiesValue(0);
@@ -548,9 +548,6 @@ var app = app || {};
 
         // Creats a temporary hotzone and captures lat-long data for later
         this.editHotzone = function(data){
-            // Determine events ID nad convert to string
-            var num = this.id();
-            var n = num.toString();
             // Remove previous Hotzone previews
             for (var i = 0; i < self.tempHotzones.length; i++) {
               self.tempHotzones[i].setMap(null);

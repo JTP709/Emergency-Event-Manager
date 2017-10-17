@@ -30,5 +30,5 @@ var app = app || {};
         // Error Handling
         console.log('Google Maps failed to load');
         document.getElementById('error').style.display = 'flex';
-    }
+    };
 })();
