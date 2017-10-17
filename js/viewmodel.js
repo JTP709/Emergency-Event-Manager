@@ -75,6 +75,14 @@ var app = app || {};
             self.defaultMarker(data);
         };
 
+        // Resets the create and edit form values
+        this.resetForm = function() {
+            self.casualtiesValue(0);
+            self.radiusValue(0);
+            self.typeValue('HAZMAT');
+            self.ppeValue('LEVEL A');
+        };
+
         /*
         Navigation Bar Function
         */
@@ -93,10 +101,7 @@ var app = app || {};
                 // Reset the form
                 self.errorForm(false);
                 this.errorHotzonePreview(false);
-                self.casualtiesValue(0);
-                self.radiusValue(0);
-                self.typeValue('HAZMAT');
-                self.ppeValue('LEVEL A');
+                self.resetForm();
                 // Close edit options for other cards if opened
                 self.initialList().forEach(function(data){
                     data.edit(false);
@@ -124,10 +129,8 @@ var app = app || {};
             }
         };
 
-        // Resets the map to overview of Cincinnati
+        // Resets the map to overview of visible Event markers
         this.reset = function() {
-            //app.map.setCenter({lat: 39.106171, lng: -84.515712});
-            //app.map.setZoom(10);
             var func = this;
             this.bounds = new google.maps.LatLngBounds();
             //Extend the boundaries of the map for each visible marker
@@ -234,17 +237,21 @@ var app = app || {};
         Create a new Emergency Event
         */
 
-        // Set observables for marker lat-long data
-        this.tempLocMarker = ko.observable(null);
-        this.tempAssemblyMarker = ko.observable(null);
-        this.tempComPostMarker = ko.observable(null);
-        this.tempDeconMarker = ko.observable(null);
-
         // Set empty arrays for temp markers and temp hotzones
-        this.tempLocMarkersArray = [];
-        this.tempAssemblyMarkersArray = [];
-        this.tempComPostMarkersArray = [];
-        this.tempDeconMarkersArray = [];
+        this.tempLocMarkersArray = ko.observableArray([]);
+        this.tempAssemblyMarkersArray = ko.observableArray([]);
+        this.tempComPostMarkersArray = ko.observableArray([]);
+        this.tempDeconMarkersArray = ko.observableArray([]);
+        this.tempMarkerArrays = ko.computed(function(){
+            var tempArrays = [
+                self.tempLocMarkersArray(),
+                self.tempAssemblyMarkersArray(),
+                self.tempComPostMarkersArray(),
+                self.tempDeconMarkersArray()
+            ];
+            return tempArrays
+
+        });
         this.tempHotzones = [];
 
         // Number Dropdown for Radius and Casualties
@@ -259,40 +266,116 @@ var app = app || {};
         this.ppeValue = ko.observable();
         this.typeValue = ko.observable();
 
+        // Change Event Icon Dynamicall while creating new event
+        this.iconManager = ko.computed(function(){
+            var icon = self.typeValue();
+            if (self.tempLocMarkersArray()[0] != undefined) {
+                var img = 'icon/' + icon.replace(/\s+/g, "_") + '.png';
+                self.tempLocMarkersArray()[0].setIcon(img);
+            }
+        });
+
+        // Event button visibility Options
+        this.locMarkButton = ko.observable(true);
+        this.assemblyMarkButton = ko.observable(true);
+        this.comMarkButton = ko.observable(true);
+        this.decMarkButton = ko.observable(true);
+
+        this.g_locMarkButton = ko.observable(false);
+        this.g_assemblyMarkButton = ko.observable(false);
+        this.g_comMarkButton = ko.observable(false);
+        this.g_decMarkButton = ko.observable(false);
+
+        this.markButtonSwitch = ko.computed(function() {
+            if (self.locMarkButton() === true) {
+                self.g_locMarkButton(false);
+            } else {
+                self.g_locMarkButton(true);
+            }
+            if (self.assemblyMarkButton() === true) {
+                self.g_assemblyMarkButton(false);
+            } else {
+                self.g_assemblyMarkButton(true);
+            }
+            if (self.comMarkButton() === true) {
+                self.g_comMarkButton(false);
+            } else {
+                self.g_comMarkButton(true);
+            }
+            if (self.decMarkButton() === true) {
+                self.g_decMarkButton(false);
+            } else {
+                self.g_decMarkButton(true);
+            }
+        });
+
+        this.markButtonReset = function() {
+            var marker = self.tempMarkerArrays();
+            if (marker[0][0] != undefined) {
+                self.locMarkButton(false);
+            } else {
+                self.locMarkButton(true);
+            }
+            if (marker[1][0] != undefined) {
+                self.assemblyMarkButton(false);
+            } else {
+                self.assemblyMarkButton(true);
+            }
+            if (marker[2][0] != undefined) {
+                self.comMarkButton(false);
+            } else {
+                self.comMarkButton(true);
+            }
+            if (marker[3][0] != undefined) {
+                self.decMarkButton(false);
+            } else {
+                self.decMarkButton(true);
+            }
+        };
+
         // Create a new event function
         this.newEvent = function(){
-            if (self.tempLocMarker() === null){
+            if (self.tempMarkerArrays()[0].length == 0){
                 self.errorForm(true);
                 self.newEventMsg(false);
             } else {
                 // Counts current number of events in the list
                 var event_num = self.initialList().length;
-                this.id = event_num + 1;
+                var id = event_num + 1;
 
                 // Pull the data from the form input
-                this.cas_v = self.casualtiesValue();
-                this.rad_v = self.radiusValue();
-                this.type_v = self.typeValue();
-                this.ppe_v = self.ppeValue();
+                var cas_v = self.casualtiesValue();
+                var rad_v = self.radiusValue();
+                var type_v = self.typeValue();
+                var ppe_v = self.ppeValue();
+
+                var markerPos = function(i) {
+                    var marker = self.tempMarkerArrays();
+                    if (marker[i][0] != undefined) {
+                        return marker[i][0].position;
+                    } else {
+                        return null;
+                    }
+                };
 
                 // Pull the marker data
-                this.location = self.tempLocMarker();
-                this.assembly = self.tempAssemblyMarker();
-                this.com_post = self.tempComPostMarker();
-                this.decon = self.tempDeconMarker();
+                var location = markerPos(0);
+                var assembly = markerPos(1);
+                var com_post = markerPos(2);
+                var decon = markerPos(3);
 
                 // Populate a new array with the data
                 this.newData = [
                     {
-                        id: this.id,
-                        location: this.location,
-                        casualties: this.cas_v,
-                        type: this.type_v,
-                        ppe: this.ppe_v,
-                        assembly: this.assembly,
-                        com_post: this.com_post,
-                        decon: this.decon,
-                        radius: this.rad_v,
+                        id: id,
+                        location: location,
+                        casualties: cas_v,
+                        type: type_v,
+                        ppe: ppe_v,
+                        assembly: assembly,
+                        com_post: com_post,
+                        decon: decon,
+                        radius: rad_v,
                         clear: false,
                         edit: false
                     }
@@ -307,92 +390,87 @@ var app = app || {};
                 self.newEventMsg(true);
 
                 // Reset the temp marker observables and array
-                this.tempLocMarker = ko.observable(null);
-                this.tempAssemblyMarker = ko.observable(null);
-                this.tempComPostMarker = ko.observable(null);
-                this.tempDeconMarker = ko.observable(null);
-                for (var i = 0; i < self.tempLocMarkersArray.length; i++) {
-                  self.tempLocMarkersArray[i].setMap(null);
-                }
-                for (var j = 0; j < self.tempAssemblyMarkersArray.length; j++) {
-                  self.tempAssemblyMarkersArray[j].setMap(null);
-                }
-                for (var k = 0; k < self.tempComPostMarkersArray.length; k++) {
-                  self.tempComPostMarkersArray[k].setMap(null);
-                }
-                for (var l = 0; l < self.tempDeconMarkersArray.length; l++) {
-                  self.tempDeconMarkersArray[l].setMap(null);
-                }
-                for (var m = 0; m < self.tempHotzones.length; m++) {
-                  self.tempHotzones[m].setMap(null);
-                }
-                self.tempLocMarkersArray = [];
-                self.tempAssemblyMarkersArray = [];
-                self.tempComPostMarkersArray = [];
-                self.tempDeconMarkersArray = [];
+
+                self.tempMarkerArrays().forEach(function(mark) {
+                    for (var i = 0; i < mark.length; i++) {
+                        mark[i].setMap(null);
+                    }
+                });
+
+                self.tempLocMarkersArray([]);
+                self.tempAssemblyMarkersArray([]);
+                self.tempComPostMarkersArray([]);
+                self.tempDeconMarkersArray([]);
                 self.tempHotzones = [];
 
                 // Reset the form
                 self.errorForm(false);
                 this.errorHotzonePreview(false);
-                self.casualtiesValue(0);
-                self.radiusValue(0);
-                self.typeValue('HAZMAT');
-                self.ppeValue('LEVEL A');
+                self.resetForm();
+
+                self.locMarkButton(true);
+                self.assemblyMarkButton(true);
+                self.comMarkButton(true);
+                self.decMarkButton(true);
             }
         };
 
         // Creats a temporary marker and captures lat-long data for later
         this.newTempMarker = function(x){
             var func = this;
+
+            self.locMarkButton(false);
+            self.assemblyMarkButton(false);
+            self.comMarkButton(false);
+            self.decMarkButton(false);
+
             this.clicker = google.maps.event.addListener(app.map,'click', function(event){
-                this.marker = new google.maps.Marker({
-                    position: event.latLng,
-                    map: app.map
-                });
+                var observable;
+                var markersArray;
+                var icon;
+                var pos = event.latLng;
+
                 if (x == 'location') {
-                    if (self.tempLocMarkersArray.length > 0) {
-                        for (var i = 0; i < self.tempLocMarkersArray.length; i++) {
-                          self.tempLocMarkersArray[i].setMap(null);
-                        }
-                    }
-                    self.tempLocMarker(event.latLng);
-                    self.tempLocMarkersArray.push(this.marker);
+                    markersArray = self.tempLocMarkersArray();
+                    icon = 'icon/' + self.typeValue().replace(/\s+/g, "_") + '.png';
                 }
                 if (x == 'assembly') {
-                    if (self.tempAssemblyMarkersArray.length > 0) {
-                        for (var j = 0; j < self.tempAssemblyMarkersArray.length; j++) {
-                          self.tempAssemblyMarkersArray[j].setMap(null);
-                        }
-                    }
-                    self.tempAssemblyMarker(event.latLng);
-                    self.tempAssemblyMarkersArray.push(this.marker);
+                    markersArray = self.tempAssemblyMarkersArray();
+                    icon = 'icon/assembly.png';
                 }
                 if (x == 'com_post') {
-                    if (self.tempComPostMarkersArray.length > 0) {
-                        for (var k = 0; k < self.tempComPostMarkersArray.length; k++) {
-                          self.tempComPostMarkersArray[k].setMap(null);
-                        }
-                    }
-                    self.tempComPostMarker(event.latLng);
-                    self.tempComPostMarkersArray.push(this.marker);
+                    markersArray = self.tempComPostMarkersArray();
+                    icon = 'icon/com_post.png';
                 }
                 if (x == 'decon') {
-                    if (self.tempDeconMarkersArray.length > 0) {
-                        for (var l = 0; l < self.tempDeconMarkersArray.length; l++) {
-                          self.tempDeconMarkersArray[l].setMap(null);
-                        }
-                    }
-                    self.tempDeconMarker(event.latLng);
-                    self.tempDeconMarkersArray.push(this.marker);
+                    markersArray = self.tempDeconMarkersArray();
+                    icon = 'icon/decon.png';
                 }
+
+                this.marker = new google.maps.Marker({
+                    position: event.latLng,
+                    map: app.map,
+                    icon: icon,
+                    draggable: true
+                });
+
+                if (markersArray.length > 0) {
+                    for (var i = 0; i < markersArray.length; i++) {
+                      markersArray[i].setMap(null);
+                    }
+                }
+                markersArray.push(this.marker);
+
+                // Reset buttons
+                self.markButtonReset();
+
                 google.maps.event.removeListener(func.clicker);
             });
         };
 
         // Creats a temporary hotzone and captures lat-long data for later
         this.newHotzone = function(){
-            if (self.tempLocMarker() === null) {
+            if (self.tempMarkerArrays()[0].length == 0) {
                 this.errorHotzonePreview(true);
             } else {
                 // Remove previous Hotzone previews
@@ -402,7 +480,7 @@ var app = app || {};
                 self.tempHotzones = [];
                 // Establish radius and center
                 var radius = parseFloat(self.radiusValue());
-                var center = self.tempLocMarker();
+                var center = self.tempMarkerArrays()[0][0].position;
                 // Create the new hotzone preview
                 this.hotzone = new google.maps.Circle({
                     strokeColor: '#FF0000',
@@ -493,10 +571,7 @@ var app = app || {};
               self.tempHotzones[j].setMap(null);
             }
             self.tempHotzones = [];
-            self.casualtiesValue(0);
-            self.radiusValue(0);
-            self.typeValue('HAZMAT');
-            self.ppeValue('LEVEL A');
+            self.resetForm();
         };
 
         // Submit the temp edit data to the model and reset the form
@@ -534,10 +609,7 @@ var app = app || {};
 
             // Reset the form
             this.edit(false);
-            self.casualtiesValue(0);
-            self.radiusValue(0);
-            self.typeValue('HAZMAT');
-            self.ppeValue('LEVEL A');
+            self.resetForm();
 
             // Reset temp hotzone
             for (var i = 0; i < self.tempHotzones.length; i++) {

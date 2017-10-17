@@ -157,6 +157,14 @@ button:hover {
     width: 112px;
     height: 20px;
 }
+.grey_button {
+    color: #b3b3b3;
+    background-color: #cccccc;
+    cursor: auto;
+}
+.grey_button:hover {
+    background-color: #cccccc;
+}
 .new_marker_text {
     font-size: 15px;
 }

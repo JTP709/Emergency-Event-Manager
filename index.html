@@ -41,10 +41,10 @@
                     <!-- Select Marker Locations -->
                     <label><b>Marker Locations:</b></label>
                     <br>
-                    <button class="event_button new_marker_button" id="new_location" data-bind="click: function() {newTempMarker('location')}">Event Location</button><span class="new_marker_text"> Required</span><br>
-                    <button class="event_button new_marker_button" id="new_assembly" data-bind="click: function() {newTempMarker('assembly')}">Assembly Point</button><span class="new_marker_text"> Optional</span><br>
-                    <button class="event_button new_marker_button" id="new_com_post" data-bind="click: function() {newTempMarker('com_post')}">Command Post</button><span class="new_marker_text"> Optional</span><br>
-                    <button class="event_button new_marker_button" id="new_decon" data-bind="click: function() {newTempMarker('decon')}">DECON Point</button><span class="new_marker_text"> Optional</span><br>
+                    <button class="event_button new_marker_button" id="new_location" data-bind="visible: locMarkButton, click: function() {newTempMarker('location')}">Event Location</button><button class="event_button new_marker_button grey_button" onclick="return false;" id="new_location" data-bind="visible: g_locMarkButton">Event Location</button><span class="new_marker_text"> Required</span><br>
+                    <button class="event_button new_marker_button" id="new_assembly" data-bind="visible: assemblyMarkButton, click: function() {newTempMarker('assembly')}">Assembly Point</button><button class="event_button new_marker_button grey_button" onclick="return false;" id="new_assembly" data-bind="visible: g_assemblyMarkButton">Assembly Point</button><span class="new_marker_text"> Optional</span><br>
+                    <button class="event_button new_marker_button" id="new_com_post" data-bind="visible: comMarkButton, click: function() {newTempMarker('com_post')}">Command Post</button><button class="event_button new_marker_button grey_button" onclick="return false;" id="new_com_post" data-bind="visible: g_comMarkButton">Command Post</button><span class="new_marker_text"> Optional</span><br>
+                    <button class="event_button new_marker_button" id="new_decon" data-bind="visible: decMarkButton, click: function() {newTempMarker('decon')}">DECON Point</button><button class="event_button new_marker_button grey_button" onclick="return false;" id="new_decon" data-bind="visible: g_decMarkButton">DECON Point</button><span class="new_marker_text"> Optional</span><br>
                     <!-- Select Hotzone Radius -->
                     <label><b>Hotzone Radius: </b></label><select id="new_rad" class="numDropDownMenu" data-bind="options: dropDownNumbers, value: radiusValue"></select>
                     <button class="event_button new_hotzone" data-bind="click: newHotzone">Preview</button>

@@ -8,6 +8,13 @@ var app = app || {};
 
 (function() {
     'use strict';
+
+    app.googleError = function() {
+        // Error Handling
+        console.log('Google Maps failed to load');
+        document.getElementById('error').style.display = 'flex';
+    };
+
     app.initMap = function() {
         // Constructor creates a new map - zoom and center are provied in
         // ViewModel once markers have been applied
@@ -17,18 +24,11 @@ var app = app || {};
             });
         } else {
             // Error Handling
-            console.log('Google Maps failed to load');
-            document.getElementById('error').style.display = 'flex';
+            app.googleError();
         }
 
         app.infoWindow = new google.maps.InfoWindow();
 
         ko.applyBindings(new app.ViewModel());
-    };
-
-    app.googleError = function() {
-        // Error Handling
-        console.log('Google Maps failed to load');
-        document.getElementById('error').style.display = 'flex';
     };
 })();
