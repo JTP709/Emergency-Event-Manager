@@ -339,6 +339,11 @@ var app = app || {};
                 self.errorForm(true);
                 self.newEventMsg(false);
             } else {
+                // Remove previous Hotzone previews
+                for (var i = 0; i < self.tempHotzones.length; i++) {
+                  self.tempHotzones[i].setMap(null);
+                }
+                self.tempHotzones = [];
                 // Counts current number of events in the list
                 var event_num = self.initialList().length;
                 var id = event_num + 1;
