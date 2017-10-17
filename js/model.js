@@ -248,6 +248,7 @@ var app = app || {};
             }
         });
         xhttp.onerror = function() {
+            console.log('Error in network request ' + xhttp.statusText);
             self.weather_main('Error');
             self.weather_temp('Error');
             self.weather_icon('');

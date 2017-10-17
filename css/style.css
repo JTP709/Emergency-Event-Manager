@@ -45,6 +45,14 @@ button:hover {
     background-color: #3e8e41;
 }
 
+#error {
+    height: 90%;
+    width: 100%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
 /* Conainter boxes for body (.container) and header */
 
 .container {

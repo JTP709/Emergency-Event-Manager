@@ -18,9 +18,13 @@ var app = app || {};
             });
         } else {
             console.log('Google Maps failed to load');
-            document.getElementById('map').innerHTML('<h1>Google Maps failed to load</h1>');
+            document.getElementById('error').style.display = 'flex';
         }
 
         ko.applyBindings(new app.ViewModel());
     };
+    app.googleError = function() {
+        console.log('Google Maps failed to load');
+        document.getElementById('error').style.display = 'flex';
+    }
 })();
