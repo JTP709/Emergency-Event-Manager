@@ -61,7 +61,6 @@ var app = app || {};
                     app.map.fitBounds(func.bounds);
                 }
             });
-            console.log(data);
         };
 
         // Sets Emergency Event to "all clear" and removes from active list

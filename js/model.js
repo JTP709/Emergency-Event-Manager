@@ -242,8 +242,24 @@ var app = app || {};
         this.weather_temp = ko.observable();
         this.weather_icon = ko.observable();
 
+        // Determine lat and lng types before passing to API call
+        this.lat = function() {
+            if (typeof self.location().lat === 'function') {
+                return self.location().lat();
+            } else {
+                return self.location().lat;
+            }
+        };
+        this.lng = function() {
+            if (typeof self.location().lng === 'function') {
+                return self.location().lng();
+            } else {
+                return self.location().lat;
+            }
+        };
+
         // Get weather using Open Weather API
-        var api = 'http://api.openweathermap.org/data/2.5/weather?lat='+data.location.lat+'&lon='+data.location.lng+'&APPID=00b1eab8137a0b1d81025d667dbb2f17&units=imperial';
+        var api = 'http://api.openweathermap.org/data/2.5/weather?lat='+this.lat()+'&lon='+this.lat()+'&APPID=00b1eab8137a0b1d81025d667dbb2f17&units=imperial';
         var xhttp = new XMLHttpRequest();
         xhttp.open("GET", api, true);
         xhttp.send(null);
@@ -260,7 +276,7 @@ var app = app || {};
             }
         });
 
-
+        // Establish marker data for each type
         this.markerData = [
             {
                 title: data.type + ' EVENT',
