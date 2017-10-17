@@ -173,7 +173,7 @@ button:hover {
 #submit_button button {
     width: 100%;
 }
-#new_hotzone {
+.new_hotzone {
     height: 20px;
 }
 

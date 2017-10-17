@@ -11,19 +11,23 @@ var app = app || {};
     app.initMap = function() {
         // Constructor creates a new map - zoom and center are provied in
         // ViewModel once markers have been applied
-        // Error Handling
         if (typeof google === 'object' && typeof google.maps === 'object') {
             app.map = new google.maps.Map(document.getElementById('map'), {
               mapTypeControl: false
             });
         } else {
+            // Error Handling
             console.log('Google Maps failed to load');
             document.getElementById('error').style.display = 'flex';
         }
 
+        app.infoWindow = new google.maps.InfoWindow();
+
         ko.applyBindings(new app.ViewModel());
     };
+
     app.googleError = function() {
+        // Error Handling
         console.log('Google Maps failed to load');
         document.getElementById('error').style.display = 'flex';
     }

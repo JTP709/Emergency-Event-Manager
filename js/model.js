@@ -297,6 +297,8 @@ var app = app || {};
             }
         ];
 
+        this.infoWindow = new google.maps.InfoWindow();
+
         // Create markers with info windows
         this.markerMaker = function(data) {
             var func = this;
@@ -313,10 +315,12 @@ var app = app || {};
             // Add the info window when clicked
             this.marker.addListener('click', function(){
                 var mark = this;
-                self.infoWindow.open(app.map, func.marker);
-                self.infoWindow.setContent(data.content);
+
+                app.infoWindow.open(app.map, func.marker);
+                app.infoWindow.setContent(data.content);
+
                 this.setAnimation(google.maps.Animation.BOUNCE);
-                setTimeout(function(){ mark.setAnimation(null); }, 750);
+                setTimeout(function(){ mark.setAnimation(null); }, 700);
             });
         };
 
@@ -333,8 +337,6 @@ var app = app || {};
                 radius: parseFloat(data.radius)
             });
         };
-
-        this.infoWindow = new google.maps.InfoWindow();
 
         this.markers =[];
         this.markerData.forEach(function(data){
