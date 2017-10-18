@@ -27,6 +27,38 @@
         </div>
     </div>
     <div class="container">
+
+        <!-- Hotzone Effect List Modal -->
+        <div class="modal" id="myModal" data-bind="visible: modal">
+            <div class="modal-content">
+                <span class="close" data-bind="click: closeModal">&times;</span>
+                <h1 class="modalHeader">Local Businesses Affected by Hotzone</h1>
+                <div class="tableData" data-bind="if: resultsSwitch">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Address</th>
+                                <th>Phone Number</th>
+                                <th>People Checked in on Foursquare</th>
+                            </tr>
+                        </thead>
+                        <tbody data-bind="foreach: localList">
+                            <tr>
+                                <td data-bind="text: name"></td>
+                                <td data-bind="text: address"></td>
+                                <td data-bind="text: phoneNum"></td>
+                                <td data-bind="text: hereNow_count"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div data-bind="if: resultsZero">
+                    <h1 class="modalHeader">No businesses found within hotzone radius.</h1>
+                </div>
+            </div>
+        </div>
+
         <!-- Side Bar Div -->
         <div id="side_bar">
             <!-- Tab for New Emergency Event -->
@@ -164,6 +196,11 @@
                                 <!-- GO TO Button -->
                                 <div class="button_div" >
                                     <button class="event_button" data-bind="click: $parent.changeCenter">GO TO</button>
+                                </div>
+
+                                <!-- Businesses Affected -->
+                                <div class="button_div" >
+                                    <button class="event_button" data-bind="click: $parent.businessList">HZ Effect</button>
                                 </div>
 
                                 <!-- Edit Button -->

@@ -4,6 +4,13 @@ Jonathan Prell
 https://github.com/JTP709/Udacity_EMC
 */
 
+/*
+TODO: add foursqure API cuz reasons
+TODO: add google places API in addition to foursquare because that makes more sense
+TODO: add functionality to infoWindow
+TODO: add database storage (Firebase)
+*/
+
 
 var app = app || {};
 
@@ -74,6 +81,108 @@ var app = app || {};
             this.clear(false);
             self.defaultMarker(data);
         };
+
+        // Generates a list of local businesses from Foursquare based on HOTZONE radus
+        this.modal = ko.observable(false);
+        this.localList = ko.observableArray([]);
+        this.totalResults = ko.observable();
+        self.resultsZero = ko.observable();
+        this.resultsSwitch = ko.computed(function(){
+            if (self.totalResults() === 0) {
+                self.resultsZero(true);
+                return false;
+            } else {
+                self.resultsZero(false);
+                return true;
+            }
+        });
+
+        this.businessList = function (data) {
+            var func = this;
+            self.modal(true);
+            self.localList([]);
+            this.lat = function() {
+                if (typeof func.location().lat === 'function') {
+                    return func.location().lat();
+                } else {
+                    return func.location().lat;
+                }
+            };
+            this.lng = function() {
+                if (typeof func.location().lng === 'function') {
+                    return func.location().lng();
+                } else {
+                    return func.location().lat;
+                }
+            };
+            this.formatParams = function (params){
+                return "?" + Object
+                    .keys(params)
+                    .map(function(key){
+                      return key+"="+encodeURIComponent(params[key])
+                    })
+                    .join("&")
+            };
+            this.localListing = function(data){
+                this.name = ko.observable(data.name);
+                this.address = ko.observable(data.address);
+                this.phoneNum = ko.observable(data.phoneNum);
+                this.hereNow_count = ko.observable(data.hereNow_count);
+            };
+
+            var location = this.location();
+            var lat = this.lat();
+            var lng = this.lng();
+            var rad = this.radius();
+
+            var api = 'https://api.foursquare.com/v2/venues/explore';
+            var params = {
+                client_id: '5T4ZYC1CSKV2P24MBIXRW5DNRLQLMCU2CUCYAKCCUK0PXZXU',
+                client_secret: 'F0JZXQ3AGUA0NTMFBJ5WA5YCHEAJKDJHTRG0QVQXQNKA5Y1K',
+                ll: lat+','+lng,
+                //query: 'coffee',
+                v: '20170801',
+                radius: 500,
+                limit: 50
+            };
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", api + this.formatParams(params), true);
+            xhttp.send(params);
+            xhttp.addEventListener('load', function() {
+                if(xhttp.status >= 200 && xhttp.status <400) {
+                    var request = JSON.parse(xhttp.responseText);
+                    // Store the values from the API results
+                    self.totalResults(request.response.totalResults);
+                    for (var i = 0; i < self.totalResults(); i++) {
+                        var result = {
+                            name: request.response.groups[0].items[i].venue.name,
+                            address: request.response.groups[0].items[i].venue.location.address,
+                            phoneNum: request.response.groups[0].items[i].venue.contact.formattedPhone,
+                            hereNow_count: request.response.groups[0].items[i].venue.hereNow.count,
+                        }
+                        self.localList.push(new func.localListing(result));
+                    }
+                    console.log(self.localList());
+                } else {
+                    console.log('Error in network request ' + xhttp.statusText);
+                }
+            });
+            xhttp.onerror = function() {
+                console.log('Error in network request ' + xhttp.statusText);
+            };
+        };
+
+        // Close the modal
+        this.closeModal = function() {
+            self.modal(false);
+        };
+        // Close the modal if clicked on outsie of modal window
+        window.onclick = function(event) {
+            var modal = document.getElementById('myModal');
+            if (event.target == modal) {
+                self.modal(false);
+            }
+        }
 
         /*
         Navigation Bar Function
