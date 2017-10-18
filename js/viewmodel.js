@@ -80,6 +80,20 @@ var app = app || {};
             }
         };
 
+        // Change Center option on Info Window
+        app.eventFilterIW = function(data) {
+            var idNum = data;
+            var eventList = self.initialList();
+
+            for (var i = 0; i < eventList.length; i++) {
+                if (eventList[i].id() === idNum) {
+                    self.singleFilter(true);
+                    self.showFilterDropMenu(false);
+                    self.singleFilterID(eventList[i].id());
+                }
+            }
+        };
+
         // Center and Zoom on selected Emergency Event
         this.changeCenter = function(data) {
             var func = this;
@@ -282,33 +296,48 @@ var app = app || {};
         // Variable to check if old events are filtered; false indicates unchecked/unselected
         this.clearEvents = ko.observable(false);
 
+        // Variable to check if a single event filter has been selected on the info Window
+        this.singleFilter = ko.observable(false);
+        this.singleFilterID = ko.observable();
+        this.showFilterDropMenu = ko.observable(false);
+
         // Fliter the list based on filter check boxes
         this.filteredList = ko.computed(function(){
-            var selectedEvents = ko.utils.arrayFilter(self.filters, function(p){
-                return p.selected();
-            });
-            // Set all markers to invisible
-            self.initialList().forEach(function(mark){
-                mark.markers.forEach(function(marks){
-                    marks.marker.setVisible(false);
-                });
-                mark.hotzones.forEach(function(marks){
-                    marks.hotzone.setVisible(false);
-                });
-            });
-            // Return the entire list of no checkboxes are checked
-            if (selectedEvents.length === 0) {
-                var x = ko.utils.arrayFilter(self.initialList(), function(item){
-                    return item.clear() == self.clearEvents();
-                });
-                return x;
+            if (self.singleFilter() === true) {
+                var z = ko.utils.arrayFilter(self.initialList(), function(item){
+                        return item.id() == self.singleFilterID();
+                    });
+                    return z;
             } else {
-                var y = ko.utils.arrayFilter(self.initialList(), function(item){
-                    return ko.utils.arrayFilter(selectedEvents, function(p) {
-                        return p.type == item.type() && item.clear() == self.clearEvents();
-                    }).length > 0;
+                var selectedEvents = ko.utils.arrayFilter(self.filters, function(p){
+                    return p.selected();
                 });
-                return y;
+                // Reset single filter
+                self.showFilterDropMenu(true);
+                self.singleFilter(false);
+                // Set all markers to invisible
+                self.initialList().forEach(function(mark){
+                    mark.markers.forEach(function(marks){
+                        marks.marker.setVisible(false);
+                    });
+                    mark.hotzones.forEach(function(marks){
+                        marks.hotzone.setVisible(false);
+                    });
+                });
+                // Return the entire list of no checkboxes are checked
+                if (selectedEvents.length === 0) {
+                    var x = ko.utils.arrayFilter(self.initialList(), function(item){
+                        return item.clear() == self.clearEvents();
+                    });
+                    return x;
+                } else {
+                    var y = ko.utils.arrayFilter(self.initialList(), function(item){
+                        return ko.utils.arrayFilter(selectedEvents, function(p) {
+                            return p.type == item.type() && item.clear() == self.clearEvents();
+                        }).length > 0;
+                    });
+                    return y;
+                }
             }
         });
 

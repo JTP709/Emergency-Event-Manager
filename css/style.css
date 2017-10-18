@@ -256,6 +256,13 @@ th {
     min-width: 60px;
     padding: 3px 10px 3px 10px;
 }
+.info_button {
+    width: 80px;
+    margin-right: 5px;
+}
+#info_right_button {
+    margin-right: 0px;
+}
 .new_marker_button {
     width: 112px;
     height: 20px;
@@ -315,6 +322,9 @@ th {
     float: left;
     margin: 0px 5px 0px 0px;
     min-height: 30px;
+}
+.reset_div {
+    margin-bottom: 10px;
 }
 #filter_box {
     width: 100%;

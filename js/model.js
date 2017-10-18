@@ -263,8 +263,15 @@ var app = app || {};
                     '<label><b>' + data.type + ' EVENT</b></label>' +
                     '<p> Emergency Event #' + data.id + '</p>' +
                     '<p>' + self.cas_level() + '</p>' +
-                    '<button class="event_button" onClick="app.hotzoneEffectIW('+self.id()+')">HOTZONE<br>EFFECT</button>' +
-                    '<button class="event_button" onClick="app.changeCenterIW('+self.id()+')">GO TO</button>' +
+                    '<div class="button_div">' +
+                    '<button class="event_button info_button" onClick="app.hotzoneEffectIW('+self.id()+')">HOTZONE<br>EFFECT</button>' +
+                    '</div>' +
+                    '<div class="button_div">' +
+                    '<button class="event_button info_button" onClick="app.changeCenterIW('+self.id()+')">GO TO</button>' +
+                    '</div>' +
+                    '<div id="info_right_button" class="button_div">' +
+                    '<button class="event_button info_button" onClick="app.eventFilterIW('+self.id()+')">EVENT<br>CARD</button>' +
+                    '</div>' +
                     '</div>',
                 type: 'primary',
                 icon: 'icon/' + data.type.replace(/\s+/g, "_") + '.png'

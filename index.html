@@ -130,7 +130,10 @@
 
                     <!-- Filter Options -->
                     <div class="dropdown" id="filter_box">
-                        <button class="filter_button event_button" data-bind="click: function(){showFilterList('checkbox_list')}">List Filters</button>
+                        <!-- Reset Button for List Filter -->
+                        <button class="filter_button event_button" data-bind="click: function() { singleFilter(false); showFilterDropMenu(true); }, visible: singleFilter">Reset List</button>
+                        <!-- Standard Filter Options -->
+                        <button class="filter_button event_button" data-bind="click: function(){showFilterList('checkbox_list')}, visible: showFilterDropMenu">List Filters</button>
                         <div id="checkbox_list" class="dropdown-content" data-bind="visible: checkbox_list">
                             <div data-bind="foreach: filters">
                                 <span>
