@@ -6,7 +6,6 @@ https://github.com/JTP709/Udacity_EMC
 
 /*
 TODO: add google places API in addition to foursquare because that makes more sense
-TODO: add functionality to infoWindow
 TODO: add database storage (Firebase)
 */
 
@@ -293,6 +292,18 @@ var app = app || {};
             self.filters.push(new app.typeFilter(item));
         });
 
+        // Set all markers to invisible
+        this.setMarkersOff = function() {
+            self.initialList().forEach(function(mark){
+                mark.markers.forEach(function(marks){
+                    marks.marker.setVisible(false);
+                });
+                mark.hotzones.forEach(function(marks){
+                    marks.hotzone.setVisible(false);
+                });
+            });
+        };
+
         // Variable to check if old events are filtered; false indicates unchecked/unselected
         this.clearEvents = ko.observable(false);
 
@@ -304,6 +315,8 @@ var app = app || {};
         // Fliter the list based on filter check boxes
         this.filteredList = ko.computed(function(){
             if (self.singleFilter() === true) {
+                // Set all markers to invisible
+                self.setMarkersOff();
                 var z = ko.utils.arrayFilter(self.initialList(), function(item){
                         return item.id() == self.singleFilterID();
                     });
@@ -316,14 +329,7 @@ var app = app || {};
                 self.showFilterDropMenu(true);
                 self.singleFilter(false);
                 // Set all markers to invisible
-                self.initialList().forEach(function(mark){
-                    mark.markers.forEach(function(marks){
-                        marks.marker.setVisible(false);
-                    });
-                    mark.hotzones.forEach(function(marks){
-                        marks.hotzone.setVisible(false);
-                    });
-                });
+                self.setMarkersOff();
                 // Return the entire list of no checkboxes are checked
                 if (selectedEvents.length === 0) {
                     var x = ko.utils.arrayFilter(self.initialList(), function(item){
