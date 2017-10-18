@@ -202,12 +202,13 @@ th {
         display: block;
     }
 }
-@media screen and (max-width: 670px) {
+@media screen and (max-width: 600px) {
     .head_full {
         display: none;
     }
-}
-@media screen and (max-width: 460px) {
+    #page_title {
+        font-size: 45px;
+    }
 }
 
 /* Button elements */
@@ -369,7 +370,7 @@ th {
 .weatherIcon {
     float: right;
 }
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 800px) {
     #map {
         height: 50%;
         position: relative;
