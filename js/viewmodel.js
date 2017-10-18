@@ -132,6 +132,7 @@ var app = app || {};
                 return true;
             }
         });
+        this.foursquareError = ko.observable(false);
         this.hotzoneEffect = function (data) {
             var func = this;
             self.modal(true);
@@ -168,7 +169,12 @@ var app = app || {};
             var location = data.location();
             var lat = this.lat();
             var lng = this.lng();
-            var rad = data.radius();
+            var rad;
+            if (data.radius() <= 50) {
+                rad = 50;
+            } else {
+                rad = data.radius();
+            }
 
             var api = 'https://api.foursquare.com/v2/venues/explore';
             var params = {
@@ -186,6 +192,8 @@ var app = app || {};
             xhttp.addEventListener('load', function() {
                 if(xhttp.status >= 200 && xhttp.status <400) {
                     var request = JSON.parse(xhttp.responseText);
+                    // Reset error message
+                    self.foursquareError(false);
                     // Store the values from the API results
                     self.totalResults(request.response.totalResults);
                     for (var i = 0; i < self.totalResults(); i++) {
@@ -197,15 +205,14 @@ var app = app || {};
                         }
                         self.localList.push(new func.localListing(result));
                     }
-                    console.log(xhttp);
-                    console.log(request);
-                    console.log(self.localList());
                 } else {
                     console.log('Error in network request ' + xhttp.statusText);
+                    self.foursquareError(true);
                 }
             });
             xhttp.onerror = function() {
                 console.log('Error in network request ' + xhttp.statusText);
+                self.foursquareError(true);
             };
         };
 

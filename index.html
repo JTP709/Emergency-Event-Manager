@@ -63,6 +63,9 @@
                 <div data-bind="if: resultsZero">
                     <h1 class="modalHeader">No businesses found within hotzone radius.</h1>
                 </div>
+                <div data-bind="if: foursquareError">
+                    <h1 class="modalHeader">Foursquare API failed to load</h1>
+                </div>
             </div>
         </div>
 

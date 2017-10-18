@@ -23,14 +23,14 @@ var app = app || {};
         },
         {
             id: 2,
-            location: {lat: 39.087383, lng: -84.725753},
+            location: {lat: 39.098819, lng: -84.508101},
             casualties: 0,
-            type: 'FIRE',
-            ppe: 'Turnout',
-            assembly: {lat: 39.085401, lng: -84.725157},
-            com_post: {lat: 39.086947, lng: -84.727718},
-            decon: null,
-            radius: 50,
+            type: 'HAZMAT',
+            ppe: 'LEVEL A',
+            assembly: {lat: 39.097056, lng: -84.516201},
+            com_post: {lat: 39.097418, lng: -84.512824},
+            decon: {lat: 39.098173, lng: -84.512069},
+            radius: 150,
             clear: false,
             edit: false
         },
@@ -62,14 +62,14 @@ var app = app || {};
         },
         {
             id: 5,
-            location: {lat: 39.117189, lng: -84.802841},
+            location: {lat: 39.143471, lng: -84.519189},
             casualties: 0,
             type: 'HAZMAT',
             ppe: 'LEVEL B',
-            assembly: {lat: 39.116347, lng: -84.799515},
-            com_post: {lat: 39.115844, lng: -84.803381},
-            decon: {lat: 39.116412, lng: -84.803169},
-            radius: 150,
+            assembly: {lat: 39.139577, lng: -84.521002},
+            com_post: {lat: 39.143008, lng: -84.520830},
+            decon: {lat: 39.142659, lng: -84.519460},
+            radius: 75,
             clear: false,
             edit: false
         },
@@ -88,12 +88,12 @@ var app = app || {};
         },
         {
             id: 7,
-            location: {lat: 39.030311, lng: -84.608230},
+            location: {lat: 39.129595, lng: -84.476775},
             casualties: 3,
             type: 'VEHICULAR COLLISION',
             ppe: 'LEVEL D',
-            assembly: {lat: 39.031508, lng: -84.606009},
-            com_post: {lat: 39.030607, lng: -84.607927},
+            assembly: {lat: 39.129372, lng: -84.476501},
+            com_post: {lat: 39.129581, lng: -84.476442},
             decon: null,
             radius: 0,
             clear: false,
@@ -101,24 +101,24 @@ var app = app || {};
         },
         {
             id: 8,
-            location: {lat: 39.302596, lng: -84.439124},
+            location: {lat: 39.082263, lng: -84.509830},
             casualties: 2,
             type: 'VEHICULAR COLLISION',
             ppe: 'LEVEL D',
-            assembly: {lat: 39.302503, lng: -84.439175},
-            com_post: {lat: 39.302503, lng: -84.439175},
+            assembly: {lat: 39.082499, lng: -84.510762},
+            com_post: null,
             decon: null,
             radius: 0,
-            clear: true,
+            clear: false,
             edit: false
         },
         {
             id: 9,
-            location: {lat: 39.157515, lng: -84.292828},
+            location: {lat: 39.147961, lng: -84.466707},
             casualties: 2,
             type: 'OTHER',
             ppe: 'LEVEL D',
-            assembly: {lat: 39.157760, lng: -84.292542},
+            assembly: null,
             com_post: null,
             decon: null,
             radius: 0,
@@ -127,14 +127,27 @@ var app = app || {};
         },
         {
             id: 10,
-            location: {lat: 39.173853, lng: -84.507786},
+            location: {lat: 39.147888, lng: -84.466517},
             casualties: 4,
-            type: 'HAZMAT',
+            type: 'CONFINED SPACE RESCUE',
             ppe: 'LEVEL A',
-            assembly: {lat: 39.176411, lng: -84.507937},
-            com_post: {lat: 39.175396, lng: -84.507062},
-            decon: {lat: 39.174987, lng: -84.507533},
-            radius: 50,
+            assembly: null,
+            com_post: null,
+            decon: null,
+            radius: 0,
+            clear: false,
+            edit: false
+        },
+        {
+            id: 11,
+            location: {lat: 39.034052, lng: -84.534343},
+            casualties: 4,
+            type: 'VEHICULAR COLLISION',
+            ppe: 'Turnout',
+            assembly: null,
+            com_post: null,
+            decon: null,
+            radius: 0,
             clear: false,
             edit: false
         }
@@ -245,6 +258,9 @@ var app = app || {};
                 self.weather_icon('http://openweathermap.org/img/w/' + weather_icon + '.png');
             } else {
                 console.log('Error in network request ' + xhttp.statusText);
+                self.weather_main('Error');
+                self.weather_temp('Error');
+                self.weather_icon('');
             }
         });
         xhttp.onerror = function() {
