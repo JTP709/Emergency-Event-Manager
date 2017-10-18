@@ -139,12 +139,15 @@ th {
 
 #navbar {
     height: 100%;
-    width: 420px;
+    width: 423px;
     position: absolute;
 }
 #nav_list_button {
     display: none;
     font-size: 20px;
+    margin: 3px 0px 0px 3px;
+    width: 47px;
+    position: relative;
 }
 #navlist {
     background-color: white;
@@ -211,14 +214,40 @@ th {
 .button_container {
     float: none;
 }
+#listTab, #selListTab {
+    margin-left: 3px;
+    margin-top: 8.5px;
+    border-radius: 3px 3px 0px 0px;
+}
+#newTab, #selNewTab {
+    margin-left: 163px;
+    margin-top: 8.5px;
+    border-radius: 3px 3px 0px 0px;
+}
+#resetButton {
+    margin-left: 308px;
+    margin-top: 8.5px;
+}
 .nav_button {
     font-size: 16px;
     padding: 10px 10px;
-    margin: 3px 0px 3px 3px;
     border-radius: 2px;
+    position: absolute;
+}
+.tab_button {
+    height: 46px;
+}
+#selListTab, #selNewTab {
+    color: #333333;
+    background-color: #ffffff;
+    cursor: auto;
+    height: 48px;
+    border: 1px solid #000066;
+    border-bottom: 0px;
 }
 .event_button {
-    height: 30px;
+    height: 60px;
+    min-width: 60px;
     padding: 3px 10px 3px 10px;
 }
 .new_marker_button {
@@ -241,6 +270,7 @@ th {
     position: relative;
     display: inline-block;
     width: 305px;
+    font-size: 20px;
 }
 #submit_button {
     width: 50%;
@@ -307,13 +337,16 @@ th {
     padding-left: 10px;
     padding-right: 10px;
 }
-#eventListHeader {
+.eventListHeader {
     height: 35px;
     padding: 10px 0px 10px 10px;
 }
+#newEmHead {
+    padding-left: 0px;
+}
 #eventList {
     position: absolute;
-    max-height: calc(100% - 100px);
+    max-height: calc(100% - 125px);
     max-width: 340px;
     overflow: auto;
     background-color: #f1f1f1;

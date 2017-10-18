@@ -11,9 +11,16 @@
     <div class="header">
         <div id="navbar" class="navBar">
             <!-- Navigation Buttons -->
-            <button class="nav_button" data-bind="click: function(){nav('map_tab')}">Emergency Events</button>
-            <button class="nav_button" data-bind="click: function(){nav('new_tab')}">New Emergency</button>
-            <button class="nav_button" data-bind="click: reset">Reset Map</button>
+            <button id="listTab" class="nav_button tab_button" data-bind="click: function(){nav('map_tab')}, visible: new_tab">Emergency Events</button>
+
+            <button id="selListTab" class="nav_button tab_button" onclick="return false;" data-bind="visible: map_tab">Emergency Events</button>
+
+            <button id="newTab" class="nav_button tab_button" data-bind="click: function(){nav('new_tab')}, visible: map_tab">New Emergency</button>
+
+            <button id="selNewTab" class="nav_button tab_button" onclick="return false;" data-bind="visible: new_tab">New Emergency</button>
+
+            <button id="resetButton" class="nav_button" data-bind="click: reset">Reset Map</button>
+
             <button class="nav_button" id="nav_list_button" data-bind="click: function(){showFilterList('navlist')}">&#9776;</button>
             <div id="navlist" class="dropdown-content" data-bind="visible: navlist">
                 <a href="javascript:void(0);" class="nav_link" data-bind="click: function(){nav('map_tab')}">Emergency Events</a>
@@ -32,8 +39,8 @@
         <div class="modal" id="myModal" data-bind="visible: modal">
             <div class="modal-content">
                 <span class="close" data-bind="click: closeModal">&times;</span>
-                <h1 class="modalHeader">Local Businesses Affected by Hotzone</h1>
                 <div class="tableData" data-bind="if: resultsSwitch">
+                    <h1 class="modalHeader">Local Businesses Affected by Hotzone</h1>
                     <table>
                         <thead>
                             <tr>
@@ -63,7 +70,9 @@
         <div id="side_bar">
             <!-- Tab for New Emergency Event -->
             <div id="new_tab" data-bind="visible: new_tab">
-                <h2>New Emergency</h2>
+                <div id="newEmHead" class="eventListHeader">
+                    <h2>New Emergency</h2>
+                </div>
                 <form>
                     <!-- Select Type -->
                     <label><b>Event Type:</b></label>
@@ -115,7 +124,7 @@
             </div>
             <div id="map_tab" data-bind="visible: map_tab">
                 <div id="event_header">
-                    <div id="eventListHeader">
+                    <div class="eventListHeader">
                         <h2>Emergency Events</h2>
                     </div>
 
@@ -200,7 +209,7 @@
 
                                 <!-- Businesses Affected -->
                                 <div class="button_div" >
-                                    <button class="event_button" data-bind="click: $parent.businessList">HZ Effect</button>
+                                    <button class="event_button" data-bind="click: $parent.businessList">Hotzone<br>Effect</button>
                                 </div>
 
                                 <!-- Edit Button -->
