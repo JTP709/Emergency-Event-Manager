@@ -5,7 +5,6 @@ https://github.com/JTP709/Udacity_EMC
 */
 
 /*
-TODO: add foursqure API cuz reasons
 TODO: add google places API in addition to foursquare because that makes more sense
 TODO: add functionality to infoWindow
 TODO: add database storage (Firebase)
@@ -112,7 +111,7 @@ var app = app || {};
                 if (typeof func.location().lng === 'function') {
                     return func.location().lng();
                 } else {
-                    return func.location().lat;
+                    return func.location().lng;
                 }
             };
             this.formatParams = function (params){
@@ -142,7 +141,7 @@ var app = app || {};
                 ll: lat+','+lng,
                 //query: 'coffee',
                 v: '20170801',
-                radius: 500,
+                radius: rad,
                 limit: 50
             };
             var xhttp = new XMLHttpRequest();
@@ -162,6 +161,8 @@ var app = app || {};
                         }
                         self.localList.push(new func.localListing(result));
                     }
+                    console.log(xhttp);
+                    console.log(request);
                     console.log(self.localList());
                 } else {
                     console.log('Error in network request ' + xhttp.statusText);

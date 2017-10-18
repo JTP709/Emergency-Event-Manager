@@ -10,13 +10,13 @@ var app = app || {};
     app.initialEmergency = [
         {
             id: 1,
-            location: {lat: 39.173853, lng: -84.507786},
-            casualties: 4,
-            type: 'HAZMAT',
-            ppe: 'LEVEL A',
-            assembly: {lat: 39.176411, lng: -84.507937},
-            com_post: {lat: 39.175396, lng: -84.507062},
-            decon: {lat: 39.174987, lng: -84.507533},
+            location: {lat: 39.115406, lng: -84.519266},
+            casualties: 2,
+            type: 'FIRE',
+            ppe: 'Turnout',
+            assembly: {lat: 39.116187, lng: -84.519295},
+            com_post: {lat: 39.115317, lng: -84.519888},
+            decon: null,
             radius: 50,
             clear: false,
             edit: false
@@ -127,14 +127,14 @@ var app = app || {};
         },
         {
             id: 10,
-            location: {lat: 39.050350, lng: -84.494028},
-            casualties: 2,
-            type: 'OTHER',
-            ppe: 'LEVEL D',
-            assembly: null,
-            com_post: {lat: 39.050674, lng: -84.492918},
-            decon: null,
-            radius: 0,
+            location: {lat: 39.173853, lng: -84.507786},
+            casualties: 4,
+            type: 'HAZMAT',
+            ppe: 'LEVEL A',
+            assembly: {lat: 39.176411, lng: -84.507937},
+            com_post: {lat: 39.175396, lng: -84.507062},
+            decon: {lat: 39.174987, lng: -84.507533},
+            radius: 50,
             clear: false,
             edit: false
         }
@@ -226,7 +226,7 @@ var app = app || {};
             if (typeof self.location().lng === 'function') {
                 return self.location().lng();
             } else {
-                return self.location().lat;
+                return self.location().lng;
             }
         };
 
