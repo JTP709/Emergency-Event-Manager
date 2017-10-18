@@ -56,12 +56,36 @@ var app = app || {};
             }
         };
 
+        // Generate Hotzone Effect model from Info Window
+        app.hotzoneEffectIW = function(data) {
+            var idNum = data;
+            var eventList = self.initialList();
+
+            for (var i = 0; i < eventList.length; i++) {
+                if (eventList[i].id() === idNum) {
+                    self.hotzoneEffect(eventList[i]);
+                }
+            }
+        };
+
+        // Change Center option on Info Window
+        app.changeCenterIW = function(data) {
+            var idNum = data;
+            var eventList = self.initialList();
+
+            for (var i = 0; i < eventList.length; i++) {
+                if (eventList[i].id() === idNum) {
+                    self.changeCenter(eventList[i]);
+                }
+            }
+        };
+
         // Center and Zoom on selected Emergency Event
         this.changeCenter = function(data) {
             var func = this;
             this.bounds = new google.maps.LatLngBounds();
             //Extend the boundaries of the map for each visible marker
-            this.markers.forEach(function(marks){
+            data.markers.forEach(function(marks){
                 if (marks.marker.getVisible() === true) {
                     func.bounds.extend(marks.marker.position);
                     app.map.fitBounds(func.bounds);
@@ -95,23 +119,22 @@ var app = app || {};
                 return true;
             }
         });
-
-        this.businessList = function (data) {
+        this.hotzoneEffect = function (data) {
             var func = this;
             self.modal(true);
             self.localList([]);
             this.lat = function() {
-                if (typeof func.location().lat === 'function') {
-                    return func.location().lat();
+                if (typeof data.location().lat === 'function') {
+                    return data.location().lat();
                 } else {
-                    return func.location().lat;
+                    return data.location().lat;
                 }
             };
             this.lng = function() {
-                if (typeof func.location().lng === 'function') {
-                    return func.location().lng();
+                if (typeof data.location().lng === 'function') {
+                    return data.location().lng();
                 } else {
-                    return func.location().lng;
+                    return data.location().lng;
                 }
             };
             this.formatParams = function (params){
@@ -129,10 +152,10 @@ var app = app || {};
                 this.hereNow_count = ko.observable(data.hereNow_count);
             };
 
-            var location = this.location();
+            var location = data.location();
             var lat = this.lat();
             var lng = this.lng();
-            var rad = this.radius();
+            var rad = data.radius();
 
             var api = 'https://api.foursquare.com/v2/venues/explore';
             var params = {
@@ -296,12 +319,13 @@ var app = app || {};
         this.filteredMarkers = ko.computed(function(){
             // Get the filtered list
             this.filteredList = self.filteredList();
-            // Remove google listener for zoom
+            // Remove google listener for zoom and info Window
             self.zoomListeners.forEach(function(mark){
                 google.maps.event.removeListener(mark);
             });
             // Set only the filtered markers to visible
             this.filteredList.forEach(function(mark){
+                // Get map zoom level
                 var zoom = app.map.getZoom();
                 if (zoom >= 14) {
                     // Set all markers to visible if zoomed in

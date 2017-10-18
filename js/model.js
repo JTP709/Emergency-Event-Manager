@@ -36,27 +36,27 @@ var app = app || {};
         },
         {
             id: 3,
-            location: {lat: 38.993431, lng: -84.647401},
-            casualties: 2,
+            location: {lat: 38.995923, lng: -84.650347},
+            casualties: 4,
             type: 'FIRE',
             ppe: 'Turnout',
-            assembly: {lat: 38.993168, lng: -84.650226},
-            com_post: {lat: 38.992819, lng: -84.649519},
+            assembly: {lat: 38.992827, lng: -84.648754},
+            com_post: {lat: 38.994470, lng: -84.651465},
             decon: null,
-            radius: 55,
+            radius: 150,
             clear: false,
             edit: false
         },
         {
             id: 4,
-            location: {lat: 39.114720, lng: -84.528539},
+            location: {lat: 39.128099, lng: -84.518025},
             casualties: 2,
-            type: 'CONFINED SPACE RESCUE',
-            ppe: 'LEVEL B',
-            assembly: {lat: 39.112839, lng: -84.526615},
-            com_post: {lat: 39.113600, lng: -84.527466},
+            type: 'FIRE',
+            ppe: 'Turnout',
+            assembly: {lat: 39.128297, lng: -84.519331},
+            com_post: {lat: 39.128191, lng: -84.516869},
             decon: null,
-            radius: 30,
+            radius: 70,
             clear: false,
             edit: false
         },
@@ -92,7 +92,7 @@ var app = app || {};
             casualties: 3,
             type: 'VEHICULAR COLLISION',
             ppe: 'LEVEL D',
-            assembly: {lat: 39.030607, lng: -84.607927},
+            assembly: {lat: 39.031508, lng: -84.606009},
             com_post: {lat: 39.030607, lng: -84.607927},
             decon: null,
             radius: 0,
@@ -263,6 +263,8 @@ var app = app || {};
                     '<label><b>' + data.type + ' EVENT</b></label>' +
                     '<p> Emergency Event #' + data.id + '</p>' +
                     '<p>' + self.cas_level() + '</p>' +
+                    '<button class="event_button" onClick="app.hotzoneEffectIW('+self.id()+')">HOTZONE<br>EFFECT</button>' +
+                    '<button class="event_button" onClick="app.changeCenterIW('+self.id()+')">GO TO</button>' +
                     '</div>',
                 type: 'primary',
                 icon: 'icon/' + data.type.replace(/\s+/g, "_") + '.png'
@@ -297,8 +299,6 @@ var app = app || {};
             }
         ];
 
-        this.infoWindow = new google.maps.InfoWindow();
-
         // Create markers with info windows
         this.markerMaker = function(data) {
             var func = this;
@@ -312,6 +312,7 @@ var app = app || {};
                     visible: false,
                     icon: data.icon
             });
+
             // Add the info window when clicked
             this.marker.addListener('click', function(){
                 var mark = this;
