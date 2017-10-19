@@ -396,7 +396,7 @@ th {
     }
     #eventList {
         min-width: 100%;
-        max-height: calc(100% - 60px);
+        max-height: calc(100% - 125px);
         border-top: 1px solid #000066;
     }
     #eventListHeader {
