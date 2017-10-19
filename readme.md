@@ -9,6 +9,7 @@ ___
 ## Changelog:
 
 v1.0 10/18/2017 - Initial Release
+
 v1.1 10/18/2017 - Added additional features
 * Added Foursquare API functionality
 * Added Event Card function to isolate the specific event card for the selected marker
