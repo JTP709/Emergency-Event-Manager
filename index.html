@@ -225,14 +225,14 @@
 
                                 <!-- Submit Edit Button; only visible during edits -->
                                 <div class="" data-bind="visible: edit">
-                                    <button class="event_button" data-bind="click: $parent.editEvent">Submit Edit</button>
+                                    <button class="event_button" data-bind="click: $parent.editEvent">Submit<br>Edit</button>
                                     <!-- Cancel Edit Button; only visible during edits -->
-                                    <button class="event_button" data-bind="click: $parent.cancelEditEvent">Cancel Edit</button>
+                                    <button class="event_button" data-bind="click: $parent.cancelEditEvent">Cancel<br>Edit</button>
                                 </div>
 
                                 <div class="" data-bind="visible: editOption">
                                     <!-- All Clear Button; hidden when an event is clear or when editing -->
-                                    <button class="event_button" data-bind="click: $parent.allClear, visible: clearOption">All Clear!</button>
+                                    <button class="event_button" data-bind="click: $parent.allClear, visible: clearOption">All<br>Clear!</button>
                                     <!-- Still Hot Button; hidden when an event is clear or when editing -->
                                     <button class="event_button" data-bind="click: $parent.stillHot, visible: clear">Still Hot!</button>
                                 </div>

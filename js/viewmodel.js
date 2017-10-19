@@ -25,7 +25,7 @@ var app = app || {};
         app.initialEvents.forEach(function(item){
             self.initialList.push(new app.EventListing(item));
         });
-        app.setListingID = ko.observable(0);
+        app.setListingID = ko.observable();
         app.infoListing = ko.computed(function(){
             var eventID = app.setListingID()
             return self.initialList()[eventID];
