@@ -170,9 +170,9 @@ var app = app || {};
                 return "?" + Object
                     .keys(params)
                     .map(function(key){
-                      return key+"="+encodeURIComponent(params[key])
+                      return key+"="+encodeURIComponent(params[key]);
                     })
-                    .join("&")
+                    .join("&");
             };
             this.localListing = function(data){
                 this.name = ko.observable(data.name);
@@ -181,7 +181,6 @@ var app = app || {};
                 this.hereNow_count = ko.observable(data.hereNow_count);
             };
 
-            var location = data.location();
             var lat = this.lat();
             var lng = this.lng();
             var rad;
@@ -217,7 +216,7 @@ var app = app || {};
                             address: request.response.groups[0].items[i].venue.location.address,
                             phoneNum: request.response.groups[0].items[i].venue.contact.formattedPhone,
                             hereNow_count: request.response.groups[0].items[i].venue.hereNow.count,
-                        }
+                        };
                         self.localList.push(new func.localListing(result));
                     }
                 } else {
@@ -241,7 +240,7 @@ var app = app || {};
             if (event.target == modal) {
                 self.modal(false);
             }
-        }
+        };
 
         /*
         Navigation Bar Function
@@ -432,7 +431,7 @@ var app = app || {};
                 self.tempComPostMarkersArray(),
                 self.tempDeconMarkersArray()
             ];
-            return tempArrays
+            return tempArrays;
 
         });
         this.tempHotzones = [];
@@ -460,7 +459,7 @@ var app = app || {};
         // Change Event Icon Dynamicall while creating new event
         this.iconManager = ko.computed(function(){
             var icon = self.typeValue();
-            if (self.tempLocMarkersArray()[0] != undefined) {
+            if (self.tempLocMarkersArray()[0] !== undefined) {
                 var img = 'icon/' + icon.replace(/\s+/g, "_") + '.png';
                 self.tempLocMarkersArray()[0].setIcon(img);
             }
@@ -502,22 +501,22 @@ var app = app || {};
 
         this.markButtonReset = function() {
             var marker = self.tempMarkerArrays();
-            if (marker[0][0] != undefined) {
+            if (marker[0][0] !== undefined) {
                 self.locMarkButton(false);
             } else {
                 self.locMarkButton(true);
             }
-            if (marker[1][0] != undefined) {
+            if (marker[1][0] !== undefined) {
                 self.assemblyMarkButton(false);
             } else {
                 self.assemblyMarkButton(true);
             }
-            if (marker[2][0] != undefined) {
+            if (marker[2][0] !== undefined) {
                 self.comMarkButton(false);
             } else {
                 self.comMarkButton(true);
             }
-            if (marker[3][0] != undefined) {
+            if (marker[3][0] !== undefined) {
                 self.decMarkButton(false);
             } else {
                 self.decMarkButton(true);
@@ -526,7 +525,7 @@ var app = app || {};
 
         // Create a new event function
         this.newEvent = function(){
-            if (self.tempMarkerArrays()[0].length == 0){
+            if (self.tempMarkerArrays()[0].length === 0){
                 self.errorForm(true);
                 self.newEventMsg(false);
             } else {
@@ -547,7 +546,7 @@ var app = app || {};
 
                 var markerPos = function(i) {
                     var marker = self.tempMarkerArrays();
-                    if (marker[i][0] != undefined) {
+                    if (marker[i][0] !== undefined) {
                         return marker[i][0].position;
                     } else {
                         return null;
@@ -621,7 +620,6 @@ var app = app || {};
             self.decMarkButton(false);
 
             this.clicker = google.maps.event.addListener(app.map,'click', function(event){
-                var observable;
                 var markersArray;
                 var icon;
                 var pos = event.latLng;
@@ -644,7 +642,7 @@ var app = app || {};
                 }
 
                 this.marker = new google.maps.Marker({
-                    position: event.latLng,
+                    position: pos,
                     map: app.map,
                     icon: icon,
                     draggable: true
@@ -666,7 +664,7 @@ var app = app || {};
 
         // Creats a temporary hotzone and captures lat-long data for later
         this.newHotzone = function(){
-            if (self.tempMarkerArrays()[0].length == 0) {
+            if (self.tempMarkerArrays()[0].length === 0) {
                 this.errorHotzonePreview(true);
             } else {
                 // Remove previous Hotzone previews
@@ -830,8 +828,8 @@ var app = app || {};
             self.resetForm();
 
             // Reset temp hotzone
-            for (var i = 0; i < self.tempHotzones.length; i++) {
-              self.tempHotzones[i].setMap(null);
+            for (var j = 0; j < self.tempHotzones.length; j++) {
+              self.tempHotzones[j].setMap(null);
             }
             self.tempHotzones = [];
         };
