@@ -290,6 +290,7 @@ var app = app || {};
         function indexNum(n) {
             return n -1;
         }
+        var eventID = indexNum(objID);
 
         // Establish marker data for each type
         var markerData = [
@@ -297,10 +298,11 @@ var app = app || {};
                 title: data.type + ' EVENT',
                 position: data.location,
                 content: '<div id="info_window_content" '+
-                    'data-bind="template: { name: \'info-window-template\', data: app.list['+ indexNum(objID) +']}"' +
+                    'data-bind="template: { name: \'info-window-template\', data: app.infoListing}"' +
                     '</div>',
                 type: 'primary',
-                icon: 'icon/' + data.type.replace(/\s+/g, "_") + '.png'
+                icon: 'icon/' + data.type.replace(/\s+/g, "_") + '.png',
+                eventID: eventID
             },
             {
                 title: 'Command Post',
@@ -353,6 +355,9 @@ var app = app || {};
 
                 app.infoWindow.open(app.map, func.marker);
                 app.infoWindow.setContent(data.content);
+
+                var objID = data.eventID;
+                app.setListingID(objID);
 
                 this.setAnimation(google.maps.Animation.BOUNCE);
                 setTimeout(function(){ mark.setAnimation(null); }, 700);

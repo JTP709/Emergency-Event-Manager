@@ -25,14 +25,20 @@ var app = app || {};
         app.initialEvents.forEach(function(item){
             self.initialList.push(new app.EventListing(item));
         });
-        app.list = this.initialList();
-        console.log(app.list);
+        app.setListingID = ko.observable(0);
+        app.infoListing = ko.computed(function(){
+            var eventID = app.setListingID()
+            return self.initialList()[eventID];
+        });
+        var test = ko.computed(function() {
+            console.log(app.setListingID());
+        });
 
-        this.isInfoWindowLoaded = ko.observable(false);
+        var isInfoWindowLoaded = ko.observable(false);
         google.maps.event.addListener(app.infoWindow, 'domready', function(){
-            if (self.isInfoWindowLoaded() === false) {
+            if (isInfoWindowLoaded() === false) {
                 ko.applyBindings(self, document.getElementById('info_window_content'));
-                self.isInfoWindowLoaded(true);
+                isInfoWindowLoaded(true);
             }
         });
 
