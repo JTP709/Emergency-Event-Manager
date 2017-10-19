@@ -2,13 +2,19 @@
 # Emergency Event Manager for Udacity Full-Stack Nanodegree Program
 
 ### Author: Jonathan Prell
-### v1.0 - 10/16/2017
+### v1.1 - 10/18/2017
 
 ___
 
 ## Changelog:
 
-v1.0 - Initial Release
+v1.0 10/18/2017 - Initial Release
+v1.1 10/18/2017 - Added additional features
+* Added Foursquare API functionality
+* Added Event Card function to isolate the specific event card for the selected marker
+* Added GOTO, Event Card, and Hotzone Effect buttons to marker information windows
+* Some UI changes
+* Various bug fixes
 
 ___
 
@@ -42,7 +48,7 @@ The main page will open on the "Emergenc Events" tab. The left side of the page 
 #### Event Cards
 Each event has it's own "card" displayed on the left side-bar. These cards provide basic information about the event, such as the incident Type, Casualty Level, number of Casualties, and PPE (personal proetective equipment) requirements. Buttons at the bottom of the card allow the user to GO TO the even, which zooms in closer on the map view, edit the existing event information, or declaring an "All Clear" which removes the event from the active list. Hovering over a card will highlight the map icon in the map view to show the user where the event is located.
 
-### Hotzone Effect
+#### Hotzone Effect
 This button (accessible from the Event card or the Event Marker's Information Window) will show a list of all of the local business within the hotzone radius (or 50 meters, whichever is larger). This is crucial information for an emergency responder to know how to clear the scene and make it safe before going to work addressing the hazard.
 
 #### Event Locations
