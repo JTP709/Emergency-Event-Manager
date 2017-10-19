@@ -7,7 +7,7 @@ https://github.com/JTP709/Udacity_EMC
 var app = app || {};
 
 (function(){
-    app.initialEmergency = [
+    app.initialEvents = [
         {
             id: 1,
             location: {lat: 39.115406, lng: -84.519266},

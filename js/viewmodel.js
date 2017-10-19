@@ -22,9 +22,24 @@ var app = app || {};
 
         // Create an observable array and populate with Emergency Events
         this.initialList = ko.observableArray([]);
-        app.initialEmergency.forEach(function(item){
+        app.initialEvents.forEach(function(item){
             self.initialList.push(new app.EventListing(item));
         });
+        /* Firebase code
+
+        this.database.ref().once('value', function(snapshot){
+            var request = snapshot.toJSON();
+            console.log(request);
+            console.log(request[0]);
+            for (var i = 0; i < request.length; i++){
+                self.initialList.push(new app.EventListing(request[i]));
+            }
+
+            app.initialEvents.forEach(function(item){
+                self.initialList.push(new app.EventListing(item));
+            });
+        });
+        */
 
         // Flash message hidden initially
         this.newEventMsg = ko.observable(false);
