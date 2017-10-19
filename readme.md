@@ -24,6 +24,8 @@ The application uses the powerful [Google Maps JavaScript API.](https://develope
 
 The application takes advantage of a simple and free open weather API from [Open Weather Map](https://openweathermap.org/api) to provide the user current weather information. The weather currently provides local information for my location in Cincinnati, OH.
 
+In addition to location specific weather, this application draws information on local businesses using the [Foursquare API](https://developer.foursquare.com/). This data is used to provide the Emergency Manager with information from businesses that may be impacted by an ongoing emergency event.
+
 This application was writen in JavaScript, using the powerful [Knockout.js framework.](http://knockoutjs.com/)
 
 ### Demo Version
