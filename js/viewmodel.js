@@ -25,6 +25,19 @@ var app = app || {};
         app.initialEvents.forEach(function(item){
             self.initialList.push(new app.EventListing(item));
         });
+        app.list = this.initialList();
+        console.log(app.list);
+
+        this.isInfoWindowLoaded = ko.observable(false);
+        google.maps.event.addListener(app.infoWindow, 'domready', function(){
+            if (self.isInfoWindowLoaded() === false) {
+                ko.applyBindings(self, document.getElementById('info_window_content'));
+                self.isInfoWindowLoaded(true);
+            }
+        });
+
+
+
         /* Firebase code
 
         this.database.ref().once('value', function(snapshot){

@@ -249,6 +249,22 @@
             </div>
         </div>
     </div>
+    <script type="text/html" id="info-window-template">
+        <div id="content">
+            <label><b><span data-bind="text: type"></span>  EVENT</b></label>
+            <p>Emergency Event #<span data-bind="text: id"></span></p>
+            <p data-bind="text: cas_level"></p>
+            <div class="button_div">
+                <button class="event_button info_button" data-bind="click: function(id) {app.hotzoneEffect(id)}">HOTZONE<br>EFFECT</button>
+            </div>
+            <div class="button_div">
+                <button class="event_button info_button" data-bind="click: function(id) {app.changeCenterIW(id)}">GO TO</button>
+            </div>
+            <div id="info_right_button" class="button_div">
+                <button class="event_button info_button" data-bind="click: function(id) {app.eventFilterIW(id)}">EVENT<br>CARD</button>
+            </div>
+        </div>
+    </script>
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/4.5.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.5.0/firebase-database.js"></script>

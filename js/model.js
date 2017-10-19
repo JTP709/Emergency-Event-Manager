@@ -127,7 +127,7 @@ var app = app || {};
         },
         {
             id: 10,
-            location: {lat: 39.147888, lng: -84.466517},
+            location: {lat: 39.035782, lng: -84.453419},
             casualties: 4,
             type: 'CONFINED SPACE RESCUE',
             ppe: 'LEVEL A',
@@ -228,14 +228,14 @@ var app = app || {};
         this.weather_icon = ko.observable();
 
         // Determine lat and lng types before passing to API call
-        this.lat = function() {
+        var lat = function() {
             if (typeof self.location().lat === 'function') {
                 return self.location().lat();
             } else {
                 return self.location().lat;
             }
         };
-        this.lng = function() {
+        var lng = function() {
             if (typeof self.location().lng === 'function') {
                 return self.location().lng();
             } else {
@@ -244,7 +244,7 @@ var app = app || {};
         };
 
         // Get weather using Open Weather API
-        var api = 'http://api.openweathermap.org/data/2.5/weather?lat='+this.lat()+'&lon='+this.lat()+'&APPID=00b1eab8137a0b1d81025d667dbb2f17&units=imperial';
+        var api = 'http://api.openweathermap.org/data/2.5/weather?lat='+lat()+'&lon='+lat()+'&APPID=00b1eab8137a0b1d81025d667dbb2f17&units=imperial';
         var xhttp = new XMLHttpRequest();
         xhttp.open("GET", api, true);
         xhttp.send(null);
@@ -270,12 +270,8 @@ var app = app || {};
             self.weather_icon('');
         };
 
-        // Establish marker data for each type
-        this.markerData = [
-            {
-                title: data.type + ' EVENT',
-                position: data.location,
-                content: '<div id="content">'+
+        /*
+        content: '<div id="content">'+
                     '<label><b>' + data.type + ' EVENT</b></label>' +
                     '<p> Emergency Event #' + data.id + '</p>' +
                     '<p>' + self.cas_level() + '</p>' +
@@ -289,13 +285,27 @@ var app = app || {};
                     '<button class="event_button info_button" onClick="app.eventFilterIW('+self.id()+')">EVENT<br>CARD</button>' +
                     '</div>' +
                     '</div>',
+        */
+        var objID = this.id();
+        function indexNum(n) {
+            return n -1;
+        }
+
+        // Establish marker data for each type
+        var markerData = [
+            {
+                title: data.type + ' EVENT',
+                position: data.location,
+                content: '<div id="info_window_content" '+
+                    'data-bind="template: { name: \'info-window-template\', data: app.list['+ indexNum(objID) +']}"' +
+                    '</div>',
                 type: 'primary',
                 icon: 'icon/' + data.type.replace(/\s+/g, "_") + '.png'
             },
             {
                 title: 'Command Post',
                 position: data.com_post,
-                content: '<div id="content">'+
+                content: '<div id="info_window_content">'+
                     '<p>Command Post</p>' +
                     '</div>',
                 type: 'secondary',
@@ -304,7 +314,7 @@ var app = app || {};
             {
                 title: 'Assembly Point',
                 position: data.assembly,
-                content: '<div id="content">'+
+                content: '<div id="info_window_content">'+
                     '<p>Assembly Point</p>' +
                     '<p>Casualties: ' + data.casualties + '</p>' +
                     '</div>',
@@ -314,7 +324,7 @@ var app = app || {};
             {
                 title: 'Decontamination Point',
                 position: data.decon,
-                content: '<div id="content">'+
+                content: '<div id="info_window_content">'+
                     '<p>Decontamination Point</p>' +
                     '</div>',
                 type: 'secondary',
@@ -322,8 +332,9 @@ var app = app || {};
             }
         ];
 
+
         // Create markers with info windows
-        this.markerMaker = function(data) {
+        var markerMaker = function(data) {
             var func = this;
 
             // Create the marker
@@ -349,7 +360,7 @@ var app = app || {};
         };
 
         // Create a hotzone radius
-        this.hotzoneMaker = function(data) {
+        var hotzoneMaker = function(data) {
             this.hotzone = new google.maps.Circle({
                 strokeColor: '#FF0000',
                 strokeOpacity: 0.4,
@@ -363,14 +374,14 @@ var app = app || {};
         };
 
         this.markers =[];
-        this.markerData.forEach(function(data){
+        markerData.forEach(function(data){
             if (data.position !== null) {
-                self.markers.push(new self.markerMaker(data));
+                self.markers.push(new markerMaker(data));
             }
         });
 
         this.hotzones = [];
-        self.hotzones.push(new self.hotzoneMaker(data));
+        self.hotzones.push(new hotzoneMaker(data));
     };
 
 })();
