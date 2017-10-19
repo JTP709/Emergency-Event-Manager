@@ -40,6 +40,9 @@ The main page will open on the "Emergenc Events" tab. The left side of the page 
 #### Event Cards
 Each event has it's own "card" displayed on the left side-bar. These cards provide basic information about the event, such as the incident Type, Casualty Level, number of Casualties, and PPE (personal proetective equipment) requirements. Buttons at the bottom of the card allow the user to GO TO the even, which zooms in closer on the map view, edit the existing event information, or declaring an "All Clear" which removes the event from the active list. Hovering over a card will highlight the map icon in the map view to show the user where the event is located.
 
+### Hotzone Effect
+This button (accessible from the Event card or the Event Marker's Information Window) will show a list of all of the local business within the hotzone radius (or 50 meters, whichever is larger). This is crucial information for an emergency responder to know how to clear the scene and make it safe before going to work addressing the hazard.
+
 #### Event Locations
 When a user zooms into an event, additional markers for that event will appear. These will indicate more event specific locations, such as the local Command Post, Assembly Point, and Decontamination area. These markers may not always be applicable. A red circle will also appear, indicating the event's Hot Zone, or immediate danger area. Again, these are only present if applicable.
 
