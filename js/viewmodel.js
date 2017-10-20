@@ -5,7 +5,7 @@ https://github.com/JTP709/Udacity_EMC
 */
 
 /*
-TODO: add google places API in addition to foursquare because that makes more sense
+TODO: replace foursquare API with google places API because that makes more sense
 TODO: add database storage (Firebase)
 */
 
@@ -25,24 +25,25 @@ var app = app || {};
         app.initialEvents.forEach(function(item){
             self.initialList.push(new app.EventListing(item));
         });
+
+        // Info listing provides data for the info window bindings.
+        // Info listing is updated based on the marker selected.
         app.setListingID = ko.observable();
-        app.infoListing = ko.computed(function(){
+        this.infoListing = ko.computed(function(){
             var eventID = app.setListingID()
             return self.initialList()[eventID];
         });
-        var test = ko.computed(function() {
-            console.log(app.setListingID());
-        });
 
-        var isInfoWindowLoaded = ko.observable(false);
+        // Get info window content. This is applied in the Model.
+        app.node = document.getElementById('info_window_div');
+
+        // Apply info window content bindings each time the info window DOM is ready
+        app.markerType = ko.observable();
         google.maps.event.addListener(app.infoWindow, 'domready', function(){
-            if (isInfoWindowLoaded() === false) {
+            if (app.markerType() === 'primary') {
                 ko.applyBindings(self, document.getElementById('info_window_content'));
-                isInfoWindowLoaded(true);
-            }
+            };
         });
-
-
 
         /* Firebase code
 
@@ -89,35 +90,11 @@ var app = app || {};
             }
         };
 
-        // Generate Hotzone Effect model from Info Window
-        app.hotzoneEffectIW = function(data) {
-            var idNum = data;
-            var eventList = self.initialList();
-
-            for (var i = 0; i < eventList.length; i++) {
-                if (eventList[i].id() === idNum) {
-                    self.hotzoneEffect(eventList[i]);
-                }
-            }
-        };
-
         // Change Center option on Info Window
-        app.changeCenterIW = function(data) {
-            var idNum = data;
+        this.eventFilterIW = function(data) {
+            var idNum = data.id();
             var eventList = self.initialList();
-
-            for (var i = 0; i < eventList.length; i++) {
-                if (eventList[i].id() === idNum) {
-                    self.changeCenter(eventList[i]);
-                }
-            }
-        };
-
-        // Change Center option on Info Window
-        app.eventFilterIW = function(data) {
-            var idNum = data;
-            var eventList = self.initialList();
-
+            console.log(idNum);
             for (var i = 0; i < eventList.length; i++) {
                 if (eventList[i].id() === idNum) {
                     self.singleFilter(true);
@@ -152,7 +129,7 @@ var app = app || {};
             self.defaultMarker(data);
         };
 
-        // Generates a list of local businesses from Foursquare based on HOTZONE radus
+        // Generates a list of local businesses from Foursquare based on HOTZONE radius
         this.modal = ko.observable(false);
         this.localList = ko.observableArray([]);
         this.totalResults = ko.observable();

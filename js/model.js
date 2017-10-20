@@ -7,6 +7,7 @@ https://github.com/JTP709/Udacity_EMC
 var app = app || {};
 
 (function(){
+    // Initial emergency event data to populate the application
     app.initialEvents = [
         {
             id: 1,
@@ -153,6 +154,7 @@ var app = app || {};
         }
     ];
 
+    // Emergency Event Types/Categories
     app.typeList = [
         {
             type: 'HAZMAT'
@@ -171,13 +173,13 @@ var app = app || {};
         },
     ];
 
-    // Create an array of filters
+    // Create a type object
     app.typeFilter = function(x) {
         this.type = x.type;
         this.selected = ko.observable(false);
     };
 
-
+    // Creats an event object
     app.EventListing = function(data) {
         var self = this;
 
@@ -291,15 +293,14 @@ var app = app || {};
             return n -1;
         }
         var eventID = indexNum(objID);
+        var content = document.getElementById('info_window_div').innerHTML;
 
         // Establish marker data for each type
         var markerData = [
             {
                 title: data.type + ' EVENT',
                 position: data.location,
-                content: '<div id="info_window_content" '+
-                    'data-bind="template: { name: \'info-window-template\', data: app.infoListing}"' +
-                    '</div>',
+                content: content,
                 type: 'primary',
                 icon: 'icon/' + data.type.replace(/\s+/g, "_") + '.png',
                 eventID: eventID
@@ -355,6 +356,8 @@ var app = app || {};
             // Add the info window when clicked
             this.marker.addListener('click', function(){
                 var mark = this;
+                var doc = document.body.appendChild(app.node);
+                app.markerType(data.type);
 
                 app.infoWindow.open(app.map, func.marker);
                 app.infoWindow.setContent(data.content);

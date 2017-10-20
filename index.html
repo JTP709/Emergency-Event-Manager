@@ -255,15 +255,18 @@
             <p>Emergency Event #<span data-bind="text: id"></span></p>
             <p data-bind="text: cas_level"></p>
             <div class="button_div">
-                <button class="event_button info_button" data-bind="click: function(id) {app.hotzoneEffect(id)}">HOTZONE<br>EFFECT</button>
+                <button class="event_button info_button" data-bind="click: $parent.hotzoneEffect">HOTZONE<br>EFFECT</button>
             </div>
             <div class="button_div">
-                <button class="event_button info_button" data-bind="click: function(id) {app.changeCenterIW(id)}">GO TO</button>
+                <button class="event_button info_button" data-bind="click: $parent.changeCenter">GO TO</button>
             </div>
             <div id="info_right_button" class="button_div">
-                <button class="event_button info_button" data-bind="click: function(id) {app.eventFilterIW(id)}">EVENT<br>CARD</button>
+                <button class="event_button info_button" data-bind="click: $parent.eventFilterIW">EVENT<br>CARD</button>
             </div>
         </div>
+    </script>
+    <script type="text/html" id="info_window_div">
+        <div id="info_window_content" data-bind="template: { name: 'info-window-template', data: infoListing}"></div>
     </script>
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/4.5.0/firebase-app.js"></script>
