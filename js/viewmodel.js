@@ -94,7 +94,6 @@ var app = app || {};
         this.eventFilterIW = function(data) {
             var idNum = data.id();
             var eventList = self.initialList();
-            console.log(idNum);
             for (var i = 0; i < eventList.length; i++) {
                 if (eventList[i].id() === idNum) {
                     self.singleFilter(true);

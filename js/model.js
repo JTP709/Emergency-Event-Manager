@@ -346,6 +346,7 @@ var app = app || {};
             // Create the marker
             this.marker = new google.maps.Marker({
                     position: data.position,
+
                     title: data.title,
                     animation: google.maps.Animation.DROP,
                     map: app.map,
@@ -356,6 +357,8 @@ var app = app || {};
             // Add the info window when clicked
             this.marker.addListener('click', function(){
                 var mark = this;
+                // Info Window Content is destroyed when info window is closed and must be
+                // appended to the document.
                 var doc = document.body.appendChild(app.node);
                 app.markerType(data.type);
 
@@ -367,6 +370,14 @@ var app = app || {};
 
                 this.setAnimation(google.maps.Animation.BOUNCE);
                 setTimeout(function(){ mark.setAnimation(null); }, 700);
+
+                var closeClick = google.maps.event.addListener(app.map, "click", function(event) {
+                    var map = app.infoWindow.getMap();
+                    if (map !== null && typeof map !== "undefined") {
+                        app.infoWindow.close()
+                    }
+                    google.maps.event.removeListener(closeClick);
+                });
             });
         };
 
