@@ -246,7 +246,7 @@ var app = app || {};
         };
 
         // Get weather using Open Weather API
-        var api = 'http://api.openweathermap.org/data/2.5/weather?lat='+lat()+'&lon='+lat()+'&APPID=00b1eab8137a0b1d81025d667dbb2f17&units=imperial';
+        var api = 'http://api.openweathermap.org/data/2.5/weather?lat='+lat()+'&lon='+lng()+'&APPID=00b1eab8137a0b1d81025d667dbb2f17&units=imperial';
         var xhttp = new XMLHttpRequest();
         xhttp.open("GET", api, true);
         xhttp.send(null);
@@ -359,7 +359,6 @@ var app = app || {};
                 var mark = this;
                 // Info Window Content is destroyed when info window is closed and must be
                 // appended to the document.
-                var doc = document.body.appendChild(app.node);
                 app.markerType(data.type);
 
                 app.infoWindow.open(app.map, func.marker);
@@ -374,7 +373,7 @@ var app = app || {};
                 var closeClick = google.maps.event.addListener(app.map, "click", function(event) {
                     var map = app.infoWindow.getMap();
                     if (map !== null && typeof map !== "undefined") {
-                        app.infoWindow.close()
+                        app.infoWindow.close();
                     }
                     google.maps.event.removeListener(closeClick);
                 });

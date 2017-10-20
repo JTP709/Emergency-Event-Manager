@@ -30,7 +30,7 @@ var app = app || {};
         // Info listing is updated based on the marker selected.
         app.setListingID = ko.observable();
         this.infoListing = ko.computed(function(){
-            var eventID = app.setListingID()
+            var eventID = app.setListingID();
             return self.initialList()[eventID];
         });
 
@@ -42,7 +42,7 @@ var app = app || {};
         google.maps.event.addListener(app.infoWindow, 'domready', function(){
             if (app.markerType() === 'primary') {
                 ko.applyBindings(self, document.getElementById('info_window_content'));
-            };
+            }
         });
 
         /* Firebase code
