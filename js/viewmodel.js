@@ -75,6 +75,8 @@ var app = app || {};
             } else {
                 var h_icon = 'h_' + icon;
                 eventMarker.setIcon(h_icon);
+                eventMarker.setAnimation(google.maps.Animation.BOUNCE);
+                setTimeout(function(){ eventMarker.setAnimation(null); }, 700);
             }
         };
 
