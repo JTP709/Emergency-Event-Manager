@@ -307,8 +307,9 @@ var app = app || {};
             {
                 title: 'Command Post',
                 position: data.com_post,
-                content: '<div id="info_window_content">'+
-                    '<p>Command Post</p>' +
+                content: '<div id="info_window_content_sub">'+
+                    '<p><b>Command Post</b></p>' +
+                    '<p> Emergency Event #' + data.id + '</p>' +
                     '</div>',
                 type: 'secondary',
                 icon: 'icon/' + 'com_post' + '.png'
@@ -316,8 +317,9 @@ var app = app || {};
             {
                 title: 'Assembly Point',
                 position: data.assembly,
-                content: '<div id="info_window_content">'+
-                    '<p>Assembly Point</p>' +
+                content: '<div id="info_window_content_sub">'+
+                    '<p><b>Assembly Point</b></p>' +
+                    '<p> Emergency Event #' + data.id + '</p>' +
                     '<p>Casualties: ' + data.casualties + '</p>' +
                     '</div>',
                 type: 'secondary',
@@ -326,8 +328,9 @@ var app = app || {};
             {
                 title: 'Decontamination Point',
                 position: data.decon,
-                content: '<div id="info_window_content">'+
-                    '<p>Decontamination Point</p>' +
+                content: '<div id="info_window_content_sub">'+
+                    '<p><b>Decontamination Point</b></p>' +
+                    '<p> Emergency Event #' + data.id + '</p>' +
                     '</div>',
                 type: 'secondary',
                 icon: 'icon/' + 'decon' + '.png'
