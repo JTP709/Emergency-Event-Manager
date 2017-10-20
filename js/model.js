@@ -36,14 +36,14 @@ var app = app || {};
         },
         {
             id: 3,
-            location: {lat: 38.995923, lng: -84.650347},
+            location: {lat: 39.094211, lng: -84.547120},
             casualties: 4,
             type: 'FIRE',
             ppe: 'Turnout',
-            assembly: {lat: 38.992827, lng: -84.648754},
-            com_post: {lat: 38.994470, lng: -84.651465},
+            assembly: {lat: 39.094630, lng: -84.545832},
+            com_post: {lat: 39.093918, lng: -84.546667},
             decon: null,
-            radius: 150,
+            radius: 40,
             clear: false,
             edit: false
         },
@@ -57,7 +57,7 @@ var app = app || {};
             com_post: {lat: 39.128191, lng: -84.516869},
             decon: null,
             radius: 70,
-            clear: false,
+            clear: true,
             edit: false
         },
         {
@@ -75,14 +75,14 @@ var app = app || {};
         },
         {
             id: 6,
-            location: {lat: 39.068674, lng: -84.298888},
+            location: {lat: 39.157816, lng: -84.539276},
             casualties: 3,
             type: 'HAZMAT',
             ppe: 'LEVEL C',
-            assembly: {lat: 39.066351, lng: -84.296343},
-            com_post: {lat: 39.066021, lng: -84.302850},
-            decon: {lat: 39.066473, lng: -84.301686},
-            radius: 250,
+            assembly: {lat: 39.159318, lng: -84.537273},
+            com_post: {lat: 39.159348, lng: -84.538333},
+            decon: {lat: 39.158895, lng: -84.538553},
+            radius: 150,
             clear: true,
             edit: false
         },
