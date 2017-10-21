@@ -357,8 +357,6 @@ var app = app || {};
             // Add the info window when clicked
             this.marker.addListener('click', function(){
                 var mark = this;
-                // Info Window Content is destroyed when info window is closed and must be
-                // appended to the document.
                 app.markerType(data.type);
 
                 app.infoWindow.open(app.map, func.marker);

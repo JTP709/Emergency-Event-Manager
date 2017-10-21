@@ -76,7 +76,6 @@ var app = app || {};
                 var h_icon = 'h_' + icon;
                 eventMarker.setIcon(h_icon);
                 eventMarker.setAnimation(google.maps.Animation.BOUNCE);
-                setTimeout(function(){ eventMarker.setAnimation(null); }, 700);
             }
         };
 
@@ -89,6 +88,7 @@ var app = app || {};
             } else {
                 var r_icon = icon.replace('h_','');
                 eventMarker.setIcon(r_icon);
+                eventMarker.setAnimation(null);
             }
         };
 
