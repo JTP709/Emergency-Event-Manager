@@ -222,12 +222,12 @@ th {
 }
 #listTab, #selListTab {
     margin-left: 3px;
-    margin-top: 8.5px;
+    margin-top: 9px;
     border-radius: 3px 3px 0px 0px;
 }
 #newTab, #selNewTab {
     margin-left: 163px;
-    margin-top: 8.5px;
+    margin-top: 9px;
     border-radius: 3px 3px 0px 0px;
 }
 #resetButton {
