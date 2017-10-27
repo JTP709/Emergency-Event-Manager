@@ -5,6 +5,7 @@ https://github.com/JTP709/Udacity_EMC
 */
 
 /*
+TODO: radius filter; Google Distance Matrix API Key: AIzaSyBPwLLMC4Q0bD9vsRNAUZY6tr1ZxPsDkEo
 TODO: replace foursquare API with google places API because that makes more sense
 TODO: add database storage (Firebase)
 */
