@@ -246,7 +246,7 @@ var app = app || {};
         };
 
         // Get weather using Open Weather API
-        var api = 'http://api.openweathermap.org/data/2.5/weather?lat='+lat()+'&lon='+lng()+'&APPID=00b1eab8137a0b1d81025d667dbb2f17&units=imperial';
+        var api = 'https://api.openweathermap.org/data/2.5/weather?lat='+lat()+'&lon='+lng()+'&APPID=00b1eab8137a0b1d81025d667dbb2f17&units=imperial';
         var xhttp = new XMLHttpRequest();
         xhttp.open("GET", api, true);
         xhttp.send(null);
